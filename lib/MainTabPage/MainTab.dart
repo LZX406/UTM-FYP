@@ -1,26 +1,44 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 import 'package:myapp/GroupListPage/group-list-page.dart';
 import 'package:myapp/ProfilePage/profile-page.dart';
+import 'package:myapp/Services/Account_service.dart';
 import 'package:myapp/UserTaskListPage/user-task-list-page.dart';
+import 'package:myapp/models/user.dart';
 
 class MainTab extends StatefulWidget {
-  const MainTab({Key? key}) : super(key: key);
+  final page;
+  const MainTab({Key? key, this.page}) : super(key: key);
   @override
   State<MainTab> createState() => MainTabPage();
 }
 
 class MainTabPage extends State<MainTab> {
   int page = 1;
+  User_Account? user;
   @override
   void initState() {
     super.initState();
     // Get the order
+    if (widget.page != null) {
+      page = widget.page;
+    }
+  }
+
+  void refreshpage(int a) {
+    setState(() {
+      page = a;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    Future<void> getUser() async {
+      Future<User_Account?> futureuser = Accountservice().GetUser();
+      user = await futureuser;
+    }
+
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     return SizedBox(
@@ -206,18 +224,31 @@ class MainTabPage extends State<MainTab> {
                 ),
               ),
             ),
-            FutureBuilder(builder: (context, snapshot) {
-              if (page == 1) {
-                return const ProfilePage();
-              }
-              if (page == 2) {
-                return const UserTaskListPage();
-              }
-              if (page == 3) {
-                return const GroupListPage();
-              }
-              return const ProfilePage();
-            })
+            FutureBuilder(
+                future: getUser(),
+                builder: (context, snapshot) {
+                  if (page == 1) {
+                    return ProfilePage(
+                      UserAccount: user,
+                    );
+                  }
+
+                  if (page == 2) {
+                    return UserTaskListPage(
+                      refreshpage: refreshpage,
+                      UserAccount: user,
+                    );
+                  }
+                  if (page == 3) {
+                    return GroupListPage(
+                      UserAccount: user,
+                    );
+                  }
+
+                  return ProfilePage(
+                    UserAccount: user,
+                  );
+                })
           ],
         ),
       ),

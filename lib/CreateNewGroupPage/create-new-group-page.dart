@@ -1,24 +1,87 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, prefer_const_constructors, prefer_typing_uninitialized_variables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:myapp/Dialog.dart';
+import 'package:myapp/Services/group_service.dart';
+import 'package:myapp/models/group_member_record.dart';
+import 'package:myapp/models/user.dart';
 import 'package:myapp/utils.dart';
 
 class CreateNewGroupPage extends StatefulWidget {
-  const CreateNewGroupPage({Key? key}) : super(key: key);
+  final refresh;
+  final UserAccount;
+  const CreateNewGroupPage({Key? key, this.UserAccount, this.refresh})
+      : super(key: key);
   @override
   State<CreateNewGroupPage> createState() => CreateNewGroup();
 }
 
 class CreateNewGroup extends State<CreateNewGroupPage> {
-  List<String> positionlist = ["Member"];
-  List<String> namelist = ["JASON"];
-  // ignore: non_constant_identifier_names
+  String? message;
+  List<Group_member?> memberlist = [];
+  String? checkmessage;
+  List<double> extra = [];
+  List<bool> showextra = [];
+
   final GroupNameController = TextEditingController();
-  // ignore: non_constant_identifier_names
   final GroupInfoController = TextEditingController();
-  // ignore: non_constant_identifier_names
   final GroupMemberController = TextEditingController();
+
+  String? validatenull(String value) {
+    if (value.isEmpty) {
+      return "This field cannot be empty";
+    }
+    return null;
+  }
+
+  bool checksameuser(String username) {
+    bool exist = false;
+
+    if (username == widget.UserAccount!.username) {
+      exist = true;
+    } else {
+      for (var element in memberlist) {
+        if (element!.member_username == username) {
+          exist = true;
+        }
+      }
+    }
+    return exist;
+  }
+
+  Future<bool> checkuserexist(String username) async {
+    bool exist = false;
+
+    User_Account? user = await Group_service().Check(username);
+    if (user?.username == username) {
+      exist = true;
+    }
+    return exist;
+  }
+
+  Future<void> create(var memberlist) async {
+    message = "Create successful";
+    message = await Group_service().CreateGroup(
+        userid: widget.UserAccount!.uid,
+        group_nam: GroupNameController.text,
+        info: GroupInfoController.text,
+        member_list: memberlist);
+  }
+
+  String memberposition(int a) {
+    if (a == 1) {
+      return "member";
+    } else if (a == 2) {
+      return "manager";
+    }
+    return "leader";
+  }
+
+  void switchmemberposition(Group_member member, int value) {
+    member.member_type = value;
+  }
+
   @override
   Widget build(BuildContext context) {
     double baseWidth = 360;
@@ -33,470 +96,64 @@ class CreateNewGroup extends State<CreateNewGroupPage> {
         decoration: const BoxDecoration(
           color: Color(0xffffffff),
         ),
-        child: Stack(
-          children: [
-            Positioned(
-              // hdwallpaperhomerosimpsonshomer (108:331)
-              left: 0 * fem,
-              top: 0 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 360 * fem,
-                  height: 799 * fem,
-                  child: Image.asset(
-                    'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-iSC.png',
-                    fit: BoxFit.cover,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Stack(
+            children: [
+              Positioned(
+                // hdwallpaperhomerosimpsonshomer (108:331)
+                left: 0 * fem,
+                top: 0 * fem,
+                child: Align(
+                  child: SizedBox(
+                    width: 360 * fem,
+                    height: 799 * fem,
+                    child: Image.asset(
+                      'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-iSC.png',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Center(
-                    child: Align(
-                      child: SizedBox(
-                        width: 360 * fem,
-                        height: 25 * fem,
-                        child: Text(
-                          'NEW GROUP ',
-                          textAlign: TextAlign.center,
-                          style: SafeGoogleFont(
-                            'Inter',
-                            fontSize: 20 * ffem,
-                            fontWeight: FontWeight.w400,
-                            decoration: TextDecoration.none,
-                            height: 1.2125 * ffem / fem,
-                            color: const Color(0xffffffff),
-                          ),
-                        ),
-                      ),
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  Row(
-                    children: [
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
+                    Center(
+                      child: Align(
                         child: SizedBox(
-                          width: 330 * fem,
-                          height: 15 * fem,
+                          width: 360 * fem,
+                          height: 25 * fem,
                           child: Text(
-                            'GROUP NAME',
+                            'NEW GROUP ',
+                            textAlign: TextAlign.center,
                             style: SafeGoogleFont(
                               'Inter',
-                              fontSize: 12 * ffem,
+                              fontSize: 20 * ffem,
                               fontWeight: FontWeight.w400,
-                              height: 1.2125 * ffem / fem,
                               decoration: TextDecoration.none,
+                              height: 1.2125 * ffem / fem,
                               color: const Color(0xffffffff),
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  Align(
-                    child: SizedBox(
-                      width: 330 * fem,
-                      height: 20 * fem,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffffffff)),
-                        ),
-                        child: Material(
-                          color: const Color(0x00000000),
-                          child: TextField(
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(60),
-                            ],
-                            maxLines: 1,
-                            controller: GroupNameController,
-                            style: const TextStyle(color: Colors.white),
-                            textAlignVertical: TextAlignVertical.center,
-                            decoration: const InputDecoration(
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: EdgeInsets.zero,
-                            ),
-                          ),
-                        ),
-                      ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  Align(
-                    child: SizedBox(
-                      width: 330 * fem,
-                      height: 15 * fem,
-                      child: Text(
-                        'Task info',
-                        style: SafeGoogleFont(
-                          'Inter',
-                          fontSize: 12 * ffem,
-                          fontWeight: FontWeight.w400,
-                          height: 1.2125 * ffem / fem,
-                          decoration: TextDecoration.none,
-                          color: const Color(0xffffffff),
+                    const SizedBox(height: 30),
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 15,
                         ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    child: SizedBox(
-                      width: 330 * fem,
-                      height: 120 * fem,
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffffffff)),
-                        ),
-                        child: Material(
-                          color: const Color(0x00000000),
-                          child: TextField(
-                            maxLines: null,
-                            controller: GroupInfoController,
-                            style: const TextStyle(color: Colors.white),
-                            textAlignVertical: TextAlignVertical.top,
-                            decoration: const InputDecoration(
-                              filled: true,
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                              ),
-                              contentPadding: EdgeInsets.zero,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Align(
-                    child: SizedBox(
-                      width: 330 * fem,
-                      height: 15 * fem,
-                      child: Text(
-                        'GROUP MEMBER',
-                        style: SafeGoogleFont(
-                          'Inter',
-                          fontSize: 12 * ffem,
-                          fontWeight: FontWeight.w400,
-                          height: 1.2125 * ffem / fem,
-                          decoration: TextDecoration.none,
-                          color: const Color(0xffffffff),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        width: 330 * fem,
-                        height: 280 * fem,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xffffffff)),
-                          ),
-                          child: ListView.separated(
-                            padding: EdgeInsets.zero,
-                            itemCount: namelist.length,
-                            itemBuilder: (context, index) {
-                              return Align(
-                                child: SizedBox(
-                                  width: 360 * fem,
-                                  height: 60 * fem,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xffffffff)),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Align(
-                                          child: SizedBox(
-                                            width: 140 * fem,
-                                            height: 30 * fem,
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                namelist.elementAt(index),
-                                                style: SafeGoogleFont(
-                                                  'Inter',
-                                                  fontSize: 12 * ffem,
-                                                  fontWeight: FontWeight.w400,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                  height: 1.2125 * ffem / fem,
-                                                  color:
-                                                      const Color(0xffffffff),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Align(
-                                            alignment: Alignment.center,
-                                            child: SizedBox(
-                                              width: 168 * fem,
-                                              height: 30 * fem,
-                                              child: Container(
-                                                alignment: Alignment.centerLeft,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: const Color(
-                                                          0xffffffff)),
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 120 * fem,
-                                                      height: 25 * fem,
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: Text(
-                                                          positionlist[index],
-                                                          style: SafeGoogleFont(
-                                                            'Inter',
-                                                            fontSize: 12 * ffem,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .none,
-                                                            height: 1.2125 *
-                                                                ffem /
-                                                                fem,
-                                                            color: const Color(
-                                                                0xffffffff),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 38 * fem,
-                                                      height: 45 * fem,
-                                                      child: TextButton(
-                                                        onPressed: () {
-                                                          if (positionlist[
-                                                                  index] ==
-                                                              "Member") {
-                                                            setState(() {
-                                                              positionlist[
-                                                                      index] =
-                                                                  "Manager";
-                                                            });
-                                                          } else {
-                                                            setState(() {
-                                                              positionlist[
-                                                                      index] =
-                                                                  "Member";
-                                                            });
-                                                          }
-                                                        },
-                                                        child: const Icon(
-                                                          Icons
-                                                              .keyboard_arrow_right_outlined,
-                                                          color: Colors.white,
-                                                          size: 20,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const Divider(
-                                height: 0,
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                        ),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Dialog(
-                                  backgroundColor: Colors.black,
-                                  insetPadding: const EdgeInsets.symmetric(
-                                      horizontal: 40, vertical: 40),
-                                  child: SizedBox(
-                                    width: 200,
-                                    height: 120,
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          'Member Username',
-                                          style: SafeGoogleFont(
-                                            'Inter',
-                                            fontSize: 12 * ffem,
-                                            fontWeight: FontWeight.w400,
-                                            height: 1.2125 * ffem / fem,
-                                            decoration: TextDecoration.none,
-                                            color: const Color(0xffffffff),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 180,
-                                          height: 30,
-                                          child: Container(
-                                            alignment: Alignment.topLeft,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color:
-                                                      const Color(0xffffffff)),
-                                            ),
-                                            child: Material(
-                                              color: const Color(0x00000000),
-                                              child: TextField(
-                                                inputFormatters: [
-                                                  LengthLimitingTextInputFormatter(
-                                                      60),
-                                                ],
-                                                maxLines: 1,
-                                                controller:
-                                                    GroupMemberController,
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                                textAlignVertical:
-                                                    TextAlignVertical.center,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  filled: true,
-                                                  border: OutlineInputBorder(
-                                                    borderSide: BorderSide.none,
-                                                  ),
-                                                  contentPadding:
-                                                      EdgeInsets.zero,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            const SizedBox(width: 60),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: SizedBox(
-                                                width: 60 * fem,
-                                                height: 30 * fem,
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: const Color(
-                                                            0xffffffff)),
-                                                    color:
-                                                        const Color(0x7fffffff),
-                                                  ),
-                                                  child: Text(
-                                                    'ADD',
-                                                    textAlign: TextAlign.center,
-                                                    style: SafeGoogleFont(
-                                                      'Inter',
-                                                      fontSize: 12 * ffem,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      height:
-                                                          1.2125 * ffem / fem,
-                                                      decoration:
-                                                          TextDecoration.none,
-                                                      color: const Color(
-                                                          0xffffffff),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                GroupMemberController.clear();
-                                                Navigator.pop(context);
-                                              },
-                                              child: SizedBox(
-                                                width: 60 * fem,
-                                                height: 30 * fem,
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: const Color(
-                                                            0xffffffff)),
-                                                    color:
-                                                        const Color(0x7fffffff),
-                                                  ),
-                                                  child: Text(
-                                                    'CANCEL',
-                                                    textAlign: TextAlign.center,
-                                                    style: SafeGoogleFont(
-                                                      'Inter',
-                                                      fontSize: 12 * ffem,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      height:
-                                                          1.2125 * ffem / fem,
-                                                      decoration:
-                                                          TextDecoration.none,
-                                                      color: const Color(
-                                                          0xffffffff),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }).whenComplete(
-                            () {
-                              if (GroupMemberController.text.isNotEmpty) {
-                                setState(() {
-                                  namelist.add(GroupMemberController.text);
-                                  positionlist.add("Member");
-                                });
-                              }
-                            },
-                          );
-                        },
-                        child: SizedBox(
-                          width: 330 * fem,
-                          height: 30 * fem,
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xffffffff)),
-                              color: const Color(0x7fffffff),
-                            ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: SizedBox(
+                            width: 330 * fem,
+                            height: 15 * fem,
                             child: Text(
-                              'ADD MEMBER',
-                              textAlign: TextAlign.center,
+                              'GROUP NAME',
                               style: SafeGoogleFont(
                                 'Inter',
                                 fontSize: 12 * ffem,
@@ -508,113 +165,504 @@ class CreateNewGroup extends State<CreateNewGroupPage> {
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                    Align(
+                      child: SizedBox(
+                        width: 330 * fem,
+                        height: 50 * fem,
+                        child: TextField(
+                          controller: GroupNameController,
+                          decoration: InputDecoration(
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: Colors.white)),
+                            errorText: validatenull(GroupNameController.text),
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          ),
+                          style: SafeGoogleFont(
+                            'Inter',
+                            fontSize: 16 * ffem,
+                            decoration: TextDecoration.none,
+                            color: const Color(0xffffffff),
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Row(
+                    ),
+                    const SizedBox(height: 10),
+                    Align(
+                      child: SizedBox(
+                        width: 330 * fem,
+                        height: 15 * fem,
+                        child: Text(
+                          'Group info',
+                          style: SafeGoogleFont(
+                            'Inter',
+                            fontSize: 12 * ffem,
+                            fontWeight: FontWeight.w400,
+                            height: 1.2125 * ffem / fem,
+                            decoration: TextDecoration.none,
+                            color: const Color(0xffffffff),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      child: SizedBox(
+                        width: 330 * fem,
+                        height: 120 * fem,
+                        child: TextField(
+                          minLines: 1,
+                          maxLines: 5,
+                          controller: GroupInfoController,
+                          decoration: InputDecoration(
+                            enabledBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 1, color: Colors.white)),
+                            errorText: validatenull(GroupInfoController.text),
+                            contentPadding:
+                                const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          ),
+                          style: SafeGoogleFont(
+                            'Inter',
+                            fontSize: 14 * ffem,
+                            decoration: TextDecoration.none,
+                            color: const Color(0xffffffff),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Align(
+                      child: SizedBox(
+                        width: 330 * fem,
+                        height: 15 * fem,
+                        child: Text(
+                          'GROUP MEMBER',
+                          style: SafeGoogleFont(
+                            'Inter',
+                            fontSize: 12 * ffem,
+                            fontWeight: FontWeight.w400,
+                            height: 1.2125 * ffem / fem,
+                            decoration: TextDecoration.none,
+                            color: const Color(0xffffffff),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Column(
                       children: [
-                        TextButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) => Dialog(
-                                      backgroundColor: Colors.black,
-                                      insetPadding: const EdgeInsets.symmetric(
-                                          horizontal: 40, vertical: 40),
+                        SizedBox(
+                          width: 330 * fem,
+                          height: 280 * fem,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: const Color(0xffffffff)),
+                            ),
+                            child: ListView.separated(
+                              padding: EdgeInsets.zero,
+                              itemCount: memberlist.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onPanUpdate: (DragUpdateDetails details) {
+                                    if (details.delta.dx > 15) {
+                                      setState(() {
+                                        extra[index] = 0;
+                                        showextra[index] = false;
+                                      });
+                                    } else if (details.delta.dx < -15) {
+                                      setState(() {
+                                        extra[index] = 30;
+                                        showextra[index] = true;
+                                      });
+                                    }
+                                  },
+                                  child: Align(
+                                    child: SizedBox(
+                                      width: 360 * fem,
+                                      height: 60 * fem,
                                       child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 25, vertical: 30),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xffffffff)),
+                                        ),
+                                        child: Row(
                                           children: [
-                                            const SizedBox(height: 14),
-                                            const Text(
-                                              "Create successfull",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 40),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                "OK",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
+                                            Align(
+                                              child: SizedBox(
+                                                width: 140 * fem - extra[index],
+                                                height: 30 * fem,
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    memberlist[index]!
+                                                        .member_username,
+                                                    style: SafeGoogleFont(
+                                                      'Inter',
+                                                      fontSize: 12 * ffem,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      decoration:
+                                                          TextDecoration.none,
+                                                      height:
+                                                          1.2125 * ffem / fem,
+                                                      color: const Color(
+                                                          0xffffffff),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
+                                            Align(
+                                                alignment: Alignment.center,
+                                                child: SizedBox(
+                                                  width:
+                                                      168 * fem - extra[index],
+                                                  height: 30 * fem,
+                                                  child: Container(
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: const Color(
+                                                              0xffffffff)),
+                                                    ),
+                                                    child: Row(
+                                                      children: [
+                                                        SizedBox(
+                                                          width: 120 * fem -
+                                                              extra[index],
+                                                          height: 25 * fem,
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: Text(
+                                                              memberposition(
+                                                                  memberlist[
+                                                                          index]!
+                                                                      .member_type),
+                                                              style:
+                                                                  SafeGoogleFont(
+                                                                'Inter',
+                                                                fontSize:
+                                                                    12 * ffem,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .none,
+                                                                height: 1.2125 *
+                                                                    ffem /
+                                                                    fem,
+                                                                color: const Color(
+                                                                    0xffffffff),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          width: 38 * fem,
+                                                          height: 45 * fem,
+                                                          child: TextButton(
+                                                            onPressed: () {
+                                                              if (memberlist[
+                                                                          index]!
+                                                                      .member_type ==
+                                                                  1) {
+                                                                switchmemberposition(
+                                                                    memberlist[
+                                                                        index]!,
+                                                                    2);
+                                                                setState(() {
+                                                                  memberlist[
+                                                                          index]!
+                                                                      .member_type = 2;
+                                                                });
+                                                              } else {
+                                                                switchmemberposition(
+                                                                    memberlist[
+                                                                        index]!,
+                                                                    1);
+                                                                setState(() {
+                                                                  memberlist[
+                                                                          index]!
+                                                                      .member_type = 1;
+                                                                });
+                                                              }
+                                                            },
+                                                            child: const Icon(
+                                                              Icons
+                                                                  .keyboard_arrow_right_outlined,
+                                                              color:
+                                                                  Colors.white,
+                                                              size: 20,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )),
+                                            const SizedBox(
+                                              width: 20,
+                                            ),
+                                            if (showextra[index])
+                                              SizedBox(
+                                                height: 65,
+                                                width: 2 * extra[index],
+                                                child: Container(
+                                                    color: Colors.red,
+                                                    child: TextButton(
+                                                        onPressed: () {
+                                                          message =
+                                                              "delete successful";
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return dialog(
+                                                                  message:
+                                                                      message,
+                                                                );
+                                                              }).whenComplete(() {
+                                                            widget
+                                                                .refresh(true);
+                                                            memberlist.removeAt(
+                                                                index);
+                                                            showextra.removeAt(
+                                                                index);
+                                                            extra.removeAt(
+                                                                index);
+                                                          });
+                                                        },
+                                                        child: const Icon(
+                                                          Icons.delete_outline,
+                                                          color: Colors.white,
+                                                        ))),
+                                              )
                                           ],
                                         ),
                                       ),
-                                    ));
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                          ),
-                          child: Container(
-                            width: 180 * fem,
-                            height: 57.22 * fem,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xff00ff19)),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Create',
-                                textAlign: TextAlign.center,
-                                style: SafeGoogleFont(
-                                  'Inter',
-                                  fontSize: 15 * ffem,
-                                  fontWeight: FontWeight.w400,
-                                  decoration: TextDecoration.none,
-                                  height: 1.2125 * ffem / fem,
-                                  color: const Color(0xffffffff),
-                                ),
-                              ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return const Divider(
+                                  height: 0,
+                                );
+                              },
                             ),
                           ),
                         ),
                         TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                           ),
-                          child: Container(
-                            width: 180 * fem,
-                            height: 57.22 * fem,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xffff0000)),
-                            ),
-                            child: Center(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    backgroundColor: Colors.black,
+                                    insetPadding: const EdgeInsets.symmetric(
+                                        horizontal: 40, vertical: 40),
+                                    child: SizedBox(
+                                      width: 200,
+                                      height: 120,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            'Member Username',
+                                            style: SafeGoogleFont(
+                                              'Inter',
+                                              fontSize: 12 * ffem,
+                                              fontWeight: FontWeight.w400,
+                                              height: 1.2125 * ffem / fem,
+                                              decoration: TextDecoration.none,
+                                              color: const Color(0xffffffff),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 180,
+                                            height: 30,
+                                            child: Container(
+                                              alignment: Alignment.topLeft,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: const Color(
+                                                        0xffffffff)),
+                                              ),
+                                              child: Material(
+                                                color: const Color(0x00000000),
+                                                child: TextField(
+                                                  inputFormatters: [
+                                                    LengthLimitingTextInputFormatter(
+                                                        60),
+                                                  ],
+                                                  maxLines: 1,
+                                                  controller:
+                                                      GroupMemberController,
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                  textAlignVertical:
+                                                      TextAlignVertical.center,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    filled: true,
+                                                    border: OutlineInputBorder(
+                                                      borderSide:
+                                                          BorderSide.none,
+                                                    ),
+                                                    contentPadding:
+                                                        EdgeInsets.zero,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              const SizedBox(width: 60),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: SizedBox(
+                                                  width: 60 * fem,
+                                                  height: 30 * fem,
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: const Color(
+                                                              0xffffffff)),
+                                                      color: const Color(
+                                                          0x7fffffff),
+                                                    ),
+                                                    child: Text(
+                                                      'ADD',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: SafeGoogleFont(
+                                                        'Inter',
+                                                        fontSize: 12 * ffem,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        height:
+                                                            1.2125 * ffem / fem,
+                                                        decoration:
+                                                            TextDecoration.none,
+                                                        color: const Color(
+                                                            0xffffffff),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  GroupMemberController.clear();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: SizedBox(
+                                                  width: 60 * fem,
+                                                  height: 30 * fem,
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: const Color(
+                                                              0xffffffff)),
+                                                      color: const Color(
+                                                          0x7fffffff),
+                                                    ),
+                                                    child: Text(
+                                                      'CANCEL',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: SafeGoogleFont(
+                                                        'Inter',
+                                                        fontSize: 12 * ffem,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        height:
+                                                            1.2125 * ffem / fem,
+                                                        decoration:
+                                                            TextDecoration.none,
+                                                        color: const Color(
+                                                            0xffffffff),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }).whenComplete(
+                              () async {
+                                if (GroupMemberController.text.isNotEmpty) {
+                                  bool user = await checkuserexist(
+                                      GroupMemberController.text);
+                                  if (user) {}
+                                  bool exist =
+                                      checksameuser(GroupMemberController.text);
+                                  if (!exist && user) {
+                                    setState(() {
+                                      memberlist.add(Group_member.create(
+                                          "new",
+                                          "none",
+                                          1,
+                                          GroupMemberController.text));
+                                      checkmessage = "User added";
+                                      showextra.add(false);
+                                      extra.add(0);
+                                    });
+                                  } else {
+                                    setState(() {
+                                      if (user) {
+                                        checkmessage = "User already in group";
+                                      } else {
+                                        checkmessage = "User not exist";
+                                      }
+                                    });
+                                  }
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return dialog(message: checkmessage);
+                                      });
+                                }
+                              },
+                            );
+                          },
+                          child: SizedBox(
+                            width: 330 * fem,
+                            height: 30 * fem,
+                            child: Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: const Color(0xffffffff)),
+                                color: const Color(0x7fffffff),
+                              ),
                               child: Text(
-                                'Back',
+                                'ADD MEMBER',
                                 textAlign: TextAlign.center,
                                 style: SafeGoogleFont(
                                   'Inter',
-                                  fontSize: 15 * ffem,
+                                  fontSize: 12 * ffem,
                                   fontWeight: FontWeight.w400,
-                                  decoration: TextDecoration.none,
                                   height: 1.2125 * ffem / fem,
+                                  decoration: TextDecoration.none,
                                   color: const Color(0xffffffff),
                                 ),
                               ),
@@ -623,11 +671,128 @@ class CreateNewGroup extends State<CreateNewGroupPage> {
                         ),
                       ],
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Row(
+                        children: [
+                          TextButton(
+                            onPressed: () async {
+                              await create(memberlist);
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => Dialog(
+                                        backgroundColor: Colors.black,
+                                        insetPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 40, vertical: 40),
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 25, vertical: 30),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              const SizedBox(height: 14),
+                                              Text(
+                                                message ?? '',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 40),
+                                              TextButton(
+                                                onPressed: () {
+                                                  widget.refresh();
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  "OK",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ));
+                            },
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                            ),
+                            child: Container(
+                              width: 180 * fem,
+                              height: 57.22 * fem,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: const Color(0xff00ff19)),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Create',
+                                  textAlign: TextAlign.center,
+                                  style: SafeGoogleFont(
+                                    'Inter',
+                                    fontSize: 15 * ffem,
+                                    fontWeight: FontWeight.w400,
+                                    decoration: TextDecoration.none,
+                                    height: 1.2125 * ffem / fem,
+                                    color: const Color(0xffffffff),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              widget.refresh();
+                              Navigator.pop(context);
+                            },
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                            ),
+                            child: Container(
+                              width: 180 * fem,
+                              height: 57.22 * fem,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: const Color(0xffff0000)),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Back',
+                                  textAlign: TextAlign.center,
+                                  style: SafeGoogleFont(
+                                    'Inter',
+                                    fontSize: 15 * ffem,
+                                    fontWeight: FontWeight.w400,
+                                    decoration: TextDecoration.none,
+                                    height: 1.2125 * ffem / fem,
+                                    color: const Color(0xffffffff),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

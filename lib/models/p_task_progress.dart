@@ -12,12 +12,13 @@ class P_task_progress {
       this.task_involved = false,
       this.progress = 0});
 
-  P_task_progress.fromJson(Map<String, dynamic> json)
-      : this(
-            account_id: json['account_id'],
-            task_id: json['task_id'],
-            task_involved: json['task_involved'],
-            progress: json['progress']);
+  factory P_task_progress.fromMap(map) {
+    return P_task_progress(
+        account_id: map['account_id'],
+        task_id: map['task_id'],
+        task_involved: map['task_involved'],
+        progress: map['progress']);
+  }
 
   Map<String, dynamic> toJson() => {
         'account_id': account_id,

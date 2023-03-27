@@ -2,17 +2,37 @@
 
 class Group_leader {
   final String group_id;
-  final String account_id;
+  final String leader_id;
+  final String group_leader_id;
+  final int member_type;
 
-  const Group_leader({this.group_id = '', this.account_id = ''});
+  Group_leader(
+      {this.group_id = '',
+      this.leader_id = '',
+      this.group_leader_id = '',
+      this.member_type = 0});
 
-  Group_leader.fromJson(Map<String, dynamic> json)
-      : this(group_id: json['group_id'], account_id: json['account_id']);
+  factory Group_leader.fromMap(map) {
+    return Group_leader(
+        group_id: map['group_id'],
+        leader_id: map['leader_id'],
+        group_leader_id: map['group_leader_id'],
+        member_type: map['member_type']);
+  }
 
-  Map<String, dynamic> toJson() =>
-      {'group_id': group_id, 'account_id': account_id};
+  factory Group_leader.create(
+      group_id, leader_id, group_leader_id, member_type) {
+    return Group_leader(
+        group_id: group_id,
+        leader_id: leader_id,
+        group_leader_id: group_leader_id,
+        member_type: member_type);
+  }
 
-  copyWith({group_id, account_id}) => Group_leader(
-      group_id: group_id ?? this.group_id,
-      account_id: account_id ?? this.account_id);
+  Map<String, dynamic> toJson() => {
+        'group_id': group_id,
+        'leader_id': leader_id,
+        'group_leader_id': group_leader_id,
+        'member_type': member_type
+      };
 }

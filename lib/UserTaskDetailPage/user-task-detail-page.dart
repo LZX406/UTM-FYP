@@ -1,12 +1,22 @@
-// ignore_for_file: file_names, non_constant_identifier_names
+// ignore_for_file: file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables
 
+import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:myapp/UserTaskDetailPage/user-edit-task-detail-page.dart';
+import 'package:myapp/models/p_task.dart';
 import 'package:myapp/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:myapp/models/user.dart';
 
 class UserTaskDetailPage extends StatefulWidget {
-  const UserTaskDetailPage({Key? key}) : super(key: key);
+  final page;
+  final switchpage;
+  final User_Account? UserAccount;
+  final Task_record? Task;
+  const UserTaskDetailPage(
+      {Key? key, this.UserAccount, this.Task, this.switchpage, this.page})
+      : super(key: key);
   @override
   State<UserTaskDetailPage> createState() => UserTaskDetail();
 }
@@ -14,64 +24,112 @@ class UserTaskDetailPage extends StatefulWidget {
 class UserTaskDetail extends State<UserTaskDetailPage> {
   final EndController = TextEditingController();
   final StartController = TextEditingController();
-  final httpsUri = Uri.https('www.google.com');
+  final EstiController = TextEditingController();
+  bool editmode = false;
+  Uri httpsUri = Uri.https('www.google.com');
+
+  void setvalue() {
+    StartController.text =
+        DateFormat('yyyy-MM-dd').format(widget.Task!.startdate!);
+    EndController.text = DateFormat('yyyy-MM-dd').format(widget.Task!.enddate!);
+    EstiController.text =
+        DateFormat('yyyy-MM-dd').format(widget.Task!.estidate!);
+    httpsUri = Uri.https(widget.Task!.link);
+  }
+
+  double progressvalue(String value) {
+    double values = double.parse(value) / 100;
+    return values;
+  }
+
+  void switchmode(bool value) {
+    if (editmode == false) {
+      setState(() {
+        editmode = true;
+      });
+    } else {
+      setState(() {
+        editmode = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    setvalue();
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
-    return SizedBox(
-      width: double.infinity,
-      child: SizedBox(
-        // usertaskdetailpage6sa (108:144)
+    if (editmode == false) {
+      return SizedBox(
         width: double.infinity,
-        height: double.infinity,
-        child: Stack(
-          children: [
-            Positioned(
-              // hdwallpaperhomerosimpsonshomer (107:19)
-              left: 0 * fem,
-              top: 0 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 360 * fem,
-                  height: 799 * fem,
-                  child: Image.asset(
-                    'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                    fit: BoxFit.cover,
+        height: 800 * fem,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Stack(
+            children: [
+              Positioned(
+                // hdwallpaperhomerosimpsonshomer (107:19)
+                left: 0 * fem,
+                top: 0 * fem,
+                child: Align(
+                  child: SizedBox(
+                    width: 360 * fem,
+                    height: 799 * fem,
+                    child: Image.asset(
+                      'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Positioned(
-              // completeprojectdesignSkQ (108:158)
-              left: 0 * fem,
-              top: 71 * fem,
-              child: Column(
+              Column(
                 children: [
-                  Center(
-                    child: Align(
-                      child: SizedBox(
-                        width: 360 * fem,
+                  SizedBox(
+                    height: 71 * fem,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 30 * fem,
                         height: 25 * fem,
-                        child: Text(
-                          'COMPLETE PROJECT DESIGN ',
-                          textAlign: TextAlign.center,
-                          style: SafeGoogleFont(
-                            'Inter',
-                            fontSize: 20 * ffem,
-                            fontWeight: FontWeight.w400,
-                            decoration: TextDecoration.none,
-                            height: 1.2125 * ffem / fem,
-                            color: const Color(0xffffffff),
+                      ),
+                      Center(
+                        child: Align(
+                          child: SizedBox(
+                            width: 300 * fem,
+                            height: 25 * fem,
+                            child: Text(
+                              "My task",
+                              textAlign: TextAlign.center,
+                              style: SafeGoogleFont(
+                                'Inter',
+                                fontSize: 20 * ffem,
+                                fontWeight: FontWeight.w400,
+                                decoration: TextDecoration.none,
+                                height: 1.2125 * ffem / fem,
+                                color: const Color(0xffffffff),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                      SizedBox(
+                        width: 30 * fem,
+                        height: 25 * fem,
+                        child: Switch(
+                          onChanged: switchmode,
+                          value: editmode,
+                          activeColor: Colors.blue,
+                          activeTrackColor: Colors.blue[100],
+                          inactiveThumbColor: Colors.grey,
+                          inactiveTrackColor: Colors.white,
+                        ),
+                      )
+                    ],
                   ),
                   const SizedBox(height: 30),
                   Align(
-                    alignment: Alignment.topLeft,
                     child: SizedBox(
                       width: 330 * fem,
                       height: 15 * fem,
@@ -91,26 +149,27 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                   Align(
                     child: SizedBox(
                       width: 330 * fem,
-                      height: 20 * fem,
+                      height: 40 * fem,
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: const Color(0xffffffff)),
                         ),
-                        child: Text(
-                          'COMPLETE PROJECT DESIGN',
-                          style: SafeGoogleFont(
-                            'Inter',
-                            fontSize: 12 * ffem,
-                            fontWeight: FontWeight.w400,
-                            decoration: TextDecoration.none,
-                            height: 1.2125 * ffem / fem,
-                            color: const Color(0xffffffff),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            widget.Task!.task_nam,
+                            style: SafeGoogleFont(
+                              'Inter',
+                              fontSize: 16 * ffem,
+                              height: 1.2125 * ffem / fem,
+                              color: const Color(0xffffffff),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   Align(
                     child: SizedBox(
                       width: 330 * fem,
@@ -133,14 +192,15 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                       width: 330 * fem,
                       height: 120 * fem,
                       child: Container(
+                        alignment: Alignment.topLeft,
                         decoration: BoxDecoration(
                           border: Border.all(color: const Color(0xffffffff)),
                         ),
                         child: Text(
-                          'Project Link:',
+                          widget.Task!.info,
                           style: SafeGoogleFont(
                             'Inter',
-                            fontSize: 12 * ffem,
+                            fontSize: 14 * ffem,
                             fontWeight: FontWeight.w400,
                             height: 1.2125 * ffem / fem,
                             decoration: TextDecoration.none,
@@ -181,7 +241,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                           child: InkWell(
                             onTap: () => launchUrl(httpsUri),
                             child: Text(
-                              'http::/www.project.com',
+                              widget.Task!.link,
                               style: SafeGoogleFont(
                                 'Inter',
                                 fontSize: 12 * ffem,
@@ -200,6 +260,9 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                   const SizedBox(height: 40),
                   Row(
                     children: [
+                      const SizedBox(
+                        width: 15,
+                      ),
                       Align(
                         child: SizedBox(
                           width: 165 * fem,
@@ -238,6 +301,9 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                   ),
                   Row(
                     children: [
+                      const SizedBox(
+                        width: 15,
+                      ),
                       Align(
                         child: SizedBox(
                           width: 155 * fem,
@@ -250,53 +316,27 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  width: 125,
+                                  width: 133,
                                   height: 35,
-                                  child: Text(
-                                    '20/5/2023',
-                                    style: SafeGoogleFont(
-                                      'Inter',
-                                      fontSize: 12 * ffem,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.2125 * ffem / fem,
-                                      decoration: TextDecoration.none,
-                                      color: const Color(0xffffffff),
+                                  child: Center(
+                                    child: Text(
+                                      StartController.text,
+                                      style: SafeGoogleFont(
+                                        'Inter',
+                                        fontSize: 12 * ffem,
+                                        decoration: TextDecoration.none,
+                                        color: const Color(0xffffffff),
+                                      ),
                                     ),
                                   ),
                                 ),
                                 SizedBox(
                                   width: 30,
-                                  height: 40,
+                                  height: 20,
                                   child: Container(
-                                    alignment: Alignment.topLeft,
-                                    child: TextButton(
-                                        onPressed: () async {
-                                          DateTime? pickedDate =
-                                              await showDatePicker(
-                                                  context: context,
-                                                  initialDate: DateTime
-                                                      .now(), //get today's date
-                                                  firstDate: DateTime(
-                                                      2000), //DateTime.now() - not to allow to choose before today.
-                                                  lastDate: DateTime(2101));
-
-                                          if (pickedDate != null) {
-                                            //get the picked date in the format => 2022-07-04 00:00:00.000
-                                            String formattedDate =
-                                                DateFormat('yyyy-MM-dd').format(
-                                                    pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                                            //formatted date output using intl package =>  2022-07-04
-                                            //You can format date as per your need
-
-                                            setState(() {
-                                              StartController.text =
-                                                  formattedDate; //set foratted date to TextField value.
-                                            });
-                                          } else {}
-                                        },
-                                        child: const Icon(Icons.calendar_month,
-                                            color: Colors.white, size: 25)),
-                                  ),
+                                      alignment: Alignment.topLeft,
+                                      child: const Icon(Icons.calendar_month,
+                                          color: Colors.white, size: 25)),
                                 ),
                               ],
                             ),
@@ -316,53 +356,27 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  width: 125,
+                                  width: 133,
                                   height: 35,
-                                  child: Text(
-                                    '25/5/2023',
-                                    style: SafeGoogleFont(
-                                      'Inter',
-                                      fontSize: 12 * ffem,
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.2125 * ffem / fem,
-                                      decoration: TextDecoration.none,
-                                      color: const Color(0xffffffff),
+                                  child: Center(
+                                    child: Text(
+                                      EndController.text,
+                                      style: SafeGoogleFont(
+                                        'Inter',
+                                        fontSize: 12 * ffem,
+                                        decoration: TextDecoration.none,
+                                        color: const Color(0xffffffff),
+                                      ),
                                     ),
                                   ),
                                 ),
                                 SizedBox(
                                   width: 30,
-                                  height: 40,
+                                  height: 20,
                                   child: Container(
-                                    alignment: Alignment.topLeft,
-                                    child: TextButton(
-                                        onPressed: () async {
-                                          DateTime? pickedDate =
-                                              await showDatePicker(
-                                                  context: context,
-                                                  initialDate: DateTime
-                                                      .now(), //get today's date
-                                                  firstDate: DateTime(
-                                                      2000), //DateTime.now() - not to allow to choose before today.
-                                                  lastDate: DateTime(2101));
-
-                                          if (pickedDate != null) {
-                                            //get the picked date in the format => 2022-07-04 00:00:00.000
-                                            String formattedDate =
-                                                DateFormat('yyyy-MM-dd').format(
-                                                    pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                                            //formatted date output using intl package =>  2022-07-04
-                                            //You can format date as per your need
-
-                                            setState(() {
-                                              EndController.text =
-                                                  formattedDate; //set foratted date to TextField value.
-                                            });
-                                          } else {}
-                                        },
-                                        child: const Icon(Icons.calendar_month,
-                                            color: Colors.white, size: 25)),
-                                  ),
+                                      alignment: Alignment.topLeft,
+                                      child: const Icon(Icons.calendar_month,
+                                          color: Colors.white, size: 25)),
                                 ),
                               ],
                             ),
@@ -374,6 +388,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                   const SizedBox(height: 40),
                   Row(
                     children: [
+                      const SizedBox(width: 15),
                       SizedBox(
                         width: 165 * fem,
                         height: 15 * fem,
@@ -383,24 +398,20 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                           style: SafeGoogleFont(
                             'Inter',
                             fontSize: 12 * ffem,
-                            fontWeight: FontWeight.w400,
-                            height: 1.2125 * ffem / fem,
                             decoration: TextDecoration.none,
                             color: const Color(0xffffffff),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 80),
+                      const SizedBox(width: 150),
                       SizedBox(
-                        width: 85 * fem,
+                        width: 35 * fem,
                         height: 15 * fem,
                         child: Text(
-                          ' 70%',
+                          '${widget.Task!.progress.toString()} %',
                           style: SafeGoogleFont(
                             'Inter',
                             fontSize: 12 * ffem,
-                            fontWeight: FontWeight.w400,
-                            height: 1.2125 * ffem / fem,
                             decoration: TextDecoration.none,
                             color: const Color(0xffffffff),
                           ),
@@ -412,130 +423,61 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                   SizedBox(
                     width: 330 * fem,
                     height: 20 * fem,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25 * fem),
-                        border: Border.all(color: const Color(0xffffffff)),
-                      ),
+                    child: CupertinoProgressBar(
+                      value: progressvalue(widget.Task!.progress.toString()),
+                      trackColor: Colors.white,
+                      valueColor: Colors.blue,
                     ),
                   ),
-                  const SizedBox(height: 90),
+                  const SizedBox(height: 80),
                   Align(
                     alignment: Alignment.bottomLeft,
-                    child: Row(
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) => Dialog(
-                                      backgroundColor: Colors.black,
-                                      insetPadding: const EdgeInsets.symmetric(
-                                          horizontal: 40, vertical: 40),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 25, vertical: 30),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            const SizedBox(height: 14),
-                                            const Text(
-                                              "Save successfull",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 40),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                "OK",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ));
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                          ),
-                          child: Container(
-                            width: 180 * fem,
-                            height: 57.22 * fem,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xff00ff19)),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Save',
-                                textAlign: TextAlign.center,
-                                style: SafeGoogleFont(
-                                  'Inter',
-                                  fontSize: 15 * ffem,
-                                  fontWeight: FontWeight.w400,
-                                  decoration: TextDecoration.none,
-                                  height: 1.2125 * ffem / fem,
-                                  color: const Color(0xffffffff),
-                                ),
-                              ),
+                    child: TextButton(
+                      onPressed: () {
+                        widget.switchpage(widget.page);
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: Container(
+                        width: 360 * fem,
+                        height: 57.22 * fem,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xffff0000)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Back',
+                            textAlign: TextAlign.center,
+                            style: SafeGoogleFont(
+                              'Inter',
+                              fontSize: 15 * ffem,
+                              fontWeight: FontWeight.w400,
+                              decoration: TextDecoration.none,
+                              height: 1.2125 * ffem / fem,
+                              color: const Color(0xffffffff),
                             ),
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                          ),
-                          child: Container(
-                            width: 180 * fem,
-                            height: 57.22 * fem,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xffff0000)),
-                            ),
-                            child: Center(
-                              child: Text(
-                                'Back',
-                                textAlign: TextAlign.center,
-                                style: SafeGoogleFont(
-                                  'Inter',
-                                  fontSize: 15 * ffem,
-                                  fontWeight: FontWeight.w400,
-                                  decoration: TextDecoration.none,
-                                  height: 1.2125 * ffem / fem,
-                                  color: const Color(0xffffffff),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return UserEditTaskDetailPage(
+        page: widget.page,
+        switchpage: widget.switchpage,
+        editmode: editmode,
+        switchmode: switchmode,
+        UserAccount: widget.UserAccount,
+        Task: widget.Task,
+      );
+    }
   }
 }
