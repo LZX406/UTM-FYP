@@ -1,69 +1,82 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types
 
 class Task_record {
-  final String username;
-  final int task_num;
-  final int enddate;
-  final int estidate;
-  final String extra_info;
+  final String userid;
+  final String task_nam;
+  final DateTime? enddate;
+  final DateTime? estidate;
+  final String link;
   final String task_id;
   final String info;
   final int progress;
-  final int startdate;
+  final DateTime? startdate;
+  bool activestate;
 
-  const Task_record(
-      {this.username = '',
-      this.task_num = 0,
-      this.enddate = 0,
-      this.estidate = 0,
-      this.extra_info = '',
+  Task_record(
+      {this.userid = '',
+      this.task_nam = '',
+      this.enddate,
+      this.estidate,
+      this.link = '',
       this.task_id = '',
       this.info = '',
       this.progress = 0,
-      this.startdate = 0});
+      this.startdate,
+      this.activestate = true});
 
-  Task_record.fromJson(Map<String, dynamic> json)
-      : this(
-            username: json['username'],
-            task_num: json['task_num'],
-            enddate: json['enddate'],
-            estidate: json['estidate'],
-            extra_info: json['extra_info'],
-            task_id: json['task_id'],
-            info: json['info'],
-            progress: json['progress'],
-            startdate: json['startdate']);
+  factory Task_record.fromMap(map) {
+    return Task_record(
+      userid: map['userid'],
+      task_nam: map['task_nam'],
+      enddate: map['enddate'].toDate(),
+      estidate: map['estidate'].toDate(),
+      link: map['link'],
+      task_id: map['task_id'],
+      info: map['info'],
+      progress: map['progress'],
+      startdate: map['startdate'].toDate(),
+      activestate: map['activestate'],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
-        'username': username,
-        'task_num': task_num,
+        'userid': userid,
+        'task_nam': task_nam,
         'enddate': enddate,
         'estidate': estidate,
-        'extra_info': extra_info,
+        'link': link,
         'task_id': task_id,
         'info': info,
         'progress': progress,
-        'startdate': startdate
+        'startdate': startdate,
+        'activestate': activestate
       };
 
-  copyWith(
-          {username,
-          task_num,
-          enddate,
-          estidate,
-          extra_info,
-          task_id,
-          info,
-          progress,
-          startdate}) =>
-      Task_record(
-          username: username ?? this.username,
-          task_num: task_num ?? this.task_num,
-          enddate: enddate ?? this.enddate,
-          estidate: estidate ?? this.estidate,
-          extra_info: extra_info ?? this.extra_info,
-          task_id: task_id ?? this.task_id,
-          info: info ?? this.info,
-          progress: progress ?? this.progress,
-          startdate: startdate ?? this.startdate);
+  factory Task_record.create(
+      {userid,
+      task_nam,
+      enddate,
+      estidate,
+      link,
+      task_id,
+      info,
+      progress,
+      startdate,
+      activestate}) {
+    return Task_record(
+        userid: userid,
+        task_nam: task_nam,
+        enddate: enddate,
+        estidate: estidate,
+        link: link,
+        task_id: task_id,
+        info: info,
+        progress: progress,
+        startdate: startdate,
+        activestate: activestate);
+  }
+
+  set setstate(bool state) {
+    activestate = state;
+  }
 }

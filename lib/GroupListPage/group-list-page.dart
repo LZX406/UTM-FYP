@@ -1,20 +1,38 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:myapp/CreateNewGroupPage/create-new-group-page.dart';
 import 'package:myapp/GroupTaskListPage/group-task-list-page.dart';
+import 'package:myapp/Services/group_service.dart';
+import 'package:myapp/models/group.dart';
+import 'package:myapp/models/user.dart';
 import 'package:myapp/utils.dart';
 
 class GroupListPage extends StatefulWidget {
-  const GroupListPage({Key? key}) : super(key: key);
+  final User_Account? UserAccount;
+  const GroupListPage({Key? key, this.UserAccount}) : super(key: key);
   @override
   State<GroupListPage> createState() => GroupList();
 }
 
 class GroupList extends State<GroupListPage> {
+  List<Group?> grouplist = [];
+  @override
+  void initState() {
+    super.initState();
+    // Get the order
+  }
+
+  void refresh() {
+    setState(() {});
+  }
+
+  Future<void> getallgroup() async {
+    grouplist = await Group_service().GetGroup(userid: widget.UserAccount!.uid);
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<int> grouplist = [1, 2, 3, 6, 7, 7, 6, 5];
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
@@ -35,7 +53,10 @@ class GroupList extends State<GroupListPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CreateNewGroupPage()),
+                        builder: (context) => CreateNewGroupPage(
+                              refresh: refresh,
+                              UserAccount: widget.UserAccount,
+                            )),
                   );
                 },
                 style: TextButton.styleFrom(
@@ -79,128 +100,92 @@ class GroupList extends State<GroupListPage> {
                       decoration: BoxDecoration(
                         border: Border.all(color: const Color(0xffffffff)),
                       ),
-                      child: FutureBuilder(builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return ListView.separated(
-                            padding: EdgeInsets.zero,
-                            itemCount: grouplist.length,
-                            itemBuilder: (context, index) {
-                              return Align(
-                                alignment: Alignment.topLeft,
-                                child: SizedBox(
-                                  width: 360 * fem,
-                                  height: 81 * fem,
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const GroupTaskListPage()),
-                                      );
-                                    },
-                                    style: TextButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                    ),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: const Color(0xffffffff)),
+                      child: FutureBuilder(
+                          future: getallgroup(),
+                          builder: (context, snapshot) {
+                            return ListView.separated(
+                              padding: EdgeInsets.zero,
+                              itemCount: grouplist.length,
+                              itemBuilder: (context, index) {
+                                return Align(
+                                  alignment: Alignment.topLeft,
+                                  child: SizedBox(
+                                    width: 360 * fem,
+                                    height: 81 * fem,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  GroupTaskListPage(
+                                                      refresh: refresh,
+                                                      getallgroup: getallgroup,
+                                                      UserAccount:
+                                                          widget.UserAccount,
+                                                      group: grouplist[index])),
+                                        );
+                                      },
+                                      style: TextButton.styleFrom(
+                                        padding: EdgeInsets.zero,
                                       ),
-                                      child: Column(
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: SizedBox(
-                                              width: 115 * fem,
-                                              height: 25 * fem,
-                                              child: Text(
-                                                'Alpha group',
-                                                style: SafeGoogleFont(
-                                                  'Inter',
-                                                  fontSize: 20 * ffem,
-                                                  fontWeight: FontWeight.w400,
-                                                  height: 1.2125 * ffem / fem,
-                                                  color:
-                                                      const Color(0xffffffff),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color(0xffffffff)),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: SizedBox(
+                                                width: 350 * fem,
+                                                height: 25 * fem,
+                                                child: Text(
+                                                  grouplist[index]!.group_name,
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 20 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: SizedBox(
-                                              width: 153 * fem,
-                                              height: 15 * fem,
-                                              child: Text(
-                                                'Active task: compile report',
-                                                style: SafeGoogleFont(
-                                                  'Inter',
-                                                  fontSize: 12 * ffem,
-                                                  fontWeight: FontWeight.w400,
-                                                  height: 1.2125 * ffem / fem,
-                                                  color:
-                                                      const Color(0xffffffff),
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: SizedBox(
+                                                width: 153 * fem,
+                                                height: 15 * fem,
+                                                child: Text(
+                                                  'Active task: compile report',
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 12 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const Divider(
-                                height: 0,
-                              );
-                            },
-                          );
-                        }
-                        return ListView.separated(
-                          padding: EdgeInsets.zero,
-                          itemCount: 1,
-                          itemBuilder: (context, index) {
-                            return Align(
-                              alignment: Alignment.topLeft,
-                              child: SizedBox(
-                                width: 360 * fem,
-                                height: 81 * fem,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color(0xffffffff)),
-                                  ),
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: SizedBox(
-                                      width: 115 * fem,
-                                      height: 25 * fem,
-                                      child: Text(
-                                        'No group',
-                                        style: SafeGoogleFont(
-                                          'Inter',
-                                          fontSize: 20 * ffem,
-                                          fontWeight: FontWeight.w400,
-                                          height: 1.2125 * ffem / fem,
-                                          color: const Color(0xffffffff),
+                                          ],
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return const Divider(
+                                  height: 0,
+                                );
+                              },
                             );
-                          },
-                          separatorBuilder: (context, index) {
-                            return const Divider(
-                              height: 0,
-                            );
-                          },
-                        );
-                      })),
+                          })),
                 ),
               ),
             ),

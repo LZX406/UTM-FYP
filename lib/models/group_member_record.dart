@@ -1,27 +1,38 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
 class Group_member {
+  final String member_id;
+  int member_type;
+  final String member_username;
   final String group_id;
-  final String account_id;
-  final int member_type;
 
-  const Group_member(
-      {this.group_id = '', this.account_id = '', this.member_type = 0});
+  Group_member(
+      {this.member_id = '',
+      this.member_type = 0,
+      this.member_username = '',
+      this.group_id = ''});
 
-  Group_member.fromJson(Map<String, dynamic> json)
-      : this(
-            group_id: json['group_id'],
-            account_id: json['account_id'],
-            member_type: json['member_type']);
+  factory Group_member.fromMap(map) {
+    return Group_member(
+        member_id: map['member_id'],
+        member_type: map['memberposition'],
+        member_username: map['member_username'],
+        group_id: map['group_id']);
+  }
+
+  factory Group_member.create(
+      group_id, member_id, member_type, member_username) {
+    return Group_member(
+        member_id: member_id,
+        member_type: member_type,
+        member_username: member_username,
+        group_id: group_id);
+  }
 
   Map<String, dynamic> toJson() => {
-        'group_id': group_id,
-        'account_id': account_id,
-        'member_type': member_type
+        'member_id': member_id,
+        'member_type': member_type,
+        'member_username': member_username,
+        'group_id': group_id
       };
-
-  copyWith({group_id, account_id, member_type}) => Group_member(
-      group_id: group_id ?? this.group_id,
-      account_id: account_id ?? this.account_id,
-      member_type: member_type ?? this.member_type);
 }

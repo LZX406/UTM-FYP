@@ -1,27 +1,38 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, non_constant_identifier_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:myapp/Services/p_task_service.dart';
 import 'package:myapp/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:myapp/models/user.dart';
 
 class UserCreateTaskPage extends StatefulWidget {
-  const UserCreateTaskPage({Key? key}) : super(key: key);
+  final switchpage;
+  final User_Account? UserAccount;
+  const UserCreateTaskPage({Key? key, this.UserAccount, this.switchpage})
+      : super(key: key);
   @override
   State<UserCreateTaskPage> createState() => UserCreateTask();
 }
 
 class UserCreateTask extends State<UserCreateTaskPage> {
-  // ignore: non_constant_identifier_names
   final TaskNameController = TextEditingController();
-  // ignore: non_constant_identifier_names
   final TaskInfoController = TextEditingController();
-  // ignore: non_constant_identifier_names
   final LinkController = TextEditingController();
-  // ignore: non_constant_identifier_names
   final StartController = TextEditingController();
-  // ignore: non_constant_identifier_names
   final EndController = TextEditingController();
+  String? userid;
+  DateTime? StartDate;
+  DateTime? EndDate;
+  DateTime? EstimeDate;
+
+  @override
+  initState() {
+    super.initState();
+    userid = widget.UserAccount!.uid;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -286,18 +297,16 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                                   height: 35,
                                   child: Material(
                                     color: const Color(0x00000000),
-                                    child: TextField(
-                                      controller: StartController,
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
-                                      decoration: const InputDecoration(
-                                        filled: true,
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        StartController.text,
+                                        style: SafeGoogleFont(
+                                          'Inter',
+                                          fontSize: 14 * ffem,
+                                          decoration: TextDecoration.none,
+                                          color: const Color(0xffffffff),
                                         ),
-                                        contentPadding: EdgeInsets.zero,
                                       ),
                                     ),
                                   ),
@@ -309,20 +318,19 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                                     alignment: Alignment.topLeft,
                                     child: TextButton(
                                         onPressed: () async {
-                                          DateTime? pickedDate =
-                                              await showDatePicker(
-                                                  context: context,
-                                                  initialDate: DateTime
-                                                      .now(), //get today's date
-                                                  firstDate: DateTime(
-                                                      2000), //DateTime.now() - not to allow to choose before today.
-                                                  lastDate: DateTime(2101));
+                                          StartDate = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime
+                                                  .now(), //get today's date
+                                              firstDate: DateTime(
+                                                  2000), //DateTime.now() - not to allow to choose before today.
+                                              lastDate: DateTime(2101));
 
-                                          if (pickedDate != null) {
+                                          if (StartDate != null) {
                                             //get the picked date in the format => 2022-07-04 00:00:00.000
                                             String formattedDate =
                                                 DateFormat('yyyy-MM-dd').format(
-                                                    pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                                    StartDate!); // format date in required form here we use yyyy-MM-dd that means time is removed
                                             //formatted date output using intl package =>  2022-07-04
                                             //You can format date as per your need
 
@@ -358,18 +366,16 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                                   height: 35,
                                   child: Material(
                                     color: const Color(0x00000000),
-                                    child: TextField(
-                                      controller: EndController,
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
-                                      decoration: const InputDecoration(
-                                        filled: true,
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
+                                    child: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        EndController.text,
+                                        style: SafeGoogleFont(
+                                          'Inter',
+                                          fontSize: 14 * ffem,
+                                          decoration: TextDecoration.none,
+                                          color: const Color(0xffffffff),
                                         ),
-                                        contentPadding: EdgeInsets.zero,
                                       ),
                                     ),
                                   ),
@@ -381,20 +387,19 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                                     alignment: Alignment.topLeft,
                                     child: TextButton(
                                         onPressed: () async {
-                                          DateTime? pickedDate =
-                                              await showDatePicker(
-                                                  context: context,
-                                                  initialDate: DateTime
-                                                      .now(), //get today's date
-                                                  firstDate: DateTime(
-                                                      2000), //DateTime.now() - not to allow to choose before today.
-                                                  lastDate: DateTime(2101));
+                                          EndDate = await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime
+                                                  .now(), //get today's date
+                                              firstDate: DateTime(
+                                                  2000), //DateTime.now() - not to allow to choose before today.
+                                              lastDate: DateTime(2101));
 
-                                          if (pickedDate != null) {
+                                          if (EndDate != null) {
                                             //get the picked date in the format => 2022-07-04 00:00:00.000
                                             String formattedDate =
                                                 DateFormat('yyyy-MM-dd').format(
-                                                    pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                                    EndDate!); // format date in required form here we use yyyy-MM-dd that means time is removed
                                             //formatted date output using intl package =>  2022-07-04
                                             //You can format date as per your need
 
@@ -425,6 +430,26 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                       children: [
                         TextButton(
                           onPressed: () {
+                            String message = "Create unsuccessful";
+                            Timestamp StartTimeStamp =
+                                Timestamp.fromDate(StartDate!);
+                            Timestamp EndTimeStamp =
+                                Timestamp.fromDate(EndDate!);
+                            Timestamp EstimateTimeStamp =
+                                Timestamp.fromDate(EndDate!);
+                            if (userid != '') {
+                              User_tasK_service().CreateUserTask(
+                                  enddate: EndTimeStamp,
+                                  estidate: EstimateTimeStamp,
+                                  info: TaskInfoController.text,
+                                  link: LinkController.text,
+                                  progress: 0,
+                                  startdate: StartTimeStamp,
+                                  task_nam: TaskNameController.text,
+                                  userid: userid);
+                              message = "Create successfull";
+                            }
+
                             showDialog(
                                 context: context,
                                 builder: (context) => Dialog(
@@ -442,9 +467,9 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                                               CrossAxisAlignment.center,
                                           children: [
                                             const SizedBox(height: 14),
-                                            const Text(
-                                              "Create successfull",
-                                              style: TextStyle(
+                                            Text(
+                                              message,
+                                              style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18,
@@ -453,6 +478,7 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                                             const SizedBox(height: 40),
                                             TextButton(
                                               onPressed: () {
+                                                widget.switchpage(1);
                                                 Navigator.pop(context);
                                                 Navigator.pop(context);
                                               },
