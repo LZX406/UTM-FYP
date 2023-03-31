@@ -265,7 +265,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                       ),
                       Align(
                         child: SizedBox(
-                          width: 165 * fem,
+                          width: 173 * fem,
                           height: 15 * fem,
                           child: Text(
                             'Start date',
@@ -343,10 +343,10 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 20),
                       Align(
                         child: SizedBox(
-                          width: 165 * fem,
+                          width: 155 * fem,
                           height: 35 * fem,
                           child: Container(
                             decoration: BoxDecoration(
@@ -384,6 +384,64 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                         ),
                       ),
                     ],
+                  ),
+                  Align(
+                    alignment: const Alignment(-0.85, 0),
+                    child: SizedBox(
+                      width: 155 * fem,
+                      height: 15 * fem,
+                      child: Text(
+                        'Estimate end date',
+                        style: SafeGoogleFont(
+                          'Inter',
+                          fontSize: 12 * ffem,
+                          decoration: TextDecoration.none,
+                          color: const Color(0xffffffff),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: const Alignment(-0.85, 0),
+                    child: SizedBox(
+                      width: 155 * fem,
+                      height: 35 * fem,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xffffffff)),
+                        ),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 133,
+                              height: 35,
+                              child: Center(
+                                child: Text(
+                                  DateFormat('yyyy-MM-dd').format(
+                                      widget.Task!.estidate ?? DateTime.now()),
+                                  style: SafeGoogleFont(
+                                    'Inter',
+                                    fontSize: 12 * ffem,
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.2125 * ffem / fem,
+                                    decoration: TextDecoration.none,
+                                    color: const Color(0xffffffff),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 30,
+                              height: 20,
+                              child: Container(
+                                  alignment: Alignment.topLeft,
+                                  child: const Icon(Icons.calendar_month,
+                                      color: Colors.white, size: 25)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 40),
                   Row(
@@ -429,7 +487,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                       valueColor: Colors.blue,
                     ),
                   ),
-                  const SizedBox(height: 80),
+                  const SizedBox(height: 30),
                   Align(
                     alignment: Alignment.bottomLeft,
                     child: TextButton(

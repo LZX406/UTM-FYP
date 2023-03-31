@@ -90,7 +90,9 @@ class User_tasK_service {
     List<List<Task_record?>?> Alltasklist = [];
     List<Task_record?> tasklist = await GetUserTask(userid: userid);
     for (Task_record? task in tasklist) {
-      if (task!.activestate == true && task.enddate!.isBefore(DateTime.now())) {
+      if (task!.activestate == true &&
+          task.enddate!
+              .isBefore((DateTime.now().add(const Duration(days: -1))))) {
         task.setstate = false;
         updatestate(Task: task);
       } else if (task.activestate == false &&

@@ -40,8 +40,7 @@ class GroupDetail extends State<GroupDetailPage> {
 
   Future<List<Group_member?>> getgroup() async {
     group = await Group_service().GetSingleGroup(groupid: widget.groupid);
-    groupleader = await Group_service()
-        .GetSingleGroupleader(userid: widget.UserAccount!.uid, group: group!);
+    groupleader = await Group_service().GetSingleGroupleader(group: group!);
     memberlist =
         await Group_member_service().GetGroupMember(groupid: widget.groupid);
     return memberlist;
@@ -431,7 +430,8 @@ class GroupDetail extends State<GroupDetailPage> {
                         editmode: editmode,
                       );
                     }
-                  } else if (groupleader?.leader_id == null &&
+                  } else if (groupleader?.leader_id !=
+                          widget.UserAccount!.uid &&
                       group?.group_id != null) {
                     return GroupMemberDetailPage(
                         refresh: widget.refresh,

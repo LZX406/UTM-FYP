@@ -5,11 +5,18 @@ class User_Account {
   final String email;
   final String username;
   final String uid;
+  DateTime? lastlogin;
+  bool ban;
 
-  const User_Account(
-      {this.password = '', this.email = '', this.username = '', this.uid = ''});
+  User_Account(
+      {this.password = '',
+      this.email = '',
+      this.username = '',
+      this.uid = '',
+      this.lastlogin,
+      this.ban = false});
 
-  factory User_Account.fromMap(map) {
+  factory User_Account.AdminMap(map) {
     return User_Account(
       email: map['email'],
       password: map['password'],
@@ -23,6 +30,8 @@ class User_Account {
       email: map['email'],
       username: map['username'],
       uid: map['uid'],
+      lastlogin: map['lastlogin'].toDate(),
+      ban: map['ban'],
     );
   }
 
@@ -32,6 +41,7 @@ class User_Account {
       password: map['password'],
       uid: map['uid'],
       username: map['username'],
+      lastlogin: map['lastlogin'].toDate(),
     );
   }
 

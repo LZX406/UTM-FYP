@@ -1,9 +1,13 @@
 // ignore_for_file: file_names, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
+import 'package:myapp/AdminViewGroupListPage/group-list-page.dart';
+import 'package:myapp/AdminViewUserListPage/user-list-page.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupListPage/group-list-page.dart';
 import 'package:myapp/ProfilePage/profile-page.dart';
 import 'package:myapp/Services/Account_service.dart';
+import 'package:myapp/Services/Auth.dart';
 import 'package:myapp/UserTaskListPage/user-task-list-page.dart';
 import 'package:myapp/models/user.dart';
 
@@ -17,6 +21,7 @@ class MainTab extends StatefulWidget {
 class MainTabPage extends State<MainTab> {
   int page = 1;
   User_Account? user;
+  Icon icon = const Icon(Icons.task, color: Colors.black, size: 40);
   @override
   void initState() {
     super.initState();
@@ -32,13 +37,33 @@ class MainTabPage extends State<MainTab> {
     });
   }
 
+  void display(User_Account? user) {
+    if (user?.username == "Admin") {
+      setState(() {
+        icon = const Icon(Icons.person, color: Colors.black, size: 40);
+      });
+    }
+  }
+
+  Future<void> getUser() async {
+    Future<User_Account?> futureuser = Accountservice().GetUser();
+    user = await futureuser;
+    if (user!.ban == true) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return const dialog(
+              message: "Your account has been banned",
+            );
+          }).whenComplete(() {
+        Auth().signOut();
+      });
+    }
+    display(user);
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<void> getUser() async {
-      Future<User_Account?> futureuser = Accountservice().GetUser();
-      user = await futureuser;
-    }
-
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     return SizedBox(
@@ -79,22 +104,22 @@ class MainTabPage extends State<MainTab> {
                 ),
                 child: Container(
                   padding:
-                      EdgeInsets.fromLTRB(55 * fem, 8 * fem, 57 * fem, 6 * fem),
+                      EdgeInsets.fromLTRB(55 * fem, 8 * fem, 57 * fem, 0 * fem),
                   width: 145 * fem,
-                  height: 58 * fem,
+                  height: 100 * fem,
                   decoration: BoxDecoration(
                     border: Border.all(color: const Color(0xff000000)),
                     color: const Color(0xffd9d9d9),
                   ),
-                  child: Center(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
                     // download11KXE (116:6)
                     child: SizedBox(
                       width: 33 * fem,
                       height: 44 * fem,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(6 * fem),
-                        child: const Icon(Icons.task,
-                            color: Colors.black, size: 40),
+                        child: icon,
                       ),
                     ),
                   ),
@@ -116,9 +141,9 @@ class MainTabPage extends State<MainTab> {
                 ),
                 child: Container(
                     padding: EdgeInsets.fromLTRB(
-                        50 * fem, 19 * fem, 20 * fem, 29 * fem),
+                        50 * fem, 19 * fem, 20 * fem, 0 * fem),
                     width: 67 * fem,
-                    height: 58 * fem,
+                    height: 100 * fem,
                     decoration: BoxDecoration(
                       border: Border.all(color: const Color(0xff000000)),
                       color: const Color.fromARGB(255, 57, 61, 61),
@@ -129,7 +154,7 @@ class MainTabPage extends State<MainTab> {
             Positioned(
               // line3c8x (116:11)
               left: 20 * fem,
-              top: 18 * fem,
+              top: 68 * fem,
               child: Align(
                 child: SizedBox(
                   width: 27 * fem,
@@ -145,7 +170,7 @@ class MainTabPage extends State<MainTab> {
             Positioned(
               // line3c8x (116:11)
               left: 20 * fem,
-              top: 28 * fem,
+              top: 78 * fem,
               child: Align(
                 child: SizedBox(
                   width: 27 * fem,
@@ -161,7 +186,7 @@ class MainTabPage extends State<MainTab> {
             Positioned(
               // line3c8x (116:11)
               left: 20 * fem,
-              top: 38 * fem,
+              top: 88 * fem,
               child: Align(
                 child: SizedBox(
                   width: 27 * fem,
@@ -188,37 +213,22 @@ class MainTabPage extends State<MainTab> {
                   padding: EdgeInsets.zero,
                 ),
                 child: Container(
-                  padding:
-                      EdgeInsets.fromLTRB(45 * fem, 4 * fem, 46 * fem, 2 * fem),
+                  padding: EdgeInsets.fromLTRB(
+                      45 * fem, 10 * fem, 46 * fem, 0 * fem),
                   width: 148 * fem,
-                  height: 58 * fem,
+                  height: 100 * fem,
                   decoration: BoxDecoration(
                     border: Border.all(color: const Color(0xff000000)),
                     color: const Color(0xffffffff),
                   ),
-                  child: Center(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
                     // downloadremovebgpreview1NXS (116:14)
                     child: SizedBox(
                       width: 57 * fem,
-                      height: 52 * fem,
+                      height: 45 * fem,
                       child: const Icon(Icons.group,
                           color: Colors.black, size: 50),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              // rectangle14h3W (107:32)
-              left: 0 * fem,
-              top: 109 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 360 * fem,
-                  height: 122 * fem,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xff000000)),
                     ),
                   ),
                 ),
@@ -231,23 +241,28 @@ class MainTabPage extends State<MainTab> {
                     return ProfilePage(
                       UserAccount: user,
                     );
+                  } else if (page == 2) {
+                    if (user!.username == "Admin") {
+                      return UserListPage(
+                        UserAccount: user,
+                      );
+                    } else {
+                      return UserTaskListPage(
+                        refreshpage: refreshpage,
+                        UserAccount: user,
+                      );
+                    }
+                  } else {
+                    if (user!.username == "Admin") {
+                      return AllGroupListPage(
+                        UserAccount: user,
+                      );
+                    } else {
+                      return GroupListPage(
+                        UserAccount: user,
+                      );
+                    }
                   }
-
-                  if (page == 2) {
-                    return UserTaskListPage(
-                      refreshpage: refreshpage,
-                      UserAccount: user,
-                    );
-                  }
-                  if (page == 3) {
-                    return GroupListPage(
-                      UserAccount: user,
-                    );
-                  }
-
-                  return ProfilePage(
-                    UserAccount: user,
-                  );
                 })
           ],
         ),

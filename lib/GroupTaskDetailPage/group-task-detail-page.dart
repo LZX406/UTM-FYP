@@ -295,7 +295,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               Align(
                                 alignment: Alignment.center,
                                 child: SizedBox(
-                                  width: 165 * fem,
+                                  width: 173 * fem,
                                   height: 15 * fem,
                                   child: Text(
                                     'Start date',
@@ -374,10 +374,10 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
+                              const SizedBox(width: 20),
                               Align(
                                 child: SizedBox(
-                                  width: 165 * fem,
+                                  width: 155 * fem,
                                   height: 35 * fem,
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -422,7 +422,68 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          Align(
+                            alignment: const Alignment(-0.85, 0),
+                            child: SizedBox(
+                              width: 155 * fem,
+                              height: 15 * fem,
+                              child: Text(
+                                'Estimate end date',
+                                style: SafeGoogleFont(
+                                  'Inter',
+                                  fontSize: 12 * ffem,
+                                  decoration: TextDecoration.none,
+                                  color: const Color(0xffffffff),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: const Alignment(-0.85, 0),
+                            child: SizedBox(
+                              width: 155 * fem,
+                              height: 35 * fem,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: const Color(0xffffffff)),
+                                ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 133,
+                                      height: 35,
+                                      child: Center(
+                                        child: Text(
+                                          DateFormat('yyyy-MM-dd').format(
+                                              task?.estidate! ??
+                                                  DateTime.now()),
+                                          style: SafeGoogleFont(
+                                            'Inter',
+                                            fontSize: 12 * ffem,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.2125 * ffem / fem,
+                                            decoration: TextDecoration.none,
+                                            color: const Color(0xffffffff),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                      height: 20,
+                                      child: Container(
+                                          alignment: Alignment.topLeft,
+                                          child: const Icon(
+                                              Icons.calendar_month,
+                                              color: Colors.white,
+                                              size: 25)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                           Row(
                             children: [
                               const SizedBox(
@@ -562,15 +623,11 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                             ),
                           if (progresslist.isEmpty)
                             const SizedBox(
-                              height: 120,
+                              height: 90,
                             ),
                           if (progresslist.length == 1)
                             const SizedBox(
-                              height: 65,
-                            ),
-                          if (progresslist.length == 2)
-                            const SizedBox(
-                              height: 10,
+                              height: 35,
                             ),
                           Align(
                             alignment: Alignment.bottomLeft,

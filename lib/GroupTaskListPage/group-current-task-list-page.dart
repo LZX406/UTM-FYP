@@ -52,7 +52,7 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
         builder: (context, snapshot) {
           return SizedBox(
             width: 360 * fem,
-            height: 590 * fem,
+            height: 550 * fem,
             child: Container(
               alignment: Alignment.topLeft,
               decoration: BoxDecoration(

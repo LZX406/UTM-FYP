@@ -89,12 +89,12 @@ class GroupList extends State<GroupListPage> {
             ),
             Positioned(
               left: 0 * fem,
-              top: 109 * fem,
+              top: 159 * fem,
               child: Align(
                 alignment: Alignment.topLeft,
                 child: SizedBox(
                   width: 360 * fem,
-                  height: 550 * fem,
+                  height: 500 * fem,
                   child: Container(
                       alignment: Alignment.topLeft,
                       decoration: BoxDecoration(
@@ -192,7 +192,7 @@ class GroupList extends State<GroupListPage> {
             Positioned(
               // mygroup6Jk (106:59)
               left: 0 * fem,
-              top: 58 * fem,
+              top: 108 * fem,
               child: Align(
                 alignment: Alignment.center,
                 child: SizedBox(

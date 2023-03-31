@@ -73,7 +73,7 @@ class UserTaskList extends State<UserTaskListPage> {
                 Positioned(
                   // group117N8 (107:334)
                   left: 0 * fem,
-                  top: 58 * fem,
+                  top: 108 * fem,
 
                   child: TextButton(
                     onPressed: () {},
@@ -168,7 +168,7 @@ class UserTaskList extends State<UserTaskListPage> {
                 Positioned(
                   // rectangle14LrU (104:88)
                   left: 0 * fem,
-                  top: 109 * fem,
+                  top: 159 * fem,
                   child: Align(
                     child: SizedBox(
                       width: 360 * fem,
@@ -184,12 +184,12 @@ class UserTaskList extends State<UserTaskListPage> {
                 Positioned(
                   // rectangle20esA (106:32)
                   left: 0 * fem,
-                  top: 109 * fem,
+                  top: 159 * fem,
                   child: Column(
                     children: [
                       SizedBox(
                         width: 360 * fem,
-                        height: 550 * fem,
+                        height: 500 * fem,
                         child: Container(
                           alignment: Alignment.topLeft,
                           decoration: BoxDecoration(

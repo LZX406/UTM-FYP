@@ -1,7 +1,9 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types, avoid_types_as_parameter_names
 
+import 'package:myapp/PERT_analysis/pert.dart';
 import 'package:myapp/Services/group_task_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:myapp/models/g_task.dart';
 import 'package:myapp/models/g_task_progress.dart';
 import 'package:myapp/models/user.dart';
 
@@ -84,13 +86,13 @@ class Group_task_progress_service {
   }
 
   Future<String> UpdateGroupTaskProgress(
-      {required Group_task_progress progress,
-      required group_task_id,
+      {required Group_Task_record grouptask,
+      required Group_task_progress progress,
       required Group_task_progress newprogress}) async {
     try {
       firestoreInstance
           .collection("GroupTask")
-          .doc(group_task_id)
+          .doc(grouptask.task_id)
           .collection("GroupTaskProgress")
           .doc(progress.group_task_progress_id)
           .set({
@@ -100,7 +102,7 @@ class Group_task_progress_service {
       num newprogressvalue = 0;
       await firestoreInstance
           .collection("GroupTask")
-          .doc(group_task_id)
+          .doc(grouptask.task_id)
           .collection("GroupTaskProgress")
           .where("task_involved", isEqualTo: true)
           .get()
@@ -112,8 +114,10 @@ class Group_task_progress_service {
           newprogressvalue = newprogressvalue / QuerySnapshot.docs.length;
         }
       });
+      DateTime esti =
+          estimate(grouptask.startdate!, grouptask.enddate!, newprogressvalue);
       Group_task_service().UpdateGroupProgress(
-          a: newprogressvalue, group_task_id: group_task_id);
+          a: newprogressvalue, group_task_id: grouptask.task_id, esti: esti);
     } catch (e) {
       return e.toString();
     }
@@ -135,8 +139,8 @@ class Group_task_progress_service {
   }
 
   Future<void> updatestate({
+    required Group_Task_record grouptask,
     required Group_task_progress progress,
-    required group_task_id,
   }) async {
     bool value;
     if (progress.task_involved == true) {
@@ -147,7 +151,7 @@ class Group_task_progress_service {
 
     firestoreInstance
         .collection("GroupTask")
-        .doc(group_task_id)
+        .doc(grouptask.task_id)
         .collection("GroupTaskProgress")
         .doc(progress.group_task_progress_id)
         .set({
@@ -156,7 +160,7 @@ class Group_task_progress_service {
     num newprogressvalue = 0;
     await firestoreInstance
         .collection("GroupTask")
-        .doc(group_task_id)
+        .doc(grouptask.task_id)
         .collection("GroupTaskProgress")
         .where("task_involved", isEqualTo: true)
         .get()
@@ -168,7 +172,9 @@ class Group_task_progress_service {
         newprogressvalue = newprogressvalue / QuerySnapshot.docs.length;
       }
     });
-    Group_task_service()
-        .UpdateGroupProgress(a: newprogressvalue, group_task_id: group_task_id);
+    DateTime esti =
+        estimate(grouptask.startdate!, grouptask.enddate!, newprogressvalue);
+    Group_task_service().UpdateGroupProgress(
+        a: newprogressvalue, group_task_id: grouptask.task_id, esti: esti);
   }
 }

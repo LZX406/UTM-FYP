@@ -49,8 +49,7 @@ class GroupTaskList extends State<GroupTaskListPage> {
   Future<void> getgroup() async {
     group =
         await Group_service().GetSingleGroup(groupid: widget.group!.group_id);
-    groupleader = await Group_service()
-        .GetSingleGroupleader(userid: widget.UserAccount!.uid, group: group!);
+    groupleader = await Group_service().GetSingleGroupleader(group: group!);
   }
 
   Switchpage(int a) {
@@ -106,7 +105,7 @@ class GroupTaskList extends State<GroupTaskListPage> {
               Column(
                 children: [
                   const SizedBox(
-                    height: 10,
+                    height: 50,
                   ),
                   Container(
                     decoration: BoxDecoration(

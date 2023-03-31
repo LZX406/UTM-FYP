@@ -320,7 +320,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                         ),
                         Align(
                           child: SizedBox(
-                            width: 165 * fem,
+                            width: 173 * fem,
                             height: 15 * fem,
                             child: Text(
                               'Start date',
@@ -426,10 +426,10 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 20),
                         Align(
                           child: SizedBox(
-                            width: 165 * fem,
+                            width: 155 * fem,
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(

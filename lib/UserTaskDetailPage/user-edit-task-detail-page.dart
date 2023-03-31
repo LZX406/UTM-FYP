@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:myapp/PERT_analysis/pert.dart';
 import 'package:myapp/Services/p_task_service.dart';
 import 'package:myapp/models/p_task.dart';
 import 'package:myapp/utils.dart';
@@ -43,12 +44,14 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
   Uri httpsUri = Uri.https('www.google.com');
 
   Future<void> update() async {
+    DateTime esti = estimate(widget.Task!.startdate!, widget.Task!.enddate!,
+        num.parse(ProgressController.text));
     Task_record newTask = Task_record.create(
         task_nam: TaskNameController.text,
         task_id: widget.Task!.task_id,
         userid: widget.UserAccount!.uid,
         enddate: DateTime.parse(EndController.text),
-        estidate: DateTime.parse(EstiController.text),
+        estidate: esti,
         link: TaskLinkController.text,
         info: TaskInfoController.text,
         progress: int.parse(ProgressController.text),
