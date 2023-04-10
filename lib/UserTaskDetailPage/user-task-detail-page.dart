@@ -86,7 +86,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
               Column(
                 children: [
                   SizedBox(
-                    height: 71 * fem,
+                    height: 81 * fem,
                   ),
                   Row(
                     children: [
@@ -97,7 +97,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                       Center(
                         child: Align(
                           child: SizedBox(
-                            width: 300 * fem,
+                            width: 280 * fem,
                             height: 25 * fem,
                             child: Text(
                               "My task",
@@ -316,7 +316,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  width: 133,
+                                  width: 120,
                                   height: 35,
                                   child: Center(
                                     child: Text(
@@ -356,7 +356,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  width: 133,
+                                  width: 120,
                                   height: 35,
                                   child: Center(
                                     child: Text(
@@ -413,7 +413,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                         child: Row(
                           children: [
                             SizedBox(
-                              width: 133,
+                              width: 120,
                               height: 35,
                               child: Center(
                                 child: Text(
@@ -461,7 +461,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 150),
+                      const SizedBox(width: 120),
                       SizedBox(
                         width: 35 * fem,
                         height: 15 * fem,

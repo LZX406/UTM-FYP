@@ -46,6 +46,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
   Uri httpsUri = Uri.https('www.google.com');
 
   Future<void> update() async {
+    print("task_id " + widget.grouptask!.task_id);
     Group_Task_record newTask = Group_Task_record.create(
         task_nam: TaskNameController.text,
         task_id: widget.grouptask!.task_id,
@@ -54,6 +55,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
         estidate: DateTime.parse(EstiController.text),
         link: TaskLinkController.text,
         info: TaskInfoController.text,
+        group_id: widget.group!.group_id,
         progress: int.parse(ProgressController.text),
         startdate: DateTime.parse(StartController.text),
         activestate: activestate);
@@ -151,7 +153,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                         Center(
                           child: Align(
                             child: SizedBox(
-                              width: 300 * fem,
+                              width: 280 * fem,
                               height: 25 * fem,
                               child: Text(
                                 "${widget.group!.group_name} TASK",
@@ -367,7 +369,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: 125,
+                                    width: 120,
                                     height: 35,
                                     child: Center(
                                       child: Text(
@@ -439,7 +441,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: 125,
+                                    width: 120,
                                     height: 35,
                                     child: Center(
                                       child: Text(
@@ -574,7 +576,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                                             children: [
                                               const SizedBox(height: 14),
                                               Text(
-                                                message!,
+                                                message ?? '',
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold,

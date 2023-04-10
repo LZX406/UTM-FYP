@@ -53,12 +53,9 @@ class GroupPastTaskList extends State<GroupPastTaskListPage> {
         builder: (context, snapshot) {
           return SizedBox(
             width: 360 * fem,
-            height: 550 * fem,
+            height: 580 * fem,
             child: Container(
               alignment: Alignment.topLeft,
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xffffffff)),
-              ),
               child: ListView.separated(
                 padding: EdgeInsets.zero,
                 itemCount: Inactivetasklist!.length,

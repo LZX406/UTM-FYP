@@ -17,6 +17,7 @@ class Login extends State<LoginPage> {
   bool isLogin = true;
   final EmailController = TextEditingController();
   final PasswordController = TextEditingController();
+  bool passwordVisible = true;
 
   Switchpage() {
     if (isLogin) {
@@ -116,6 +117,7 @@ class Login extends State<LoginPage> {
                     ),
                     child: TextField(
                       controller: PasswordController,
+                      obscureText: passwordVisible,
                       textAlignVertical: TextAlignVertical.center,
                       decoration: const InputDecoration(
                         filled: true,

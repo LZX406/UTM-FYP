@@ -107,7 +107,7 @@ class GroupDetail extends State<GroupDetailPage> {
                         child: Column(
                           children: [
                             const SizedBox(
-                              height: 30,
+                              height: 55,
                             ),
                             Center(
                               child: Align(
@@ -115,7 +115,7 @@ class GroupDetail extends State<GroupDetailPage> {
                                   width: 360 * fem,
                                   height: 25 * fem,
                                   child: Text(
-                                    'NEW GROUP ',
+                                    group?.group_name ?? '',
                                     textAlign: TextAlign.center,
                                     style: SafeGoogleFont(
                                       'Inter',

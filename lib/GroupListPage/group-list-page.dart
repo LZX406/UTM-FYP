@@ -97,9 +97,6 @@ class GroupList extends State<GroupListPage> {
                   height: 500 * fem,
                   child: Container(
                       alignment: Alignment.topLeft,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xffffffff)),
-                      ),
                       child: FutureBuilder(
                           future: getallgroup(),
                           builder: (context, snapshot) {
