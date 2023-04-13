@@ -49,7 +49,8 @@ dependencies:
   cupertino_progress_bar: ^0.2.0
   firebase_messaging: ^14.4.0
   firebase_analytics: ^10.2.0
-  flutter_local_notifications: ^8.2.0
+
+  awesome_notifications: ^0.6.19
   
 
 dev_dependencies:
@@ -179,6 +180,7 @@ flutter:
     - assets/page-1/images/pexels-monstera-63733052-1-1.png
     - assets/page-1/images/pexels-monstera-63733052-1-2-bg.png
     - assets/page-1/images/pexels-monstera-6373305-3-bg.png
+    - assets/icon/task_nb.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

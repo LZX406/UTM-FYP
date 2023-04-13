@@ -679,6 +679,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
     } else if (editmode == true &&
         widget.group_leader?.leader_id == widget.UserAccount!.uid) {
       return GroupEditTaskDetailPage(
+        userlist: userlist,
         group: widget.group,
         grouptask: task,
         grouppage: widget.grouppage,

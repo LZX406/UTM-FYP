@@ -4,6 +4,7 @@ import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/Services/group_task_service.dart';
+import 'package:myapp/Services/notification_service.dart';
 import 'package:myapp/models/g_task.dart';
 import 'package:myapp/models/group.dart';
 import 'package:myapp/utils.dart';
@@ -18,7 +19,8 @@ class GroupEditTaskDetailPage extends StatefulWidget {
   final Group? group;
   final User_Account? UserAccount;
   final Group_Task_record? grouptask;
-  const GroupEditTaskDetailPage(
+  List<User_Account?> userlist = [];
+  GroupEditTaskDetailPage(
       {Key? key,
       this.UserAccount,
       this.group,
@@ -26,6 +28,7 @@ class GroupEditTaskDetailPage extends StatefulWidget {
       this.switchmode,
       this.editmode,
       this.switchpage,
+      required this.userlist,
       this.grouppage})
       : super(key: key);
   @override
@@ -45,8 +48,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
   String? message;
   Uri httpsUri = Uri.https('www.google.com');
 
-  Future<void> update() async {
-    print("task_id " + widget.grouptask!.task_id);
+  Future<void> update(
+      User_Account user, List<User_Account?> user_list, Group? group) async {
     Group_Task_record newTask = Group_Task_record.create(
         task_nam: TaskNameController.text,
         task_id: widget.grouptask!.task_id,
@@ -61,6 +64,11 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
         activestate: activestate);
 
     message = Group_task_service().UpdateGroupTask(Task: newTask);
+    Notification_service().Update_group_task_detail_Notification(
+        User: user,
+        group: group!,
+        user_list: user_list,
+        group_task: widget.grouptask!);
   }
 
   Future<void> delete() async {
@@ -556,7 +564,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              update();
+                              update(widget.UserAccount!, widget.userlist,
+                                  widget.group);
                               showDialog(
                                   context: context,
                                   builder: (context) => Dialog(

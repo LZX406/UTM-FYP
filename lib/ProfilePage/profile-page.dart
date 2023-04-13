@@ -3,6 +3,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/Auth.dart';
+import 'package:myapp/Services/notification.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/utils.dart';
 
@@ -14,47 +15,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 Future<void> signout(User_Account? user) async {
-  FirebaseMessaging.instance.unsubscribeFromTopic(user!.uid);
+  NotificationService().RemoveToken(user: user!);
   await Auth().signOut();
-}
-
-Future<void> _messageHandler(RemoteMessage message) async {
-  print('background message ${message.notification!.body}');
 }
 
 class Profile extends State<ProfilePage> {
   String? email;
   String? user;
-  String notificationMsg = '';
+
   initState() {
     super.initState();
-    FirebaseMessaging.instance.subscribeToTopic(widget.UserAccount!.uid);
-    // Terminated State
-    FirebaseMessaging.instance.getInitialMessage().then((event) {
-      if (event != null) {
-        setState(() {
-          notificationMsg =
-              "${event.notification!.title} ${event.notification!.body} I am coming from terminated state";
-        });
-      }
-    });
-
-    // Foregrand State
-    FirebaseMessaging.onMessage.listen((event) {
-      //LocalNotificationService.showNotificationOnForeground(event);
-      setState(() {
-        notificationMsg =
-            "${event.notification!.title} ${event.notification!.body} I am coming from foreground";
-      });
-    });
-
-    // background State
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      setState(() {
-        notificationMsg =
-            "${event.notification!.title} ${event.notification!.body} I am coming from background";
-      });
-    });
   }
 
   @override
@@ -63,7 +33,6 @@ class Profile extends State<ProfilePage> {
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
 
-    FirebaseMessaging.onBackgroundMessage(_messageHandler);
     return SizedBox(
       width: 360 * fem,
       child: SizedBox(

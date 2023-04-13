@@ -508,7 +508,8 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                           TextButton(
                             onPressed: () async {
                               await update(int.parse(ProgressController.text),
-                                  widget.progress!, true);
+                                  widget.progress!, activestate);
+
                               showDialog(
                                   context: context,
                                   builder: (context) => Dialog(
