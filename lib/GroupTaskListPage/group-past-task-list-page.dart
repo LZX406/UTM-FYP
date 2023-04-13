@@ -53,12 +53,9 @@ class GroupPastTaskList extends State<GroupPastTaskListPage> {
         builder: (context, snapshot) {
           return SizedBox(
             width: 360 * fem,
-            height: 590 * fem,
+            height: 580 * fem,
             child: Container(
               alignment: Alignment.topLeft,
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xffffffff)),
-              ),
               child: ListView.separated(
                 padding: EdgeInsets.zero,
                 itemCount: Inactivetasklist!.length,
@@ -141,7 +138,7 @@ class GroupPastTaskList extends State<GroupPastTaskListPage> {
                                         width: 180 * fem,
                                         height: 15 * fem,
                                         child: Text(
-                                          'start : ${Inactivetasklist![index]!.startdate == null ? "none" : 'start : ${DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.startdate!)}'}',
+                                          'start : ${Inactivetasklist![index]!.startdate == null ? "none" : DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.startdate!)}',
                                           style: SafeGoogleFont(
                                             'Inter',
                                             fontSize: 12 * ffem,
@@ -155,10 +152,10 @@ class GroupPastTaskList extends State<GroupPastTaskListPage> {
                                     Align(
                                       alignment: Alignment.topRight,
                                       child: SizedBox(
-                                        width: 92 * fem,
+                                        width: 150 * fem,
                                         height: 15 * fem,
                                         child: Text(
-                                          'end : ${Inactivetasklist![index]!.enddate == null ? "none" : 'start : ${DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.enddate!)}'}',
+                                          'end : ${Inactivetasklist![index]!.enddate == null ? "none" : DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.enddate!)}',
                                           style: SafeGoogleFont(
                                             'Inter',
                                             fontSize: 12 * ffem,

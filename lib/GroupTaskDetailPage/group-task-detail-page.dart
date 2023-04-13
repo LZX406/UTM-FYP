@@ -132,7 +132,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               Center(
                                 child: Align(
                                   child: SizedBox(
-                                    width: 300 * fem,
+                                    width: 280 * fem,
                                     height: 25 * fem,
                                     child: Text(
                                       "${widget.group!.group_name} TASK",
@@ -295,7 +295,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               Align(
                                 alignment: Alignment.center,
                                 child: SizedBox(
-                                  width: 165 * fem,
+                                  width: 173 * fem,
                                   height: 15 * fem,
                                   child: Text(
                                     'Start date',
@@ -340,7 +340,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                     child: Row(
                                       children: [
                                         SizedBox(
-                                          width: 133,
+                                          width: 120,
                                           height: 35,
                                           child: Center(
                                             child: Text(
@@ -374,10 +374,10 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 10),
+                              const SizedBox(width: 20),
                               Align(
                                 child: SizedBox(
-                                  width: 165 * fem,
+                                  width: 155 * fem,
                                   height: 35 * fem,
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -387,7 +387,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                     child: Row(
                                       children: [
                                         SizedBox(
-                                          width: 133,
+                                          width: 120,
                                           height: 35,
                                           child: Center(
                                             child: Text(
@@ -422,7 +422,71 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
+                          Align(
+                            alignment: const Alignment(-0.85, 0),
+                            child: SizedBox(
+                              width: 155 * fem,
+                              height: 15 * fem,
+                              child: Text(
+                                'Estimate end date',
+                                style: SafeGoogleFont(
+                                  'Inter',
+                                  fontSize: 12 * ffem,
+                                  decoration: TextDecoration.none,
+                                  color: const Color(0xffffffff),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: const Alignment(-0.85, 0),
+                            child: SizedBox(
+                              width: 155 * fem,
+                              height: 35 * fem,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: const Color(0xffffffff)),
+                                ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 120,
+                                      height: 35,
+                                      child: Center(
+                                        child: Text(
+                                          DateFormat('yyyy-MM-dd').format(
+                                              task?.estidate! ??
+                                                  DateTime.now()),
+                                          style: SafeGoogleFont(
+                                            'Inter',
+                                            fontSize: 12 * ffem,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.2125 * ffem / fem,
+                                            decoration: TextDecoration.none,
+                                            color: const Color(0xffffffff),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                      height: 20,
+                                      child: Container(
+                                          alignment: Alignment.topLeft,
+                                          child: const Icon(
+                                              Icons.calendar_month,
+                                              color: Colors.white,
+                                              size: 25)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Row(
                             children: [
                               const SizedBox(
@@ -442,7 +506,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 80),
+                              const SizedBox(width: 60),
                               SizedBox(
                                 width: 45 * fem,
                                 height: 15 * fem,
@@ -562,131 +626,44 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                             ),
                           if (progresslist.isEmpty)
                             const SizedBox(
-                              height: 120,
+                              height: 95,
                             ),
                           if (progresslist.length == 1)
                             const SizedBox(
-                              height: 65,
-                            ),
-                          if (progresslist.length == 2)
-                            const SizedBox(
-                              height: 10,
+                              height: 45,
                             ),
                           Align(
                             alignment: Alignment.bottomLeft,
-                            child: Row(
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => Dialog(
-                                              backgroundColor: Colors.black,
-                                              insetPadding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 40,
-                                                      vertical: 40),
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 25,
-                                                        vertical: 30),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    const SizedBox(height: 14),
-                                                    const Text(
-                                                      "Save successfull",
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 18,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 40),
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: const Text(
-                                                        "OK",
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ));
-                                  },
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                  child: Container(
-                                    width: 180 * fem,
-                                    height: 57.22 * fem,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xff00ff19)),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Save',
-                                        textAlign: TextAlign.center,
-                                        style: SafeGoogleFont(
-                                          'Inter',
-                                          fontSize: 15 * ffem,
-                                          fontWeight: FontWeight.w400,
-                                          decoration: TextDecoration.none,
-                                          height: 1.2125 * ffem / fem,
-                                          color: const Color(0xffffffff),
-                                        ),
-                                      ),
+                            child: TextButton(
+                              onPressed: () {
+                                widget.switchpage(widget.grouppage);
+                                Navigator.pop(context);
+                              },
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                              ),
+                              child: Container(
+                                width: 360 * fem,
+                                height: 57.22 * fem,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: const Color(0xffff0000)),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Back',
+                                    textAlign: TextAlign.center,
+                                    style: SafeGoogleFont(
+                                      'Inter',
+                                      fontSize: 15 * ffem,
+                                      fontWeight: FontWeight.w400,
+                                      decoration: TextDecoration.none,
+                                      height: 1.2125 * ffem / fem,
+                                      color: const Color(0xffffffff),
                                     ),
                                   ),
                                 ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                  child: Container(
-                                    width: 180 * fem,
-                                    height: 57.22 * fem,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xffff0000)),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        'Back',
-                                        textAlign: TextAlign.center,
-                                        style: SafeGoogleFont(
-                                          'Inter',
-                                          fontSize: 15 * ffem,
-                                          fontWeight: FontWeight.w400,
-                                          decoration: TextDecoration.none,
-                                          height: 1.2125 * ffem / fem,
-                                          color: const Color(0xffffffff),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         ],
@@ -702,6 +679,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
     } else if (editmode == true &&
         widget.group_leader?.leader_id == widget.UserAccount!.uid) {
       return GroupEditTaskDetailPage(
+        userlist: userlist,
         group: widget.group,
         grouptask: task,
         grouppage: widget.grouppage,

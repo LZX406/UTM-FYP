@@ -1,7 +1,9 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/Services/Auth.dart';
+import 'package:myapp/Services/notification.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/utils.dart';
 
@@ -12,13 +14,18 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => Profile();
 }
 
-Future<void> signout() async {
+Future<void> signout(User_Account? user) async {
+  NotificationService().RemoveToken(user: user!);
   await Auth().signOut();
 }
 
 class Profile extends State<ProfilePage> {
   String? email;
   String? user;
+
+  initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +44,7 @@ class Profile extends State<ProfilePage> {
             Positioned(
               // profileHeQ (116:18)
               left: 149.5 * fem,
-              top: 71 * fem,
+              top: 121 * fem,
               child: Center(
                 child: Align(
                   child: SizedBox(
@@ -62,7 +69,7 @@ class Profile extends State<ProfilePage> {
             Positioned(
               // mailregister9gc (116:47)
               left: 15 * fem,
-              top: 133 * fem,
+              top: 183 * fem,
               child: Align(
                 child: SizedBox(
                   width: 74 * fem,
@@ -84,7 +91,7 @@ class Profile extends State<ProfilePage> {
             Positioned(
               // rectangle38pGx (116:48)
               left: 15 * fem,
-              top: 157 * fem,
+              top: 207 * fem,
               child: Align(
                 child: SizedBox(
                   width: 324 * fem,
@@ -100,7 +107,7 @@ class Profile extends State<ProfilePage> {
             Positioned(
               // usernameregisterKDi (116:49)
               left: 15 * fem,
-              top: 230.5 * fem,
+              top: 280.5 * fem,
               child: Align(
                 child: SizedBox(
                   width: 105 * fem,
@@ -122,7 +129,7 @@ class Profile extends State<ProfilePage> {
             Positioned(
               // rectangle39QFA (116:50)
               left: 15 * fem,
-              top: 257 * fem,
+              top: 307 * fem,
               child: Align(
                 child: SizedBox(
                   width: 324 * fem,
@@ -138,7 +145,7 @@ class Profile extends State<ProfilePage> {
             Positioned(
               // mailgmailcomKsv (116:61)
               left: 20 * fem,
-              top: 165.5 * fem,
+              top: 215.5 * fem,
               child: Align(
                 child: SizedBox(
                   width: 330 * fem,
@@ -161,7 +168,7 @@ class Profile extends State<ProfilePage> {
             Positioned(
               // username1d7v (117:68)
               left: 20 * fem,
-              top: 269.5 * fem,
+              top: 319.5 * fem,
               child: Align(
                 child: SizedBox(
                   width: 62 * fem,
@@ -183,7 +190,7 @@ class Profile extends State<ProfilePage> {
             Positioned(
               // group28aU (117:86)
               left: 111 * fem,
-              top: 357 * fem,
+              top: 407 * fem,
               child: Container(
                 width: 132 * fem,
                 height: 43 * fem,
@@ -225,7 +232,7 @@ class Profile extends State<ProfilePage> {
                     padding: EdgeInsets.zero,
                   ),
                   onPressed: () {
-                    signout();
+                    signout(widget.UserAccount);
                   },
                   child: Center(
                     child: Text(

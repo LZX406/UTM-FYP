@@ -60,10 +60,12 @@ class Group_task_service {
     return "Update successful";
   }
 
-  void UpdateGroupProgress({required num a, required String group_task_id}) {
+  void UpdateGroupProgress(
+      {required num a, required String group_task_id, required DateTime esti}) {
     try {
       firestoreInstance.collection("GroupTask").doc(group_task_id).set({
         'progress': a.toInt(),
+        'estidate': esti,
       }, SetOptions(merge: true));
     } catch (e) {
       print(e.toString());
@@ -127,11 +129,13 @@ class Group_task_service {
     List<List<Group_Task_record?>?> Alltasklist = [];
     List<Group_Task_record?> tasklist = await GetGroupTask(groupid: groupid);
     for (Group_Task_record? task in tasklist) {
-      if (task!.activestate == true && task.enddate!.isBefore(DateTime.now())) {
+      if (task!.activestate == true &&
+          task.enddate!
+              .isBefore(DateTime.now().add(const Duration(days: -1)))) {
         task.setstate = false;
         updatestate(Task: task);
       } else if (task.activestate == false &&
-          task.enddate!.isAfter(DateTime.now())) {
+          task.enddate!.isAfter((DateTime.now()))) {
         task.setstate = true;
         updatestate(Task: task);
       }

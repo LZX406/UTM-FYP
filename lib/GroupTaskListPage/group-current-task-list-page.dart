@@ -52,12 +52,9 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
         builder: (context, snapshot) {
           return SizedBox(
             width: 360 * fem,
-            height: 590 * fem,
+            height: 580 * fem,
             child: Container(
               alignment: Alignment.topLeft,
-              decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xffffffff)),
-              ),
               child: Stack(
                 children: [
                   ListView.separated(
@@ -248,7 +245,7 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
                     Positioned(
                       // rectangle20QCp (107:33)
                       left: 230 * fem,
-                      top: 529 * fem,
+                      top: 500 * fem,
                       child: FloatingActionButton.extended(
                           backgroundColor: Colors.black,
                           hoverColor: Colors.grey,

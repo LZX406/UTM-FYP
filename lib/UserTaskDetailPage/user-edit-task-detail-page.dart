@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:myapp/PERT_analysis/pert.dart';
 import 'package:myapp/Services/p_task_service.dart';
 import 'package:myapp/models/p_task.dart';
 import 'package:myapp/utils.dart';
@@ -43,12 +44,14 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
   Uri httpsUri = Uri.https('www.google.com');
 
   Future<void> update() async {
+    DateTime esti = estimate(widget.Task!.startdate!, widget.Task!.enddate!,
+        num.parse(ProgressController.text));
     Task_record newTask = Task_record.create(
         task_nam: TaskNameController.text,
         task_id: widget.Task!.task_id,
         userid: widget.UserAccount!.uid,
         enddate: DateTime.parse(EndController.text),
-        estidate: DateTime.parse(EstiController.text),
+        estidate: esti,
         link: TaskLinkController.text,
         info: TaskInfoController.text,
         progress: int.parse(ProgressController.text),
@@ -123,7 +126,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 71 * fem,
+                    height: 81 * fem,
                   ),
                   Row(
                     children: [
@@ -134,7 +137,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                       Center(
                         child: Align(
                           child: SizedBox(
-                            width: 300 * fem,
+                            width: 280 * fem,
                             height: 25 * fem,
                             child: Text(
                               "My task",
@@ -347,7 +350,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  width: 125,
+                                  width: 120,
                                   height: 35,
                                   child: Center(
                                     child: Text(
@@ -405,7 +408,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                       const SizedBox(width: 10),
                       Align(
                         child: SizedBox(
-                          width: 165 * fem,
+                          width: 155 * fem,
                           height: 35 * fem,
                           child: Container(
                             decoration: BoxDecoration(
@@ -415,7 +418,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                             child: Row(
                               children: [
                                 SizedBox(
-                                  width: 125,
+                                  width: 120,
                                   height: 35,
                                   child: Center(
                                     child: Text(
@@ -492,7 +495,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 60),
+                      const SizedBox(width: 120),
                       SizedBox(
                         width: 35 * fem,
                         height: 15 * fem,
@@ -503,29 +506,6 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                             fontSize: 12 * ffem,
                             decoration: TextDecoration.none,
                             color: const Color(0xffffffff),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 75 * fem,
-                        height: 30 * fem,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 255, 255, 255)),
-                        ),
-                        child: TextButton(
-                          onPressed: null,
-                          child: Center(
-                            child: Text(
-                              'Change',
-                              textAlign: TextAlign.center,
-                              style: SafeGoogleFont(
-                                'Inter',
-                                fontSize: 12 * ffem,
-                                height: 1.2125 * ffem / fem,
-                                color: const Color(0xffffffff),
-                              ),
-                            ),
                           ),
                         ),
                       ),

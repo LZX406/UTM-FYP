@@ -332,7 +332,7 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
                                 children: [
                                   Align(
                                     child: SizedBox(
-                                      width: 140 * fem - extra[index],
+                                      width: 138 * fem - extra[index],
                                       height: 30 * fem,
                                       child: Container(
                                         alignment: Alignment.center,

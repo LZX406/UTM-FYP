@@ -1,16 +1,24 @@
 // ignore_for_file: camel_case_types, non_constant_identifier_names
 
+import 'package:myapp/models/user.dart';
+
 class Group_leader {
   final String group_id;
   final String leader_id;
   final String group_leader_id;
   final int member_type;
+  User_Account? leader;
 
   Group_leader(
       {this.group_id = '',
       this.leader_id = '',
       this.group_leader_id = '',
-      this.member_type = 0});
+      this.member_type = 0,
+      this.leader});
+
+  void addleader(User_Account leader) {
+    this.leader = leader;
+  }
 
   factory Group_leader.fromMap(map) {
     return Group_leader(

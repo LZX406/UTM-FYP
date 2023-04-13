@@ -1,0 +1,64 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:myapp/Services/Auth.dart';
+import 'package:myapp/models/g_task.dart';
+import 'package:myapp/models/group.dart';
+import 'package:myapp/models/group_member_record.dart';
+import 'package:myapp/models/user.dart';
+
+class Notification_service {
+  final firestoreInstance = FirebaseFirestore.instance;
+  void Update_group_task_detail_Notification({
+    required User_Account User,
+    required Group group,
+    required List<User_Account?> user_list,
+    required Group_Task_record group_task,
+  }) {
+    for (var user in user_list) {
+      firestoreInstance.collection("Notification").doc().set({
+        "title": group.group_name +
+            "'s " +
+            group_task.task_nam +
+            " task detail updated",
+        "body": User.username +
+            " has update " +
+            group.group_name +
+            "'s " +
+            group_task.task_nam +
+            " task detail!",
+        "user_id": user!.uid
+      });
+    }
+    firestoreInstance.collection("Notification").doc().set({
+      "title": group.group_name +
+          "'s " +
+          group_task.task_nam +
+          " task detail updated",
+      "body": User.username +
+          " has update " +
+          group.group_name +
+          "'s " +
+          group_task.task_nam +
+          " task detail!",
+      "user_id": User.uid
+    });
+  }
+
+  void Update_group_detail_Notification({
+    required User_Account User,
+    required Group group,
+    required List<User_Account?> user_list,
+  }) {
+    for (var user in user_list) {
+      firestoreInstance.collection("Notification").doc().set({
+        "title": group.group_name + " detail updated",
+        "body": User.username + " has update " + group.group_name + " detail!",
+        "user_id": user!.uid
+      });
+    }
+    firestoreInstance.collection("Notification").doc().set({
+      "title": group.group_name + " detail updated",
+      "body": User.username + " has update " + group.group_name + " detail!",
+      "user_id": User.uid
+    });
+  }
+}

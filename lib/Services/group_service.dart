@@ -23,12 +23,7 @@ class Group_service {
         'info': info,
         'group_leader_id': doc
       });
-      firestoreInstance
-          .collection("Group_leader")
-          .doc(userid)
-          .collection("group")
-          .doc(doc)
-          .set({
+      firestoreInstance.collection("Group_leader").doc(doc).set({
         'leader_id': userid,
         'group_id': group,
         'group_leader_id': doc,
@@ -44,7 +39,7 @@ class Group_service {
               .then((QuerySnapshot) {
             if (QuerySnapshot.docs.isNotEmpty) {
               for (var document in QuerySnapshot.docs) {
-                user = User_Account.fromMap(document.data());
+                user = User_Account.Map(document.data());
               }
             }
           });
@@ -103,6 +98,66 @@ class Group_service {
     return "Update successful";
   }
 
+  Future<List<Group?>> GetAllGroup() async {
+    Group? group;
+    List<Group?> grouplist = [];
+    User_Account? user;
+    Group_leader? groupleader;
+
+    await firestoreInstance.collection("Group").get().then((QuerySnapshot) {
+      for (var document in QuerySnapshot.docs) {
+        group = Group.fromMap(document.data());
+        grouplist.add(group);
+      }
+    });
+    for (var group in grouplist) {
+      List<Group_member?> memberlist = [];
+      await firestoreInstance
+          .collection("Group")
+          .doc(group!.group_id)
+          .collection("member")
+          .get()
+          .then((QuerySnapshot) {
+        for (var document in QuerySnapshot.docs) {
+          Group_member member = Group_member.fromMap(document.data());
+          memberlist.add(member);
+        }
+        group.addgroupmember(memberlist);
+      });
+    }
+    await firestoreInstance
+        .collection("Group_leader")
+        .get()
+        .then((QuerySnapshot) {
+      for (var document in QuerySnapshot.docs) {
+        groupleader = Group_leader.fromMap(document.data());
+        for (var group in grouplist) {
+          if (group!.group_leader_id == groupleader!.group_leader_id) {
+            group.addgroupleader(groupleader!);
+          }
+        }
+      }
+    });
+
+    for (var leader in grouplist) {
+      await firestoreInstance
+          .collection("User")
+          .doc(leader!.group_leader!.leader_id)
+          .get()
+          .then((value) async {
+        if (value.exists) {
+          user = User_Account.Map(value.data()!);
+          leader.group_leader!.addleader(user!);
+        }
+      });
+    }
+    grouplist.sort(((a, b) {
+      return a!.group_name.compareTo(b!.group_name);
+    }));
+
+    return grouplist;
+  }
+
   Future<List<Group?>> GetGroup({required String userid}) async {
     Group? group;
     List<Group?> grouplist = [];
@@ -112,8 +167,6 @@ class Group_service {
     List<Group_member?> memberlist = [];
     await firestoreInstance
         .collection("Group_leader")
-        .doc(userid)
-        .collection("group")
         .where("leader_id", isEqualTo: userid)
         .get()
         .then((QuerySnapshot) {
@@ -184,14 +237,11 @@ class Group_service {
     return group;
   }
 
-  Future<Group_leader?> GetSingleGroupleader(
-      {required String userid, required Group group}) async {
+  Future<Group_leader?> GetSingleGroupleader({required Group group}) async {
     Group_leader? groupleader;
     try {
       await firestoreInstance
           .collection("Group_leader")
-          .doc(userid)
-          .collection("group")
           .doc(group.group_leader_id)
           .get()
           .then((value) {
@@ -223,8 +273,6 @@ class Group_service {
       await firestoreInstance.collection("Group").doc(group.group_id).delete();
       await firestoreInstance
           .collection("Group_leader")
-          .doc(userid)
-          .collection("group")
           .doc(group.group_leader_id)
           .delete();
     } catch (e) {
@@ -242,7 +290,7 @@ class Group_service {
         .then((QuerySnapshot) {
       if (QuerySnapshot.docs.isNotEmpty) {
         for (var document in QuerySnapshot.docs) {
-          user = User_Account.fromMap(document.data());
+          user = User_Account.Map(document.data());
         }
       }
     });
@@ -259,7 +307,7 @@ class Group_service {
           .get()
           .then((QuerySnapshot) {
         for (var document in QuerySnapshot.docs) {
-          user = User_Account.fromMap(document.data());
+          user = User_Account.Map(document.data());
         }
       });
     } catch (e) {

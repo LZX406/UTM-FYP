@@ -4,6 +4,7 @@ import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/Services/group_task_service.dart';
+import 'package:myapp/Services/notification_service.dart';
 import 'package:myapp/models/g_task.dart';
 import 'package:myapp/models/group.dart';
 import 'package:myapp/utils.dart';
@@ -18,7 +19,8 @@ class GroupEditTaskDetailPage extends StatefulWidget {
   final Group? group;
   final User_Account? UserAccount;
   final Group_Task_record? grouptask;
-  const GroupEditTaskDetailPage(
+  List<User_Account?> userlist = [];
+  GroupEditTaskDetailPage(
       {Key? key,
       this.UserAccount,
       this.group,
@@ -26,6 +28,7 @@ class GroupEditTaskDetailPage extends StatefulWidget {
       this.switchmode,
       this.editmode,
       this.switchpage,
+      required this.userlist,
       this.grouppage})
       : super(key: key);
   @override
@@ -45,7 +48,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
   String? message;
   Uri httpsUri = Uri.https('www.google.com');
 
-  Future<void> update() async {
+  Future<void> update(
+      User_Account user, List<User_Account?> user_list, Group? group) async {
     Group_Task_record newTask = Group_Task_record.create(
         task_nam: TaskNameController.text,
         task_id: widget.grouptask!.task_id,
@@ -54,11 +58,17 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
         estidate: DateTime.parse(EstiController.text),
         link: TaskLinkController.text,
         info: TaskInfoController.text,
+        group_id: widget.group!.group_id,
         progress: int.parse(ProgressController.text),
         startdate: DateTime.parse(StartController.text),
         activestate: activestate);
 
     message = Group_task_service().UpdateGroupTask(Task: newTask);
+    Notification_service().Update_group_task_detail_Notification(
+        User: user,
+        group: group!,
+        user_list: user_list,
+        group_task: widget.grouptask!);
   }
 
   Future<void> delete() async {
@@ -151,7 +161,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                         Center(
                           child: Align(
                             child: SizedBox(
-                              width: 300 * fem,
+                              width: 280 * fem,
                               height: 25 * fem,
                               child: Text(
                                 "${widget.group!.group_name} TASK",
@@ -320,7 +330,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                         ),
                         Align(
                           child: SizedBox(
-                            width: 165 * fem,
+                            width: 173 * fem,
                             height: 15 * fem,
                             child: Text(
                               'Start date',
@@ -367,7 +377,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: 125,
+                                    width: 120,
                                     height: 35,
                                     child: Center(
                                       child: Text(
@@ -426,10 +436,10 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        const SizedBox(width: 20),
                         Align(
                           child: SizedBox(
-                            width: 165 * fem,
+                            width: 155 * fem,
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(
@@ -439,7 +449,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: 125,
+                                    width: 120,
                                     height: 35,
                                     child: Center(
                                       child: Text(
@@ -554,7 +564,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              update();
+                              update(widget.UserAccount!, widget.userlist,
+                                  widget.group);
                               showDialog(
                                   context: context,
                                   builder: (context) => Dialog(
@@ -574,7 +585,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                                             children: [
                                               const SizedBox(height: 14),
                                               Text(
-                                                message!,
+                                                message ?? '',
                                                 style: const TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold,

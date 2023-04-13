@@ -83,7 +83,7 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                     child: Column(
                       children: [
                         const SizedBox(
-                          height: 30,
+                          height: 80,
                         ),
                         Center(
                           child: Align(
@@ -310,7 +310,7 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                                   child: Row(
                                     children: [
                                       SizedBox(
-                                        width: 135,
+                                        width: 120,
                                         height: 35,
                                         child: Material(
                                           color: const Color(0x00000000),
@@ -384,7 +384,7 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                                   child: Row(
                                     children: [
                                       SizedBox(
-                                        width: 135,
+                                        width: 120,
                                         height: 35,
                                         child: Material(
                                           color: const Color(0x00000000),
@@ -447,7 +447,7 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
-                          height: 155 * fem,
+                          height: 125 * fem,
                         ),
                         Align(
                           alignment: Alignment.bottomLeft,

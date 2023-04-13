@@ -1,16 +1,30 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:myapp/models/group_leader_record.dart';
+import 'package:myapp/models/group_member_record.dart';
+
 class Group {
   final String group_id;
   final String group_name;
   final String info;
   final String group_leader_id;
+  Group_leader? group_leader;
+  List<Group_member?>? memberlist;
 
-  const Group(
+  Group(
       {this.group_id = '',
       this.info = '',
       this.group_name = '',
-      this.group_leader_id = ''});
+      this.group_leader_id = '',
+      this.group_leader});
+
+  void addgroupleader(Group_leader group_leader) {
+    this.group_leader = group_leader;
+  }
+
+  void addgroupmember(List<Group_member?> groupmember) {
+    memberlist = groupmember;
+  }
 
   factory Group.fromMap(map) {
     return Group(

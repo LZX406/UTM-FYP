@@ -1,7 +1,11 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/LoginPage/login-page.dart';
 import 'package:myapp/MainTabPage/MainTab.dart';
 import 'package:myapp/Services/Auth.dart';
+import 'package:myapp/Services/local_notification.dart';
+import 'package:myapp/Services/notification.dart';
 import 'package:myapp/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:myapp/page-1/group-list-page.dart';
@@ -44,14 +48,21 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
 // Ideal time to initialize
-  runApp(const MyApp());
+  runApp(MyApp());
+}
+
+Future<void> _messageHandler(RemoteMessage message) async {
+  print('background message ${message.notification!.body}');
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  String notificationMsg = '';
+  late FirebaseMessaging messaging;
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    FirebaseMessaging.onBackgroundMessage(_messageHandler);
     return MaterialApp(
       title: 'Flutter',
       debugShowCheckedModeBanner: false,
@@ -65,6 +76,13 @@ class MyApp extends StatelessWidget {
             stream: Auth().authStateChanges,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                WidgetsFlutterBinding.ensureInitialized();
+                LocalNotificationService().notificationinitilize();
+                messaging = FirebaseMessaging.instance;
+                //FirebaseMessaging.instance.subscribeToTopic(widget.UserAccount!.uid);
+
+                NotificationService().firebase_message_initialize();
+
                 return const MainTab();
               } else {
                 return const LoginPage();
