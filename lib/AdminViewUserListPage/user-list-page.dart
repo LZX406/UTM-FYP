@@ -167,7 +167,7 @@ class UserList extends State<UserListPage> {
                           future: getalluser(),
                           builder: (context, snapshot) {
                             return ListView.separated(
-                              padding: EdgeInsets.zero,
+                              padding: EdgeInsets.all(0.0),
                               itemCount: Userlist!.length,
                               itemBuilder: (context, index) {
                                 return Align(
@@ -177,7 +177,8 @@ class UserList extends State<UserListPage> {
                                     child: TextButton(
                                       onPressed: () {},
                                       style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
+                                        padding:
+                                            EdgeInsets.fromLTRB(20, 10, 0, 0),
                                       ),
                                       child: Container(
                                         decoration: BoxDecoration(

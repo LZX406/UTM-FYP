@@ -16,9 +16,9 @@ DateTime estimate(DateTime initial, DateTime end, num progress) {
     // print("start: " + start.seconds.toString());
     // print("end: " + e.seconds.toString());
     // print("esti: " + esti.toString());
-    print(initial);
-    print(DateTime.fromMillisecondsSinceEpoch(esti.toInt() * 1000));
-    print(DateTime.fromMillisecondsSinceEpoch(estimatedate * 1000));
+    // print(initial);
+    // print(DateTime.fromMillisecondsSinceEpoch(esti.toInt() * 1000));
+    // print(DateTime.fromMillisecondsSinceEpoch(estimatedate * 1000));
     return DateTime.fromMillisecondsSinceEpoch(estimatedate * 1000);
   } else {
     return end;
@@ -28,7 +28,7 @@ DateTime estimate(DateTime initial, DateTime end, num progress) {
 int pert(Timestamp value, Timestamp value2) {
   int o;
   int p;
-  print(value2.toString());
+  //print(value2.toString());
   int m = num.parse(value2.seconds.toString()).toInt();
   if (value.toDate().isAfter(value2.toDate())) {
     p = num.parse(value.seconds.toString()).toInt();
@@ -37,10 +37,10 @@ int pert(Timestamp value, Timestamp value2) {
     o = num.parse(value.seconds.toString()).toInt();
     p = num.parse(value2.seconds.toString()).toInt();
   }
-  print(value.toDate().isAfter(value2.toDate()));
-  print(o);
-  print(p);
-  print(m);
+  // print(value.toDate().isAfter(value2.toDate()));
+  // print(o);
+  // print(p);
+  // print(m);
   int esti = (o + 4 * m + p) ~/ 6;
   return esti;
 }

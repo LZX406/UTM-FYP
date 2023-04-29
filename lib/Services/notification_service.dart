@@ -7,6 +7,7 @@ import 'package:myapp/models/user.dart';
 
 class Notification_service {
   final firestoreInstance = FirebaseFirestore.instance;
+
   void Update_group_task_detail_Notification({
     required User_Account User,
     required Group group,
@@ -58,6 +59,45 @@ class Notification_service {
     firestoreInstance.collection("Notification").doc().set({
       "title": group.group_name + " detail updated",
       "body": User.username + " has update " + group.group_name + " detail!",
+      "user_id": User.uid
+    });
+  }
+
+  void Update_group_task_complete_Notification({
+    required User_Account User,
+    required Group group,
+    required List<User_Account?> user_list,
+    required Group_Task_record group_task,
+  }) {
+    for (var user in user_list) {
+      firestoreInstance.collection("Notification").doc().set({
+        "title": group.group_name + "'s task" + " complete",
+        "body": group_task.task_nam + " complete!",
+        "user_id": user!.uid
+      });
+    }
+    firestoreInstance.collection("Notification").doc().set({
+      "title": group.group_name + "'s task" + " complete",
+      "body": group_task.task_nam + " complete!",
+      "user_id": User.uid
+    });
+  }
+
+  void Update_group_new_task_Notification({
+    required User_Account User,
+    required Group group,
+    required List<Group_member?> user_list,
+  }) {
+    for (var user in user_list) {
+      firestoreInstance.collection("Notification").doc().set({
+        "title": group.group_name + "'s new task",
+        "body": "A new task has been created!",
+        "user_id": user!.member_id
+      });
+    }
+    firestoreInstance.collection("Notification").doc().set({
+      "title": group.group_name + "'s new task",
+      "body": "A new task has been created!",
       "user_id": User.uid
     });
   }

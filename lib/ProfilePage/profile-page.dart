@@ -68,186 +68,153 @@ class Profile extends State<ProfilePage> {
             ),
             Positioned(
               // mailregister9gc (116:47)
-              left: 15 * fem,
               top: 183 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 74 * fem,
-                  height: 15 * fem,
-                  child: Text(
-                    'MAIL register',
-                    style: SafeGoogleFont(
-                      'Inter',
-                      fontSize: 12 * ffem,
-                      fontWeight: FontWeight.w400,
-                      height: 1.2125 * ffem / fem,
-                      decoration: TextDecoration.none,
-                      color: const Color(0xffffffff),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        decoration: BoxDecoration(
+                          border:
+                              Border(bottom: BorderSide(color: Colors.white)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: const Icon(Icons.mail,
+                                    color: Colors.white, size: 30)),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              width: 280,
+                              height: 50,
+                              child: Text(
+                                widget.UserAccount?.email ?? '',
+                                style: SafeGoogleFont(
+                                  'Inter',
+                                  fontSize: 12 * ffem,
+                                  decoration: TextDecoration.none,
+                                  color: const Color(0xffffffff),
+                                  decorationColor: const Color(0xffffffff),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              // rectangle38pGx (116:48)
-              left: 15 * fem,
-              top: 207 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 324 * fem,
-                  height: 32 * fem,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xffffffff)),
+                    Container(
+                        decoration: BoxDecoration(
+                          border:
+                              Border(bottom: BorderSide(color: Colors.white)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: const Icon(Icons.person_outline,
+                                    color: Colors.white, size: 30)),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              width: 280,
+                              height: 50,
+                              child: Text(
+                                widget.UserAccount?.username ?? '',
+                                style: SafeGoogleFont(
+                                  'Inter',
+                                  fontSize: 12 * ffem,
+                                  decoration: TextDecoration.none,
+                                  color: const Color(0xffffffff),
+                                  decorationColor: const Color(0xffffffff),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                    SizedBox(
+                      height: 260,
                     ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              // usernameregisterKDi (116:49)
-              left: 15 * fem,
-              top: 280.5 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 105 * fem,
-                  height: 15 * fem,
-                  child: Text(
-                    'Username register',
-                    style: SafeGoogleFont(
-                      'Inter',
-                      fontSize: 12 * ffem,
-                      fontWeight: FontWeight.w400,
-                      height: 1.2125 * ffem / fem,
-                      decoration: TextDecoration.none,
-                      color: const Color(0xffffffff),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: const Icon(Icons.key_off,
+                                color: Colors.white, size: 30)),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          width: 280,
+                          height: 50,
+                          child: TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Reset Password',
+                              textAlign: TextAlign.center,
+                              style: SafeGoogleFont(
+                                'Inter',
+                                fontSize: 20 * ffem,
+                                decoration: TextDecoration.none,
+                                color: const Color(0xffffffff),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              // rectangle39QFA (116:50)
-              left: 15 * fem,
-              top: 307 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 324 * fem,
-                  height: 40 * fem,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xffffffff)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: const Icon(Icons.logout,
+                                color: Colors.white, size: 30)),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          width: 280,
+                          height: 50,
+                          child: TextButton(
+                            onPressed: () {
+                              signout(widget.UserAccount);
+                            },
+                            child: Text(
+                              'Log out',
+                              textAlign: TextAlign.center,
+                              style: SafeGoogleFont(
+                                'Inter',
+                                fontSize: 20 * ffem,
+                                decoration: TextDecoration.none,
+                                color: const Color(0xffffffff),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              // mailgmailcomKsv (116:61)
-              left: 20 * fem,
-              top: 215.5 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 330 * fem,
-                  height: 15 * fem,
-                  child: Text(
-                    widget.UserAccount?.email ?? '',
-                    style: SafeGoogleFont(
-                      'Inter',
-                      fontSize: 12 * ffem,
-                      fontWeight: FontWeight.w400,
-                      height: 1.2125 * ffem / fem,
-                      decoration: TextDecoration.none,
-                      color: const Color(0xffffffff),
-                      decorationColor: const Color(0xffffffff),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              // username1d7v (117:68)
-              left: 20 * fem,
-              top: 319.5 * fem,
-              child: Align(
-                child: SizedBox(
-                  width: 62 * fem,
-                  height: 15 * fem,
-                  child: Text(
-                    widget.UserAccount?.username ?? '',
-                    style: SafeGoogleFont(
-                      'Inter',
-                      fontSize: 12 * ffem,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.none,
-                      height: 1.2125 * ffem / fem,
-                      color: const Color(0xffffffff),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              // group28aU (117:86)
-              left: 111 * fem,
-              top: 407 * fem,
-              child: Container(
-                width: 132 * fem,
-                height: 43 * fem,
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xffffffff)),
-                  borderRadius: BorderRadius.circular(25 * fem),
-                ),
-                child: TextButton(
-                  onPressed: () {},
-                  child: Center(
-                    child: Text(
-                      'Reset Password',
-                      textAlign: TextAlign.center,
-                      style: SafeGoogleFont(
-                        'Inter',
-                        fontSize: 10 * ffem,
-                        fontWeight: FontWeight.w400,
-                        height: 1.2125 * ffem / fem,
-                        decoration: TextDecoration.none,
-                        color: const Color(0xffffffff),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              // group8yLC (117:89)
-              left: 111 * fem,
-              top: 543 * fem,
-              child: Container(
-                width: 150 * fem,
-                height: 56 * fem,
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xffff0000)),
-                ),
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                  ),
-                  onPressed: () {
-                    signout(widget.UserAccount);
-                  },
-                  child: Center(
-                    child: Text(
-                      'Log out',
-                      textAlign: TextAlign.center,
-                      style: SafeGoogleFont(
-                        'Inter',
-                        fontSize: 15 * ffem,
-                        fontWeight: FontWeight.w400,
-                        height: 1.2125 * ffem / fem,
-                        decoration: TextDecoration.none,
-                        color: const Color(0xffffffff),
-                      ),
-                    ),
-                  ),
+                  ],
                 ),
               ),
             ),

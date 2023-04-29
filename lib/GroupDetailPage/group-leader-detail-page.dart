@@ -133,7 +133,12 @@ class GroupDetail extends State<GroupDetailPage> {
                               height: 30,
                               child: Row(
                                 children: [
-                                  const SizedBox(width: 300),
+                                  const SizedBox(width: 260),
+                                  SizedBox(
+                                    width: 40,
+                                    child: const Icon(Icons.edit,
+                                        color: Colors.white, size: 20),
+                                  ),
                                   SizedBox(
                                       width: 60,
                                       child: SizedBox(

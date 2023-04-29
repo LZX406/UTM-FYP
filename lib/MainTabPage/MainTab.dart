@@ -73,7 +73,6 @@ class MainTabPage extends State<MainTab> {
     if (user!.username != 'Admin') {
       NotificationService().UpdateToken(user: user!, token: fcmToken!);
     }
-    print(fcmToken);
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -84,7 +83,6 @@ class MainTabPage extends State<MainTab> {
       sound: true,
     );
 
-    print('User granted permission: ${settings.authorizationStatus}');
     bool isallowed = await AwesomeNotifications().isNotificationAllowed();
     if (!isallowed) {
       //no permission of local notification
@@ -101,7 +99,7 @@ class MainTabPage extends State<MainTab> {
       child: SizedBox(
         // grouptasklistpageXSY (107:18)
         width: double.infinity,
-        height: 760 * fem,
+        height: 720 * fem,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Stack(
@@ -113,7 +111,6 @@ class MainTabPage extends State<MainTab> {
                 child: Align(
                   child: SizedBox(
                     width: 360 * fem,
-                    height: 799 * fem,
                     child: Image.asset(
                       'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
                       fit: BoxFit.cover,

@@ -62,12 +62,14 @@ class NotificationService {
       print("opened " + notificationMsg);
       AwesomeNotifications().createNotification(
           content: NotificationContent(
-        //simgple notification
-        id: 123,
-        channelKey: 'basic', //set configuration wuth key "basic"
-        title: event.notification!.title,
-        body: event.notification!.body,
-      ));
+              //simgple notification
+              id: DateTime.now().millisecondsSinceEpoch.remainder(10000000),
+              channelKey: 'basic', //set configuration wuth key "basic"
+              title: event.notification!.title,
+              body: event.notification!.body,
+              icon: 'resource://drawable/task',
+              largeIcon: 'resource://drawable/task',
+              payload: {"name": "Task Notify"}));
     });
   }
 }

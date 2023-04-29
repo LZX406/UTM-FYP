@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp/Services/group_member_service.dart';
 import 'package:myapp/Services/group_task_service.dart';
+import 'package:myapp/Services/notification_service.dart';
 import 'package:myapp/models/group.dart';
 import 'package:myapp/models/group_member_record.dart';
 import 'package:myapp/models/user.dart';
@@ -474,7 +475,11 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                                         task_nam: TaskNameController.text,
                                         group_id: widget.group!.group_id,
                                         userid: userid);
-
+                                    Notification_service()
+                                        .Update_group_new_task_Notification(
+                                            User: widget.UserAccount!,
+                                            group: widget.group!,
+                                            user_list: memberlist);
                                     message = "Create successfull";
                                   }
 

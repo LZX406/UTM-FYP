@@ -63,8 +63,8 @@ class GroupList extends State<GroupListPage> {
                   padding: EdgeInsets.zero,
                 ),
                 child: Container(
-                  width: 106 * fem,
-                  height: 30 * fem,
+                  width: 116 * fem,
+                  height: 40 * fem,
                   decoration: BoxDecoration(
                     border: Border.all(color: const Color(0xffffffff)),
                     borderRadius: BorderRadius.circular(25 * fem),
@@ -76,7 +76,7 @@ class GroupList extends State<GroupListPage> {
                         textAlign: TextAlign.center,
                         style: SafeGoogleFont(
                           'Inter',
-                          fontSize: 10 * ffem,
+                          fontSize: 13 * ffem,
                           fontWeight: FontWeight.w400,
                           height: 1.2125 * ffem / fem,
                           color: const Color(0xffffffff),
@@ -101,14 +101,27 @@ class GroupList extends State<GroupListPage> {
                           future: getallgroup(),
                           builder: (context, snapshot) {
                             return ListView.separated(
-                              padding: EdgeInsets.zero,
+                              padding: EdgeInsets.all(0.0),
                               itemCount: grouplist.length,
                               itemBuilder: (context, index) {
-                                return Align(
-                                  alignment: Alignment.topLeft,
-                                  child: SizedBox(
+                                return Padding(
+                                  padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+                                  child: Container(
                                     width: 360 * fem,
                                     height: 81 * fem,
+                                    decoration: BoxDecoration(
+                                        gradient:
+                                            LinearGradient(colors: <Color>[
+                                          Colors.black,
+                                          Colors.black87,
+                                          Colors.black54,
+                                          Colors.black38,
+                                          Colors.black26,
+                                          Colors.black12,
+                                        ]),
+                                        borderRadius: BorderRadius.circular(20),
+                                        border:
+                                            Border.all(color: Colors.white)),
                                     child: TextButton(
                                       onPressed: () {
                                         Navigator.push(
@@ -124,13 +137,10 @@ class GroupList extends State<GroupListPage> {
                                         );
                                       },
                                       style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
+                                        padding:
+                                            EdgeInsets.fromLTRB(20, 10, 0, 0),
                                       ),
                                       child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: const Color(0xffffffff)),
-                                        ),
                                         child: Column(
                                           children: [
                                             Align(
@@ -157,7 +167,7 @@ class GroupList extends State<GroupListPage> {
                                                 width: 153 * fem,
                                                 height: 15 * fem,
                                                 child: Text(
-                                                  'Active task: compile report',
+                                                  '',
                                                   style: SafeGoogleFont(
                                                     'Inter',
                                                     fontSize: 12 * ffem,
@@ -178,7 +188,7 @@ class GroupList extends State<GroupListPage> {
                               },
                               separatorBuilder: (context, index) {
                                 return const Divider(
-                                  height: 0,
+                                  height: 2,
                                 );
                               },
                             );
@@ -198,7 +208,7 @@ class GroupList extends State<GroupListPage> {
                   child: Container(
                     alignment: Alignment.center,
                     child: Text(
-                      'My group',
+                      widget.UserAccount!.username + ' Group',
                       textAlign: TextAlign.center,
                       style: SafeGoogleFont(
                         'Inter',

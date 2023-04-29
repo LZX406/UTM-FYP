@@ -161,10 +161,10 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                         Center(
                           child: Align(
                             child: SizedBox(
-                              width: 280 * fem,
+                              width: 240 * fem,
                               height: 25 * fem,
                               child: Text(
-                                "${widget.group!.group_name} TASK",
+                                "${widget.group!.group_name}",
                                 textAlign: TextAlign.center,
                                 style: SafeGoogleFont(
                                   'Inter',
@@ -177,6 +177,11 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                               ),
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          width: 40,
+                          child: const Icon(Icons.edit,
+                              color: Colors.white, size: 20),
                         ),
                         SizedBox(
                           width: 30 * fem,

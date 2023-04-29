@@ -74,6 +74,15 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
     return values;
   }
 
+  bool checkuserinvolve() {
+    for (var user in userlist) {
+      if (user!.uid == widget.UserAccount!.uid) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     double baseWidth = 360;
@@ -132,10 +141,10 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               Center(
                                 child: Align(
                                   child: SizedBox(
-                                    width: 280 * fem,
+                                    width: 240 * fem,
                                     height: 25 * fem,
                                     child: Text(
-                                      "${widget.group!.group_name} TASK",
+                                      "${widget.group!.group_name}",
                                       textAlign: TextAlign.center,
                                       style: SafeGoogleFont(
                                         'Inter',
@@ -149,18 +158,29 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 30 * fem,
-                                height: 25 * fem,
-                                child: Switch(
-                                  onChanged: switchmode,
-                                  value: editmode,
-                                  activeColor: Colors.blue,
-                                  activeTrackColor: Colors.blue[100],
-                                  inactiveThumbColor: Colors.grey,
-                                  inactiveTrackColor: Colors.white,
+                              if (widget.UserAccount!.uid ==
+                                      widget.group_leader!.group_leader_id ||
+                                  checkuserinvolve() == true)
+                                SizedBox(
+                                  width: 40,
+                                  child: const Icon(Icons.edit,
+                                      color: Colors.white, size: 20),
                                 ),
-                              )
+                              if (widget.UserAccount!.uid ==
+                                      widget.group_leader!.group_leader_id ||
+                                  checkuserinvolve() == true)
+                                SizedBox(
+                                  width: 30 * fem,
+                                  height: 25 * fem,
+                                  child: Switch(
+                                    onChanged: switchmode,
+                                    value: editmode,
+                                    activeColor: Colors.blue,
+                                    activeTrackColor: Colors.blue[100],
+                                    inactiveThumbColor: Colors.grey,
+                                    inactiveTrackColor: Colors.white,
+                                  ),
+                                )
                             ],
                           ),
                           const SizedBox(height: 30),

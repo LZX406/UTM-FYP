@@ -208,9 +208,10 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
                               itemCount: Inactivetasklist!.length,
                               itemBuilder: (context, index) {
                                 return Align(
-                                  child: SizedBox(
+                                  child: Container(
                                     width: 360 * fem,
                                     height: 122 * fem,
+                                    color: Colors.black54,
                                     child: TextButton(
                                       onPressed: () {
                                         Navigator.push(
@@ -229,48 +230,68 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
                                         );
                                       },
                                       style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
+                                        padding:
+                                            EdgeInsets.fromLTRB(20, 10, 0, 0),
                                       ),
                                       child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: const Color(0xff00ff19)),
-                                          ),
                                           child: Column(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: SizedBox(
-                                                  width: 330 * fem,
-                                                  height: 20 * fem,
-                                                  child: Text(
-                                                    textAlign: TextAlign.center,
-                                                    Alltasklist.last!
-                                                        .elementAt(index)!
-                                                        .task_nam,
-                                                    style: SafeGoogleFont(
-                                                      'Inter',
-                                                      fontSize: 20 * ffem,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      height:
-                                                          1.2125 * ffem / fem,
-                                                      color: const Color(
-                                                          0xffffffff),
-                                                    ),
-                                                  ),
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: SizedBox(
+                                              width: 330 * fem,
+                                              height: 20 * fem,
+                                              child: Text(
+                                                textAlign: TextAlign.center,
+                                                Alltasklist.last!
+                                                    .elementAt(index)!
+                                                    .task_nam,
+                                                style: SafeGoogleFont(
+                                                  'Inter',
+                                                  fontSize: 20 * ffem,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.2125 * ffem / fem,
+                                                  color:
+                                                      const Color(0xffffffff),
                                                 ),
                                               ),
-                                              const SizedBox(
-                                                height: 10,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: SizedBox(
+                                              width: 180 * fem,
+                                              height: 15 * fem,
+                                              child: Text(
+                                                'Project Link:    ${Alltasklist.last!.elementAt(index)!.link}',
+                                                style: SafeGoogleFont(
+                                                  'Inter',
+                                                  fontSize: 12 * ffem,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.2125 * ffem / fem,
+                                                  color:
+                                                      const Color(0xffffffff),
+                                                ),
                                               ),
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
                                               Align(
-                                                alignment: Alignment.centerLeft,
                                                 child: SizedBox(
-                                                  width: 180 * fem,
+                                                  width: 160 * fem,
                                                   height: 15 * fem,
                                                   child: Text(
-                                                    'Project Link:    ${Alltasklist.last!.elementAt(index)!.link}',
+                                                    Alltasklist.last!
+                                                                .elementAt(
+                                                                    index)!
+                                                                .startdate ==
+                                                            null
+                                                        ? "none"
+                                                        : 'start : ${DateFormat('yyyy-MM-dd').format(Alltasklist.last!.elementAt(index)!.startdate!)}',
                                                     style: SafeGoogleFont(
                                                       'Inter',
                                                       fontSize: 12 * ffem,
@@ -284,129 +305,19 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
                                                   ),
                                                 ),
                                               ),
-                                              Row(
-                                                children: [
-                                                  Align(
-                                                    child: SizedBox(
-                                                      width: 160 * fem,
-                                                      height: 15 * fem,
-                                                      child: Text(
-                                                        Alltasklist.last!
-                                                                    .elementAt(
-                                                                        index)!
-                                                                    .startdate ==
-                                                                null
-                                                            ? "none"
-                                                            : 'start : ${DateFormat('yyyy-MM-dd').format(Alltasklist.last!.elementAt(index)!.startdate!)}',
-                                                        style: SafeGoogleFont(
-                                                          'Inter',
-                                                          fontSize: 12 * ffem,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          height: 1.2125 *
-                                                              ffem /
-                                                              fem,
-                                                          color: const Color(
-                                                              0xffffffff),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.topRight,
-                                                    child: SizedBox(
-                                                      width: 160 * fem,
-                                                      height: 15 * fem,
-                                                      child: Text(
-                                                        Alltasklist.last!
-                                                                    .elementAt(
-                                                                        index)!
-                                                                    .enddate ==
-                                                                null
-                                                            ? "none"
-                                                            : 'end : ${DateFormat('yyyy-MM-dd').format(Alltasklist.last!.elementAt(index)!.enddate!)}',
-                                                        style: SafeGoogleFont(
-                                                          'Inter',
-                                                          fontSize: 12 * ffem,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          height: 1.2125 *
-                                                              ffem /
-                                                              fem,
-                                                          color: const Color(
-                                                              0xffffffff),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Align(
-                                                    child: SizedBox(
-                                                      width: 60 * fem,
-                                                      height: 15 * fem,
-                                                      child: Text(
-                                                        'Progress  ',
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                        style: SafeGoogleFont(
-                                                          'Inter',
-                                                          fontSize: 12 * ffem,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          height: 1.2125 *
-                                                              ffem /
-                                                              fem,
-                                                          color: const Color(
-                                                              0xffffffff),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Align(
-                                                    child: SizedBox(
-                                                      width: 180 * fem,
-                                                      height: 15 * fem,
-                                                    ),
-                                                  ),
-                                                  Align(
-                                                    child: SizedBox(
-                                                      width: 50 * fem,
-                                                      height: 15 * fem,
-                                                      child: Text(
-                                                        '${Alltasklist.last!.elementAt(index)!.progress} %',
-                                                        style: SafeGoogleFont(
-                                                          'Inter',
-                                                          fontSize: 12 * ffem,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          height: 1.2125 *
-                                                              ffem /
-                                                              fem,
-                                                          color: const Color(
-                                                              0xffffffff),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
                                               Align(
-                                                alignment: Alignment.topLeft,
+                                                alignment: Alignment.topRight,
                                                 child: SizedBox(
-                                                  width: 330 * fem,
+                                                  width: 160 * fem,
                                                   height: 15 * fem,
                                                   child: Text(
                                                     Alltasklist.last!
                                                                 .elementAt(
                                                                     index)!
-                                                                .estidate ==
+                                                                .enddate ==
                                                             null
                                                         ? "none"
-                                                        : 'Estimate end date : ${DateFormat('yyyy-MM-dd').format(Alltasklist.last!.elementAt(index)!.enddate!)}',
+                                                        : 'end : ${DateFormat('yyyy-MM-dd').format(Alltasklist.last!.elementAt(index)!.enddate!)}',
                                                     style: SafeGoogleFont(
                                                       'Inter',
                                                       fontSize: 12 * ffem,
@@ -421,7 +332,81 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
                                                 ),
                                               ),
                                             ],
-                                          )),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Align(
+                                                child: SizedBox(
+                                                  width: 60 * fem,
+                                                  height: 15 * fem,
+                                                  child: Text(
+                                                    'Progress  ',
+                                                    textAlign: TextAlign.left,
+                                                    style: SafeGoogleFont(
+                                                      'Inter',
+                                                      fontSize: 12 * ffem,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      height:
+                                                          1.2125 * ffem / fem,
+                                                      color: const Color(
+                                                          0xffffffff),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Align(
+                                                child: SizedBox(
+                                                  width: 180 * fem,
+                                                  height: 15 * fem,
+                                                ),
+                                              ),
+                                              Align(
+                                                child: SizedBox(
+                                                  width: 50 * fem,
+                                                  height: 15 * fem,
+                                                  child: Text(
+                                                    '${Alltasklist.last!.elementAt(index)!.progress} %',
+                                                    style: SafeGoogleFont(
+                                                      'Inter',
+                                                      fontSize: 12 * ffem,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      height:
+                                                          1.2125 * ffem / fem,
+                                                      color: const Color(
+                                                          0xffffffff),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: SizedBox(
+                                              width: 330 * fem,
+                                              height: 15 * fem,
+                                              child: Text(
+                                                Alltasklist.last!
+                                                            .elementAt(index)!
+                                                            .estidate ==
+                                                        null
+                                                    ? "none"
+                                                    : 'Estimate end date : ${DateFormat('yyyy-MM-dd').format(Alltasklist.last!.elementAt(index)!.enddate!)}',
+                                                style: SafeGoogleFont(
+                                                  'Inter',
+                                                  fontSize: 12 * ffem,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.2125 * ffem / fem,
+                                                  color:
+                                                      const Color(0xffffffff),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                     ),
                                   ),
                                 );
