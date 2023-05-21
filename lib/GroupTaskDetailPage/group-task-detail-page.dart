@@ -159,7 +159,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                 ),
                               ),
                               if (widget.UserAccount!.uid ==
-                                      widget.group_leader!.group_leader_id ||
+                                      widget.group_leader!.leader_id ||
                                   checkuserinvolve() == true)
                                 SizedBox(
                                   width: 40,
@@ -167,7 +167,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                       color: Colors.white, size: 20),
                                 ),
                               if (widget.UserAccount!.uid ==
-                                      widget.group_leader!.group_leader_id ||
+                                      widget.group_leader!.leader_id ||
                                   checkuserinvolve() == true)
                                 SizedBox(
                                   width: 30 * fem,
@@ -716,6 +716,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
         }
       }
       return GroupMemberEditTaskDetailPage(
+        group_leader: widget.group_leader,
         progress: progress,
         group: widget.group,
         grouptask: task,

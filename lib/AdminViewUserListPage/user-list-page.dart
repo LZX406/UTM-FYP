@@ -78,57 +78,11 @@ class UserList extends State<UserListPage> {
                   child: Stack(
                     children: [
                       Positioned(
-                        left: 20 * fem,
-                        top: 16 * fem,
-                        child: Align(
-                          child: SizedBox(
-                            width: 27 * fem,
-                            height: 2 * fem,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 20 * fem,
-                        top: 25 * fem,
-                        child: Align(
-                          child: SizedBox(
-                            width: 27 * fem,
-                            height: 2 * fem,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 20 * fem,
-                        top: 33 * fem,
-                        child: Align(
-                          child: SizedBox(
-                            width: 27 * fem,
-                            height: 2 * fem,
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Color(0xffffffff),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 122.5 * fem,
                         top: 13 * fem,
                         child: Center(
                           child: Align(
                             child: SizedBox(
-                              width: 115 * fem,
+                              width: 350 * fem,
                               height: 25 * fem,
                               child: Text(
                                 'User List',
@@ -158,185 +112,162 @@ class UserList extends State<UserListPage> {
                   SizedBox(
                     width: 360 * fem,
                     height: 500 * fem,
-                    child: Container(
-                      alignment: Alignment.topLeft,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: const Color(0xffffffff)),
-                      ),
-                      child: FutureBuilder(
-                          future: getalluser(),
-                          builder: (context, snapshot) {
-                            return ListView.separated(
-                              padding: EdgeInsets.all(0.0),
-                              itemCount: Userlist!.length,
-                              itemBuilder: (context, index) {
-                                return Align(
-                                  child: SizedBox(
-                                    width: 360 * fem,
-                                    height: 75 * fem,
-                                    child: TextButton(
-                                      onPressed: () {},
-                                      style: TextButton.styleFrom(
-                                        padding:
-                                            EdgeInsets.fromLTRB(20, 10, 0, 0),
-                                      ),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: const Color.fromARGB(
-                                                  255, 255, 255, 255)),
-                                        ),
-                                        child: Row(
+                    child: FutureBuilder(
+                        future: getalluser(),
+                        builder: (context, snapshot) {
+                          return ListView.separated(
+                            padding: EdgeInsets.all(5.0),
+                            itemCount: Userlist!.length,
+                            itemBuilder: (context, index) {
+                              return Align(
+                                child: Container(
+                                  width: 360 * fem,
+                                  height: 90 * fem,
+                                  decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(color: Colors.white)),
+                                  child: TextButton(
+                                    onPressed: () {},
+                                    style: TextButton.styleFrom(
+                                      padding:
+                                          EdgeInsets.fromLTRB(20, 10, 0, 0),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Column(
                                           children: [
-                                            Column(
-                                              children: [
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: SizedBox(
-                                                    width: 300 * fem,
-                                                    height: 20 * fem,
-                                                    child: Text(
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      Userlist!
-                                                          .elementAt(index)!
-                                                          .username,
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: 20 * ffem,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        height:
-                                                            1.2125 * ffem / fem,
-                                                        color: const Color(
-                                                            0xffffffff),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: SizedBox(
-                                                    width: 300 * fem,
-                                                    height: 15 * fem,
-                                                    child: Text(
-                                                      'Email:    ${Userlist!.elementAt(index)!.email}',
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: 12 * ffem,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        height:
-                                                            1.2125 * ffem / fem,
-                                                        color: const Color(
-                                                            0xffffffff),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: SizedBox(
-                                                    width: 300 * fem,
-                                                    height: 15 * fem,
-                                                    child: Text(
-                                                      'Last login:    ${Userlist!.elementAt(index)!.lastlogin}',
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: 12 * ffem,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        height:
-                                                            1.2125 * ffem / fem,
-                                                        color: const Color(
-                                                            0xffffffff),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.topLeft,
-                                                  child: SizedBox(
-                                                    width: 300 * fem,
-                                                    height: 15 * fem,
-                                                    child: Text(
-                                                      'Banned:    ${Userlist!.elementAt(index)!.ban}',
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: 12 * ffem,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        height:
-                                                            1.2125 * ffem / fem,
-                                                        color: const Color(
-                                                            0xffffffff),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
                                             Align(
                                               alignment: Alignment.center,
                                               child: SizedBox(
-                                                width: 45 * fem,
-                                                height: 30 * fem,
-                                                child: TextButton(
-                                                  onPressed: () {
-                                                    updatestate(Userlist!
-                                                        .elementAt(index)!);
-                                                  },
-                                                  style: TextButton.styleFrom(
-                                                    padding: EdgeInsets.zero,
+                                                width: 280 * fem,
+                                                height: 20 * fem,
+                                                child: Text(
+                                                  textAlign: TextAlign.center,
+                                                  Userlist!
+                                                      .elementAt(index)!
+                                                      .username,
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 20 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
                                                   ),
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    width: 45 * fem,
-                                                    height: 30 * fem,
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: getcolor(
-                                                              Userlist!
-                                                                  .elementAt(
-                                                                      index)!)),
-                                                    ),
-                                                    child: Text(
-                                                      getstate(Userlist!
-                                                          .elementAt(index)!),
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: 12 * ffem,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        height:
-                                                            1.2125 * ffem / fem,
-                                                        color: const Color(
-                                                            0xffffffff),
-                                                      ),
-                                                    ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: SizedBox(
+                                                width: 280 * fem,
+                                                height: 15 * fem,
+                                                child: Text(
+                                                  'Email:    ${Userlist!.elementAt(index)!.email}',
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 12 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: SizedBox(
+                                                width: 280 * fem,
+                                                height: 15 * fem,
+                                                child: Text(
+                                                  'Last login:    ${Userlist!.elementAt(index)!.lastlogin}',
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 12 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: SizedBox(
+                                                width: 280 * fem,
+                                                height: 15 * fem,
+                                                child: Text(
+                                                  'Banned:    ${Userlist!.elementAt(index)!.ban}',
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 12 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: SizedBox(
+                                            width: 45 * fem,
+                                            height: 30 * fem,
+                                            child: TextButton(
+                                              onPressed: () {
+                                                updatestate(Userlist!
+                                                    .elementAt(index)!);
+                                              },
+                                              style: TextButton.styleFrom(
+                                                padding: EdgeInsets.zero,
+                                              ),
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                width: 45 * fem,
+                                                height: 30 * fem,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: getcolor(Userlist!
+                                                          .elementAt(index)!)),
+                                                ),
+                                                child: Text(
+                                                  getstate(Userlist!
+                                                      .elementAt(index)!),
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 12 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return const Divider(
-                                  height: 0,
-                                );
-                              },
-                            );
-                          }),
-                    ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const Divider(
+                                height: 0,
+                              );
+                            },
+                          );
+                        }),
                   ),
                 ],
               ),

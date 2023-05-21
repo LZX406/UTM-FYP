@@ -17,7 +17,8 @@ class Group_task_service {
       required info,
       required progress,
       required startdate,
-      required group_id}) {
+      required group_id,
+      required List<bool> involvelist}) {
     String doc = firestoreInstance.collection("GroupTask").doc().id;
     firestoreInstance.collection("GroupTask").doc(doc).set({
       'userid': userid,
@@ -32,11 +33,12 @@ class Group_task_service {
       'group_id': group_id,
       'activestate': true
     });
-    for (var member in memberlist) {
+    for (int a = 0; a < memberlist.length; a++) {
       Group_task_progress_service().CreateGroupTaskProgress(
-          username: member!.member_username,
+          username: memberlist[a]!.member_username,
           group_id: group_id,
-          group_task_id: doc);
+          group_task_id: doc,
+          involved: involvelist[a]);
     }
   }
 
@@ -116,6 +118,7 @@ class Group_task_service {
 
   String DeleteGroupTask({required task_id}) {
     try {
+      print("Task_id " + task_id);
       firestoreInstance.collection("GroupTask").doc(task_id).delete();
     } catch (e) {
       return e.toString();

@@ -50,7 +50,7 @@ class GroupDetail extends State<GroupDetailPage> {
     if (a == 1) {
       return "member";
     } else if (a == 2) {
-      return "manager";
+      return "admin";
     }
     return "leader";
   }

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myapp/Services/Auth.dart';
 import 'package:myapp/models/g_task.dart';
 import 'package:myapp/models/group.dart';
+import 'package:myapp/models/group_leader_record.dart';
 import 'package:myapp/models/group_member_record.dart';
 import 'package:myapp/models/user.dart';
 
@@ -64,22 +65,22 @@ class Notification_service {
   }
 
   void Update_group_task_complete_Notification({
-    required User_Account User,
+    required Group_leader group_leader,
     required Group group,
-    required List<User_Account?> user_list,
+    required List<Group_member?> user_list,
     required Group_Task_record group_task,
   }) {
     for (var user in user_list) {
       firestoreInstance.collection("Notification").doc().set({
         "title": group.group_name + "'s task" + " complete",
         "body": group_task.task_nam + " complete!",
-        "user_id": user!.uid
+        "user_id": user!.member_id
       });
     }
     firestoreInstance.collection("Notification").doc().set({
       "title": group.group_name + "'s task" + " complete",
       "body": group_task.task_nam + " complete!",
-      "user_id": User.uid
+      "user_id": group_leader.leader_id
     });
   }
 

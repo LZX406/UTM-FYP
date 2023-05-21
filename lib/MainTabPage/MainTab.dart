@@ -28,7 +28,8 @@ class MainTabPage extends State<MainTab> {
   int page = 1;
   User_Account? user;
   String? fcmToken;
-  late FirebaseMessaging messaging;
+  bool checkuser = false;
+  late FirebaseMessaging? messaging;
 
   Icon icon = const Icon(Icons.task, color: Colors.black, size: 40);
   @override
@@ -57,7 +58,7 @@ class MainTabPage extends State<MainTab> {
   Future<void> getUser() async {
     Future<User_Account?> futureuser = Accountservice().GetUser();
     user = await futureuser;
-    if (user!.ban == true) {
+    if (user?.ban == true) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -68,25 +69,29 @@ class MainTabPage extends State<MainTab> {
         Auth().signOut();
       });
     }
-    display(user);
-    fcmToken = await FirebaseMessaging.instance.getToken();
-    if (user!.username != 'Admin') {
-      NotificationService().UpdateToken(user: user!, token: fcmToken!);
+    if (checkuser == false) {
+      display(user);
     }
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
+    checkuser = true;
+    fcmToken = await FirebaseMessaging.instance.getToken();
 
-    bool isallowed = await AwesomeNotifications().isNotificationAllowed();
-    if (!isallowed) {
-      //no permission of local notification
-      AwesomeNotifications().requestPermissionToSendNotifications();
+    if (user?.username != "Admin") {
+      NotificationService().UpdateToken(user: user!, token: fcmToken!);
+
+      NotificationSettings settings = await messaging!.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      );
+      bool isallowed = await AwesomeNotifications().isNotificationAllowed();
+      if (!isallowed) {
+        //no permission of local notification
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
     }
   }
 
@@ -127,6 +132,7 @@ class MainTabPage extends State<MainTab> {
                     } else {
                       if (page == 1) {
                         return ProfilePage(
+                          refreshpage: refreshpage,
                           UserAccount: user,
                         );
                       } else if (page == 2) {

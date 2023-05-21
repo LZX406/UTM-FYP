@@ -40,6 +40,7 @@ class GroupTaskList extends State<GroupTaskListPage> {
   int grouppage = 1;
   Group? group;
   Group_leader? groupleader;
+  bool leaving = true;
   @override
   void initState() {
     super.initState();
@@ -118,9 +119,15 @@ class GroupTaskList extends State<GroupTaskListPage> {
                       child: Row(
                         children: [
                           TextButton(
-                            onPressed: () {
-                              widget.getallgroup();
+                            onPressed: () async {
+                              if (!leaving) {
+                                return;
+                              }
+                              leaving = false;
+                              await widget.getallgroup();
+                              await widget.refresh();
                               Navigator.pop(context);
+                              leaving = true;
                             },
                             child: SizedBox(
                               width: 50 * fem,

@@ -15,6 +15,9 @@ class Accountservice {
       "username": username,
       "password": password,
       "uid": Auth().currentUser!.uid,
+      "countrycode": '',
+      "phonenum": '',
+      "completephonenum": '',
       "ban": false,
       "lastlogin": DateTime.now(),
     });
@@ -28,29 +31,32 @@ class Accountservice {
         .doc(Auth().currentUser!.uid)
         .get()
         .then(
-      (value) {
-        if (value.exists) {
-          user = User_Account.AdminMap(value.data()!);
-        }
-      },
-    );
-    await firestoreInstance
-        .collection("User")
-        .doc(Auth().currentUser!.uid)
-        .get()
-        .then(
       (value) async {
         if (value.exists) {
-          user = User_Account.Map(value.data()!);
-          firestoreInstance
+          user = await User_Account.AdminMap(value.data()!);
+          return user;
+        } else {
+          await firestoreInstance
               .collection("User")
               .doc(Auth().currentUser!.uid)
-              .set({
-            "lastlogin": DateTime.now(),
-          }, SetOptions(merge: true));
+              .get()
+              .then(
+            (value) async {
+              if (value.exists) {
+                user = await User_Account.Map(value.data()!);
+                firestoreInstance
+                    .collection("User")
+                    .doc(Auth().currentUser!.uid)
+                    .set({
+                  "lastlogin": DateTime.now(),
+                }, SetOptions(merge: true));
+              }
+            },
+          );
         }
       },
     );
+
     return user;
   }
 
@@ -70,10 +76,22 @@ class Accountservice {
     return userlist;
   }
 
-  void UpdateUser({required String username}) {
-    firestoreInstance.collection("User").doc(Auth().currentUser!.uid).set({
-      "username": username,
-    }, SetOptions(merge: true));
+  String UpdateUser(
+      {required String username,
+      required String countrycode,
+      required String phonenum,
+      required String completephonenum}) {
+    try {
+      firestoreInstance.collection("User").doc(Auth().currentUser!.uid).set({
+        "username": username,
+        "phonenum": phonenum,
+        "countrycode": countrycode,
+        "completephonenum": completephonenum,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      return e.toString();
+    }
+    return "Update successful";
   }
 
   void UpdateState({required User_Account user}) {

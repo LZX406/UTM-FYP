@@ -162,6 +162,24 @@ class GroupList extends State<GroupListPage> {
                                               ),
                                             ),
                                             Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: SizedBox(
+                                                width: 300 * fem,
+                                                height: 15 * fem,
+                                                child: Text(
+                                                  'Created by:    ${grouplist[index]!.group_leader!.leader!.username}',
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 12 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
                                               alignment: Alignment.topLeft,
                                               child: SizedBox(
                                                 width: 153 * fem,
@@ -208,7 +226,7 @@ class GroupList extends State<GroupListPage> {
                   child: Container(
                     alignment: Alignment.center,
                     child: Text(
-                      widget.UserAccount!.username + ' Group',
+                      'Group',
                       textAlign: TextAlign.center,
                       style: SafeGoogleFont(
                         'Inter',

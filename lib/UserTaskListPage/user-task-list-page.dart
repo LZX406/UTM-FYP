@@ -92,92 +92,33 @@ class UserTaskList extends State<UserTaskListPage> {
                 left: 0 * fem,
                 top: 108 * fem,
 
-                child: TextButton(
-                  onPressed: () {},
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: const Color(0xff000000)),
                   ),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xff000000)),
-                    ),
-                    width: 360 * fem,
-                    height: 51 * fem,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          // line4Dg4 (107:331)
-                          left: 20 * fem,
-                          top: 16 * fem,
-                          child: Align(
-                            child: SizedBox(
-                              width: 27 * fem,
-                              height: 2 * fem,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Color(0xffffffff),
-                                ),
-                              ),
+                  width: 360 * fem,
+                  height: 51 * fem,
+                  child: Center(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: 300 * fem,
+                        height: 25 * fem,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'My Task',
+                            textAlign: TextAlign.center,
+                            style: SafeGoogleFont(
+                              'Inter',
+                              fontSize: 20 * ffem,
+                              fontWeight: FontWeight.w400,
+                              height: 1.2125 * ffem / fem,
+                              color: const Color(0xffffffff),
                             ),
                           ),
                         ),
-                        Positioned(
-                          // line5jeQ (107:332)
-                          left: 20 * fem,
-                          top: 25 * fem,
-                          child: Align(
-                            child: SizedBox(
-                              width: 27 * fem,
-                              height: 2 * fem,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Color(0xffffffff),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          // line6f2G (107:333)
-                          left: 20 * fem,
-                          top: 33 * fem,
-                          child: Align(
-                            child: SizedBox(
-                              width: 27 * fem,
-                              height: 2 * fem,
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Color(0xffffffff),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          // alphagroupBmJ (107:34)
-                          left: 122.5 * fem,
-                          top: 13 * fem,
-                          child: Center(
-                            child: Align(
-                              child: SizedBox(
-                                width: 115 * fem,
-                                height: 25 * fem,
-                                child: Text(
-                                  widget.UserAccount!.username + ' Task',
-                                  textAlign: TextAlign.center,
-                                  style: SafeGoogleFont(
-                                    'Inter',
-                                    fontSize: 20 * ffem,
-                                    fontWeight: FontWeight.w400,
-                                    height: 1.2125 * ffem / fem,
-                                    color: const Color(0xffffffff),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),

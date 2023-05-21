@@ -74,22 +74,25 @@ class Group_service {
       if (member_list.isNotEmpty) {
         for (var member in member_list) {
           if (member!.member_username == "new") {
-            String membergroup =
-                firestoreInstance.collection("Group_member").doc().id;
-            firestoreInstance.collection("Group_member").doc(membergroup).set({
+            firestoreInstance
+                .collection("Group")
+                .doc(group.group_id)
+                .collection("member")
+                .doc(member.member_id)
+                .set({
               'member_id': member.member_id,
               'group_id': group,
-              'member_type': member.member_type,
+              'memberposition': member.member_type,
             }, SetOptions(merge: true));
           }
           firestoreInstance
               .collection("Group")
               .doc(group.group_id)
-              .collection("Group_member")
+              .collection("member")
               .doc(member.member_id)
               .set({
-            'member_type': member.member_type,
-          });
+            'memberposition': member.member_type,
+          }, SetOptions(merge: true));
         }
       }
     } catch (e) {
@@ -164,6 +167,7 @@ class Group_service {
     Group_leader? groupleader;
     List<Group_leader?> groupleaderlist = [];
     Group_member? member;
+    User_Account? user;
     List<Group_member?> memberlist = [];
     await firestoreInstance
         .collection("Group_leader")
@@ -184,6 +188,7 @@ class Group_service {
             .then((QuerySnapshot) {
           for (var document in QuerySnapshot.docs) {
             group = Group.fromMap(document.data());
+            group!.addgroupleader(a);
             grouplist.add(group);
           }
         });
@@ -214,6 +219,18 @@ class Group_service {
           }
           memberlist = [];
         }
+        for (var leader in grouplist) {
+          await firestoreInstance
+              .collection("User")
+              .doc(leader!.group_leader!.leader_id)
+              .get()
+              .then((value) async {
+            if (value.exists) {
+              user = User_Account.Map(value.data()!);
+              leader.group_leader!.addleader(user!);
+            }
+          });
+        }
         if (grouplist.length >= 2) {
           grouplist.sort(((a, b) {
             return a!.group_name.compareTo(b!.group_name);
@@ -226,6 +243,7 @@ class Group_service {
 
   Future<Group?> GetSingleGroup({required groupid}) async {
     Group? group;
+    Group_leader? group_leader;
     await firestoreInstance
         .collection("Group")
         .doc(groupid)
@@ -233,7 +251,18 @@ class Group_service {
         .then((value) {
       group = Group.fromMap(value.data());
     });
-
+    await firestoreInstance
+        .collection("Group_leader")
+        .where("group_id", isEqualTo: groupid)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var groupleader in value.docs) {
+          group_leader = Group_leader.fromMap(groupleader);
+        }
+        group!.addgroupleader(group_leader!);
+      }
+    });
     return group;
   }
 

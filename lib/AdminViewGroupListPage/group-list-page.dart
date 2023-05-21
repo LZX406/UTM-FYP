@@ -163,9 +163,22 @@ class AllGroupList extends State<AllGroupListPage> {
                               itemCount: Grouplist!.length,
                               itemBuilder: (context, index) {
                                 return Align(
-                                  child: SizedBox(
+                                  child: Container(
                                     width: 360 * fem,
                                     height: 75 * fem,
+                                    decoration: BoxDecoration(
+                                        gradient:
+                                            LinearGradient(colors: <Color>[
+                                          Colors.black,
+                                          Colors.black87,
+                                          Colors.black54,
+                                          Colors.black38,
+                                          Colors.black26,
+                                          Colors.black12,
+                                        ]),
+                                        borderRadius: BorderRadius.circular(20),
+                                        border:
+                                            Border.all(color: Colors.white)),
                                     child: TextButton(
                                       onPressed: () {
                                         Navigator.push(

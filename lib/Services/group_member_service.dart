@@ -22,7 +22,6 @@ class Group_member_service {
         userlist.add(user);
       });
     }
-
     return userlist;
   }
 
