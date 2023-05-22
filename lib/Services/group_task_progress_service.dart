@@ -170,7 +170,7 @@ class Group_task_progress_service {
       value = true;
     }
 
-    firestoreInstance
+    await firestoreInstance
         .collection("GroupTask")
         .doc(grouptask.task_id)
         .collection("GroupTaskProgress")

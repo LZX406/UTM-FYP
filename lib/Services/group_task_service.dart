@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, non_constant_identifier_names, avoid_print, avoid_types_as_parameter_names
+// ignore_for_file: camel_case_types, non_constant_identifier_names, avoid_print, avoid_types_as_parameter_names, prefer_interpolation_to_compose_strings, avoid_single_cascade_in_expression_statements
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myapp/Services/group_task_progress_service.dart';
@@ -116,10 +116,25 @@ class Group_task_service {
     return tasklist;
   }
 
-  String DeleteGroupTask({required task_id}) {
+  Future<String> DeleteGroupTask({required task_id}) async {
     try {
-      print("Task_id " + task_id);
-      firestoreInstance.collection("GroupTask").doc(task_id).delete();
+      firestoreInstance
+          .collection("GroupTask")
+          .doc(task_id)
+          .collection('GroupTaskProgress')
+        ..get().then((QuerySnapshot) async {
+          if (QuerySnapshot.docs.isNotEmpty) {
+            for (var document in QuerySnapshot.docs) {
+              await firestoreInstance
+                  .collection("GroupTask")
+                  .doc(task_id)
+                  .collection('GroupTaskProgress')
+                  .doc(document.id)
+                  .delete();
+            }
+          }
+        });
+      await firestoreInstance.collection("GroupTask").doc(task_id).delete();
     } catch (e) {
       return e.toString();
     }

@@ -64,7 +64,7 @@ class Login extends State<LoginPage> {
     if (isLogin && !resetPassword) {
       return GestureDetector(
           onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
+            FocusScope.of(context).requestFocus(FocusNode());
           },
           child: SizedBox(
             width: double.infinity,

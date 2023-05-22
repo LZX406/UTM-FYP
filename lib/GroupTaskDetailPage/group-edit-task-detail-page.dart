@@ -1,11 +1,15 @@
-// ignore_for_file: file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables
+// ignore_for_file: file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, must_be_immutable
 
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:myapp/Dialog.dart';
+import 'package:myapp/Services/group_member_service.dart';
+import 'package:myapp/Services/group_task_progress_service.dart';
 import 'package:myapp/Services/group_task_service.dart';
 import 'package:myapp/Services/notification_service.dart';
 import 'package:myapp/models/g_task.dart';
+import 'package:myapp/models/g_task_progress.dart';
 import 'package:myapp/models/group.dart';
 import 'package:myapp/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -46,7 +50,67 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
   String? taskid;
   late bool activestate;
   String? message;
+  List<Group_task_progress?> progresslist = [];
+  List<User_Account?> userlist = [];
   Uri httpsUri = Uri.https('www.google.com');
+
+  bool? validatenull() {
+    if (TaskNameController.text.isEmpty) {
+      showdialog(context, 'Task name must be filled.');
+      return false;
+    } else if (TaskInfoController.text.isEmpty) {
+      showdialog(context, 'Task info must be filled.');
+      return false;
+    } else if (StartController.text.isEmpty) {
+      showdialog(context, 'Start date must be filled.');
+      return false;
+    } else if (EndController.text.isEmpty) {
+      showdialog(context, 'End date must be filled.');
+      return false;
+    } else if (DateTime.parse(StartController.text)
+        .isAfter(DateTime.parse(EndController.text))) {
+      showdialog(context, 'Start date must before End date.');
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  Future<void> getdata() async {
+    progresslist = await Group_task_progress_service()
+        .GetGroupProgress(group_task_id: widget.grouptask!.task_id);
+    userlist = await Group_member_service()
+        .GetGroupMemberList(progresslist: progresslist);
+  }
+
+  Future<void> updatestate(Group_task_progress progress) async {
+    Group_task_progress_service().updatestate(
+      grouptask: widget.grouptask!,
+      progress: progress,
+    );
+  }
+
+  Color getColor(Set<MaterialState> states) {
+    const Set<MaterialState> interactiveStates = <MaterialState>{
+      MaterialState.pressed,
+      MaterialState.hovered,
+      MaterialState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.black;
+    }
+    return Colors.white;
+  }
+
+  String getname(Group_task_progress progress) {
+    String name = '';
+    for (var user in userlist) {
+      if (user!.uid == progress.user_id) {
+        name = user.username;
+      }
+    }
+    return name;
+  }
 
   Future<void> update(
       User_Account user, List<User_Account?> user_list, Group? group) async {
@@ -72,15 +136,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
   }
 
   Future<void> delete() async {
-    message = Group_task_service()
+    message = await Group_task_service()
         .DeleteGroupTask(task_id: widget.grouptask!.task_id);
-  }
-
-  String? validatenull(String value) {
-    if (value.isEmpty) {
-      return "This field cannot be empty";
-    }
-    return null;
   }
 
   @override
@@ -114,7 +171,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
 
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: SizedBox(
         width: double.infinity,
@@ -168,7 +225,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                                 width: 240 * fem,
                                 height: 25 * fem,
                                 child: Text(
-                                  "${widget.group!.group_name}",
+                                  widget.group!.group_name,
                                   textAlign: TextAlign.center,
                                   style: SafeGoogleFont(
                                     'Inter',
@@ -182,10 +239,10 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 40,
-                            child: const Icon(Icons.edit,
-                                color: Colors.white, size: 20),
+                            child:
+                                Icon(Icons.edit, color: Colors.white, size: 20),
                           ),
                           SizedBox(
                             width: 30 * fem,
@@ -230,11 +287,10 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                           ),
                           child: TextField(
                             controller: TaskNameController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
-                              errorText: validatenull(TaskNameController.text),
                               contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 30),
                             ),
                             style: SafeGoogleFont(
@@ -277,13 +333,11 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                             minLines: 1,
                             maxLines: 5,
                             controller: TaskInfoController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
                               ),
-                              errorText: validatenull(TaskInfoController.text),
-                              contentPadding:
-                                  const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             ),
                             style: SafeGoogleFont(
                               'Inter',
@@ -334,12 +388,10 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                                   color: const Color(0xff1e25de),
                                   decorationColor: const Color(0xff1e25de),
                                 ),
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   border: OutlineInputBorder(
                                     borderSide: BorderSide.none,
                                   ),
-                                  errorText:
-                                      validatenull(TaskLinkController.text),
                                   contentPadding:
                                       EdgeInsets.fromLTRB(0, 0, 0, 30),
                                 ),
@@ -547,7 +599,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                             width: 240 * fem,
                             height: 15 * fem,
                             child: Text(
-                              'Progress',
+                              'Total Progress',
                               textAlign: TextAlign.left,
                               style: SafeGoogleFont(
                                 'Inter',
@@ -573,78 +625,224 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 330 * fem,
-                        height: 20 * fem,
-                        child: CupertinoProgressBar(
-                          value: progressvalue(
-                              widget.grouptask!.progress.toString()),
-                          trackColor: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 130),
+                      const SizedBox(height: 30),
+                      FutureBuilder(
+                          future: getdata(),
+                          builder: (context, snapshot) {
+                            return Column(
+                              children: [
+                                for (int a = 0; a < progresslist.length; a++)
+                                  Align(
+                                    alignment: const Alignment(-0.10, 0),
+                                    child: SizedBox(
+                                      width: 330 * fem,
+                                      height: 70 * fem,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 145 * fem,
+                                                height: 15 * fem,
+                                                child: Text(
+                                                  getname(progresslist[a]!),
+                                                  textAlign: TextAlign.left,
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 12 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    decoration:
+                                                        TextDecoration.none,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 80),
+                                              if (progresslist[a]!
+                                                      .task_involved ==
+                                                  true)
+                                                SizedBox(
+                                                  width: 45 * fem,
+                                                  height: 15 * fem,
+                                                  child: Text(
+                                                    "${progresslist[a]!.progress} %",
+                                                    style: SafeGoogleFont(
+                                                      'Inter',
+                                                      fontSize: 12 * ffem,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      height:
+                                                          1.2125 * ffem / fem,
+                                                      decoration:
+                                                          TextDecoration.none,
+                                                      color: const Color(
+                                                          0xffffffff),
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              if (progresslist[a]!
+                                                      .task_involved ==
+                                                  false)
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: SizedBox(
+                                                    width: 250 * fem,
+                                                    height: 15 * fem,
+                                                    child: Text(
+                                                      '* No involved',
+                                                      textAlign: TextAlign.left,
+                                                      style: SafeGoogleFont(
+                                                          'Inter',
+                                                          fontSize: 12 * ffem,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          height: 1.2125 *
+                                                              ffem /
+                                                              fem,
+                                                          color: const Color(
+                                                              0xffffffff),
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .none),
+                                                    ),
+                                                  ),
+                                                ),
+                                              if (progresslist[a]!
+                                                      .task_involved ==
+                                                  true)
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: SizedBox(
+                                                    width: 250 * fem,
+                                                    height: 20 * fem,
+                                                    child: CupertinoProgressBar(
+                                                      value: progressvalue(
+                                                          progresslist[a]!
+                                                              .progress
+                                                              .toString()),
+                                                      trackColor: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              Container(
+                                                alignment: Alignment.center,
+                                                width: 80,
+                                                child: Checkbox(
+                                                  checkColor: Colors.black,
+                                                  fillColor:
+                                                      MaterialStateProperty
+                                                          .resolveWith(
+                                                              getColor),
+                                                  value: progresslist[a]!
+                                                      .task_involved,
+                                                  onChanged:
+                                                      (bool? value) async {
+                                                    await updatestate(
+                                                            progresslist[a]!)
+                                                        .then((values) {
+                                                      setState(() {
+                                                        widget.switchmode(true);
+                                                        getdata();
+                                                      });
+                                                    });
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                if (progresslist.isEmpty)
+                                  const SizedBox(
+                                    height: 95,
+                                  ),
+                                if (progresslist.length == 1)
+                                  const SizedBox(
+                                    height: 45,
+                                  ),
+                              ],
+                            );
+                          }),
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Row(
                           children: [
                             TextButton(
                               onPressed: () {
-                                update(widget.UserAccount!, widget.userlist,
-                                    widget.group);
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => Dialog(
-                                          backgroundColor: Colors.black,
-                                          insetPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 40, vertical: 40),
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 25, vertical: 30),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const SizedBox(height: 14),
-                                                Text(
-                                                  message ?? '',
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 18,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 40),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    if (message ==
-                                                        "Update successful") {
-                                                      widget.switchpage(
-                                                          widget.grouppage);
-                                                      Navigator.pop(context);
-                                                      Navigator.pop(context);
-                                                    } else {
-                                                      Navigator.pop(context);
-                                                    }
-                                                  },
-                                                  child: const Text(
-                                                    "OK",
-                                                    style: TextStyle(
+                                if (validatenull() == true) {
+                                  update(widget.UserAccount!, widget.userlist,
+                                      widget.group);
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) => Dialog(
+                                            backgroundColor: Colors.black,
+                                            insetPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 40,
+                                                    vertical: 40),
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 25,
+                                                      vertical: 30),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  const SizedBox(height: 14),
+                                                  Text(
+                                                    message ?? '',
+                                                    style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontSize: 18,
                                                     ),
                                                   ),
-                                                ),
-                                              ],
+                                                  const SizedBox(height: 40),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      if (message ==
+                                                          "Update successful") {
+                                                        widget.switchpage(
+                                                            widget.grouppage);
+                                                        Navigator.pop(context);
+                                                        Navigator.pop(context);
+                                                      } else {
+                                                        Navigator.pop(context);
+                                                      }
+                                                    },
+                                                    child: const Text(
+                                                      "OK",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ));
+                                          ));
+                                }
                               },
                               style: TextButton.styleFrom(
                                 padding: EdgeInsets.zero,

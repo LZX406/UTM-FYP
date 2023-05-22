@@ -3,6 +3,8 @@
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupTaskDetailPage/group-edit-task-detail-page.dart';
 import 'package:myapp/GroupTaskDetailPage/groupmember-edit-task-detail-page.dart';
 import 'package:myapp/Services/group_member_service.dart';
@@ -126,6 +128,18 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                 FutureBuilder(
                   future: getallprogress(),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Column(
+                        children: [
+                          Container(
+                              child: LoadingAnimationWidget.hexagonDots(
+                                  color: Colors.white, size: 200)),
+                          const dialog2(
+                            message: 'Loading, please wait',
+                          )
+                        ],
+                      );
+                    }
                     return SingleChildScrollView(
                       child: Column(
                         children: [
@@ -144,7 +158,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                     width: 240 * fem,
                                     height: 25 * fem,
                                     child: Text(
-                                      "${widget.group!.group_name}",
+                                      widget.group!.group_name,
                                       textAlign: TextAlign.center,
                                       style: SafeGoogleFont(
                                         'Inter',
@@ -161,9 +175,9 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               if (widget.UserAccount!.uid ==
                                       widget.group_leader!.leader_id ||
                                   checkuserinvolve() == true)
-                                SizedBox(
+                                const SizedBox(
                                   width: 40,
-                                  child: const Icon(Icons.edit,
+                                  child: Icon(Icons.edit,
                                       color: Colors.white, size: 20),
                                 ),
                               if (widget.UserAccount!.uid ==
@@ -504,7 +518,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Row(

@@ -1,9 +1,8 @@
-import 'dart:math';
+// ignore_for_file: non_constant_identifier_names
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/services.dart';
 import 'package:myapp/models/user.dart';
 
 class NotificationService {
@@ -28,7 +27,7 @@ class NotificationService {
         notificationMsg =
             "${event.notification!.title} ${event.notification!.body} I am coming from terminated state";
 
-        print("initial " + notificationMsg);
+        //print("initial " + notificationMsg);
       }
     });
 
@@ -39,7 +38,7 @@ class NotificationService {
       notificationMsg =
           "${event.notification!.title} ${event.notification!.body}";
 
-      print(notificationMsg);
+      //print(notificationMsg);
 
       //show notification
       AwesomeNotifications().createNotification(
@@ -59,7 +58,7 @@ class NotificationService {
       notificationMsg =
           "${event.notification!.title} ${event.notification!.body} I am coming from background";
 
-      print("opened " + notificationMsg);
+      //print("opened " + notificationMsg);
       AwesomeNotifications().createNotification(
           content: NotificationContent(
               //simgple notification

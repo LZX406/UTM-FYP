@@ -1,6 +1,8 @@
 // ignore_for_file: file_names, prefer_typing_uninitialized_variables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupTaskListPage/group-current-task-list-page.dart';
 import 'package:myapp/GroupDetailPage/group-leader-detail-page.dart';
 import 'package:myapp/GroupTaskListPage/group-past-task-list-page.dart';
@@ -124,9 +126,9 @@ class GroupTaskList extends State<GroupTaskListPage> {
                                 return;
                               }
                               leaving = false;
-                              await widget.getallgroup();
-                              await widget.refresh();
+
                               Navigator.pop(context);
+                              widget.refresh();
                               leaving = true;
                             },
                             child: SizedBox(
@@ -192,6 +194,23 @@ class GroupTaskList extends State<GroupTaskListPage> {
                     FutureBuilder(
                         future: getgroup(),
                         builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Container(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        child:
+                                            LoadingAnimationWidget.hexagonDots(
+                                                color: Colors.white,
+                                                size: 200)),
+                                    const dialog2(
+                                      message: 'Loading, please wait',
+                                    )
+                                  ],
+                                ));
+                          }
                           if (grouppage == 2) {
                             return GroupPastTaskListPage(
                                 group: group,

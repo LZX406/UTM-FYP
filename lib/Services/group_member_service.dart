@@ -41,6 +41,21 @@ class Group_member_service {
     return memberlist;
   }
 
+  Future<Group_member?> GetSingleGroupMember(
+      {required groupid, required userid}) async {
+    Group_member? member;
+    await firestoreInstance
+        .collection("Group")
+        .doc(groupid)
+        .collection("member")
+        .doc(userid)
+        .get()
+        .then((QuerySnapshot) {
+      member = Group_member.fromMap(QuerySnapshot.data());
+    });
+    return member;
+  }
+
   void UpdateMember(
       {required String groupid,
       required String userid,

@@ -1,8 +1,6 @@
-// ignore_for_file: file_names, non_constant_identifier_names
+// ignore_for_file: file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:myapp/Dialog.dart';
 import 'package:myapp/ProfilePage/profile-page-edit.dart';
 import 'package:myapp/Services/Auth.dart';
@@ -30,6 +28,7 @@ class Profile extends State<ProfilePage> {
   String? email;
   String? user;
   bool Edit = false;
+  @override
   initState() {
     super.initState();
   }
@@ -84,12 +83,12 @@ class Profile extends State<ProfilePage> {
                 // mailregister9gc (116:47)
                 top: 183 * fem,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border:
                                 Border(bottom: BorderSide(color: Colors.white)),
                           ),
@@ -97,12 +96,12 @@ class Profile extends State<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                   width: 50,
                                   height: 50,
-                                  child: const Icon(Icons.mail,
+                                  child: Icon(Icons.mail,
                                       color: Colors.white, size: 30)),
-                              SizedBox(
+                              const SizedBox(
                                 width: 20,
                               ),
                               Container(
@@ -122,11 +121,11 @@ class Profile extends State<ProfilePage> {
                               ),
                             ],
                           )),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             border:
                                 Border(bottom: BorderSide(color: Colors.white)),
                           ),
@@ -134,12 +133,12 @@ class Profile extends State<ProfilePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                   width: 50,
                                   height: 50,
-                                  child: const Icon(Icons.person_outline,
+                                  child: Icon(Icons.person_outline,
                                       color: Colors.white, size: 30)),
-                              SizedBox(
+                              const SizedBox(
                                 width: 20,
                               ),
                               Container(
@@ -159,11 +158,11 @@ class Profile extends State<ProfilePage> {
                               ),
                             ],
                           )),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           border:
                               Border(bottom: BorderSide(color: Colors.white)),
                         ),
@@ -171,12 +170,12 @@ class Profile extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                                 width: 50,
                                 height: 50,
-                                child: const Icon(Icons.phone_android,
+                                child: Icon(Icons.phone_android,
                                     color: Colors.white, size: 30)),
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                             ),
                             Container(
@@ -197,19 +196,19 @@ class Profile extends State<ProfilePage> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 260,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                               width: 50,
                               height: 50,
-                              child: const Icon(Icons.edit,
+                              child: Icon(Icons.edit,
                                   color: Colors.white, size: 30)),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Container(
@@ -238,12 +237,12 @@ class Profile extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                               width: 50,
                               height: 50,
-                              child: const Icon(Icons.key_off,
+                              child: Icon(Icons.key_off,
                                   color: Colors.white, size: 30)),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Container(
@@ -256,7 +255,7 @@ class Profile extends State<ProfilePage> {
                                 showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return dialog(
+                                      return const dialog(
                                         message:
                                             "A reset password email had been send to your email",
                                       );
@@ -280,12 +279,12 @@ class Profile extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                               width: 50,
                               height: 50,
-                              child: const Icon(Icons.logout,
+                              child: Icon(Icons.logout,
                                   color: Colors.white, size: 30)),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           Container(

@@ -3,6 +3,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:myapp/AdminViewGroupListPage/group-list-page.dart';
 import 'package:myapp/AdminViewUserListPage/user-list-page.dart';
 import 'package:myapp/Dialog.dart';
@@ -78,15 +79,15 @@ class MainTabPage extends State<MainTab> {
     if (user?.username != "Admin") {
       NotificationService().UpdateToken(user: user!, token: fcmToken!);
 
-      NotificationSettings settings = await messaging!.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true,
-      );
+      // NotificationSettings settings = await messaging!.requestPermission(
+      //   alert: true,
+      //   announcement: false,
+      //   badge: true,
+      //   carPlay: false,
+      //   criticalAlert: false,
+      //   provisional: false,
+      //   sound: true,
+      // );
       bool isallowed = await AwesomeNotifications().isNotificationAllowed();
       if (!isallowed) {
         //no permission of local notification
@@ -127,6 +128,18 @@ class MainTabPage extends State<MainTab> {
               FutureBuilder(
                   future: getUser(),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Column(
+                        children: [
+                          Container(
+                              child: LoadingAnimationWidget.hexagonDots(
+                                  color: Colors.white, size: 200)),
+                          const dialog2(
+                            message: 'Loading, please wait',
+                          )
+                        ],
+                      );
+                    }
                     if (snapshot.connectionState != ConnectionState.done) {
                       return Container();
                     } else {

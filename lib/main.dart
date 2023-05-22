@@ -1,4 +1,5 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/LoginPage/login-page.dart';
@@ -52,7 +53,7 @@ Future<void> main() async {
 }
 
 Future<void> _messageHandler(RemoteMessage message) async {
-  print('background message ${message.notification!.body}');
+  //print('background message ${message.notification!.body}');
 }
 
 class MyApp extends StatelessWidget {

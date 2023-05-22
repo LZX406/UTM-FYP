@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupCreateTaskPage/group-create-task-page.dart';
 import 'package:myapp/GroupTaskDetailPage/group-task-detail-page.dart';
 import 'package:myapp/Services/group_task_service.dart';
@@ -50,6 +52,18 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
     return FutureBuilder(
         future: getalltask(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Column(
+              children: [
+                Container(
+                    child: LoadingAnimationWidget.hexagonDots(
+                        color: Colors.white, size: 200)),
+                const dialog2(
+                  message: 'Loading, please wait',
+                )
+              ],
+            );
+          }
           return SizedBox(
             width: 360 * fem,
             height: 558 * fem,
@@ -58,11 +72,11 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
               child: Stack(
                 children: [
                   ListView.separated(
-                    padding: EdgeInsets.all(0.0),
+                    padding: const EdgeInsets.all(0.0),
                     itemCount: Activetasklist!.length,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+                        padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
                         child: Container(
                           width: 360 * fem,
                           height: 122 * fem,
@@ -86,10 +100,9 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
                               );
                             },
                             style: TextButton.styleFrom(
-                              padding: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                              padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
                             ),
-                            child: Container(
-                                child: Column(
+                            child: Column(
                               children: [
                                 const SizedBox(
                                   height: 10,
@@ -231,7 +244,7 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
                                   ),
                                 ),
                               ],
-                            )),
+                            ),
                           ),
                         ),
                       );

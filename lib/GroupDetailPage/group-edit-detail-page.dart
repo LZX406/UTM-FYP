@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, must_be_immutable, unused_local_variable, file_names
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, must_be_immutable, unused_local_variable, file_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:myapp/Dialog.dart';
 import 'package:myapp/Services/group_member_service.dart';
 import 'package:myapp/Services/group_service.dart';
@@ -43,7 +44,7 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
   final GroupNameController = TextEditingController();
   final GroupInfoController = TextEditingController();
   final GroupMemberController = TextEditingController();
-
+  bool delete = false;
   String? message;
   String? checkmessage;
   List<double> extra = [];
@@ -57,6 +58,18 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
     for (var element in widget.memberlist) {
       showextra.add(false);
       extra.add(0);
+    }
+  }
+
+  bool? validatenull() {
+    if (GroupNameController.text.isEmpty) {
+      showdialog(context, 'Group name must be filled.');
+      return false;
+    } else if (GroupInfoController.text.isEmpty) {
+      showdialog(context, 'Group info must be filled.');
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -127,7 +140,7 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
     double ffem = fem * 0.97;
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: SingleChildScrollView(
         child: Column(
@@ -160,10 +173,9 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
               child: Row(
                 children: [
                   const SizedBox(width: 260),
-                  SizedBox(
+                  const SizedBox(
                     width: 40,
-                    child:
-                        const Icon(Icons.edit, color: Colors.white, size: 20),
+                    child: Icon(Icons.edit, color: Colors.white, size: 20),
                   ),
                   SizedBox(
                       width: 60,
@@ -697,22 +709,51 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
                 padding: EdgeInsets.zero,
               ),
               onPressed: () async {
-                String? message = '';
-                message =
-                    await deletegroup(widget.group!, widget.UserAccount!.uid)
-                        .whenComplete(() {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return dialog(
-                          message: message ?? '',
-                        );
-                      }).whenComplete(() {
-                    widget.refresh();
+                delete = await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          confirmationdialog(
+                            statement: delete,
+                          )
+                        ],
+                      );
+                    });
+                if (delete) {
+                  String? message = '';
+                  message =
+                      await deletegroup(widget.group!, widget.UserAccount!.uid)
+                          .whenComplete(() async {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Column(
+                            children: [
+                              Container(
+                                  child: LoadingAnimationWidget.hexagonDots(
+                                      color: Colors.white, size: 200)),
+                              const dialog2(
+                                message: 'Updating, please wait',
+                              )
+                            ],
+                          );
+                        });
+                    await widget.refresh();
                     Navigator.pop(context);
-                    Navigator.pop(context);
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return dialog(
+                            message: message ?? '',
+                          );
+                        }).whenComplete(() {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    });
                   });
-                });
+                }
               },
               child: Container(
                 width: 360 * fem,
@@ -745,51 +786,54 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      update();
-                      showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                                backgroundColor: Colors.black,
-                                insetPadding: const EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 40),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 30),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const SizedBox(height: 14),
-                                      const Text(
-                                        "Save successfull",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 40),
-                                      TextButton(
-                                        onPressed: () {
-                                          widget.switchpage(widget.grouppage);
-                                          Navigator.pop(context);
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text(
-                                          "OK",
+                      if (validatenull() == true) {
+                        update();
+                        showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                                  backgroundColor: Colors.black,
+                                  insetPadding: const EdgeInsets.symmetric(
+                                      horizontal: 40, vertical: 40),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 25, vertical: 30),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 14),
+                                        const Text(
+                                          "Save successfull",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 18,
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        const SizedBox(height: 40),
+                                        TextButton(
+                                          onPressed: () {
+                                            widget.switchpage(widget.grouppage);
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text(
+                                            "OK",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ));
+                                ));
+                      }
                     },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,

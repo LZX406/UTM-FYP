@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/Services/group_member_service.dart';
 import 'package:myapp/Services/group_task_service.dart';
 import 'package:myapp/Services/notification_service.dart';
@@ -35,6 +36,27 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
   DateTime? EstimeDate;
   List<Group_member?> memberlist = [];
   List<bool> involvelist = [];
+
+  bool? validatenull() {
+    if (TaskNameController.text.isEmpty) {
+      showdialog(context, 'Task name must be filled.');
+      return false;
+    } else if (TaskInfoController.text.isEmpty) {
+      showdialog(context, 'Task info must be filled.');
+      return false;
+    } else if (StartController.text.isEmpty) {
+      showdialog(context, 'Start date must be filled.');
+      return false;
+    } else if (EndController.text.isEmpty) {
+      showdialog(context, 'End date must be filled.');
+      return false;
+    } else if (StartDate!.isAfter(EndDate!)) {
+      showdialog(context, 'Start date must before End date.');
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   Future<void> getgroup() async {
     memberlist = await Group_member_service()
@@ -72,7 +94,7 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
+          FocusScope.of(context).requestFocus(FocusNode());
         },
         child: SizedBox(
           width: double.infinity,
@@ -576,92 +598,98 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                                 children: [
                                   TextButton(
                                     onPressed: () {
-                                      String message = "Create unsuccessful";
-                                      Timestamp StartTimeStamp =
-                                          Timestamp.fromDate(StartDate!);
-                                      Timestamp EndTimeStamp =
-                                          Timestamp.fromDate(EndDate!);
-                                      Timestamp EstimateTimeStamp =
-                                          Timestamp.fromDate(EndDate!);
-                                      if (userid != '') {
-                                        Group_task_service().CreateGroupTask(
-                                            memberlist: memberlist,
-                                            enddate: EndTimeStamp,
-                                            estidate: EstimateTimeStamp,
-                                            info: TaskInfoController.text,
-                                            link: LinkController.text,
-                                            progress: 0,
-                                            startdate: StartTimeStamp,
-                                            task_nam: TaskNameController.text,
-                                            group_id: widget.group!.group_id,
-                                            userid: userid,
-                                            involvelist: involvelist);
-                                        Notification_service()
-                                            .Update_group_new_task_Notification(
-                                                User: widget.UserAccount!,
-                                                group: widget.group!,
-                                                user_list: memberlist);
-                                        message = "Create successfull";
-                                      }
+                                      if (validatenull() == true) {
+                                        String message = "Create unsuccessful";
+                                        Timestamp StartTimeStamp =
+                                            Timestamp.fromDate(StartDate!);
+                                        Timestamp EndTimeStamp =
+                                            Timestamp.fromDate(EndDate!);
+                                        Timestamp EstimateTimeStamp =
+                                            Timestamp.fromDate(EndDate!);
+                                        if (userid != '') {
+                                          Group_task_service().CreateGroupTask(
+                                              memberlist: memberlist,
+                                              enddate: EndTimeStamp,
+                                              estidate: EstimateTimeStamp,
+                                              info: TaskInfoController.text,
+                                              link: LinkController.text,
+                                              progress: 0,
+                                              startdate: StartTimeStamp,
+                                              task_nam: TaskNameController.text,
+                                              group_id: widget.group!.group_id,
+                                              userid: userid,
+                                              involvelist: involvelist);
+                                          Notification_service()
+                                              .Update_group_new_task_Notification(
+                                                  User: widget.UserAccount!,
+                                                  group: widget.group!,
+                                                  user_list: memberlist);
+                                          message = "Create successfull";
+                                        }
 
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) => Dialog(
-                                                backgroundColor: Colors.black,
-                                                insetPadding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 40,
-                                                        vertical: 40),
-                                                child: Container(
-                                                  padding: const EdgeInsets
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => Dialog(
+                                                  backgroundColor: Colors.black,
+                                                  insetPadding: const EdgeInsets
                                                           .symmetric(
-                                                      horizontal: 25,
-                                                      vertical: 30),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      const SizedBox(
-                                                          height: 14),
-                                                      Text(
-                                                        message,
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 40),
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          widget.switchpage(1);
-                                                          Navigator.pop(
-                                                              context);
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: const Text(
-                                                          "OK",
-                                                          style: TextStyle(
+                                                      horizontal: 40,
+                                                      vertical: 40),
+                                                  child: Container(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 25,
+                                                        vertical: 30),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        const SizedBox(
+                                                            height: 14),
+                                                        Text(
+                                                          message,
+                                                          style:
+                                                              const TextStyle(
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             fontSize: 18,
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                        const SizedBox(
+                                                            height: 40),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            widget
+                                                                .switchpage(1);
+                                                            Navigator.pop(
+                                                                context);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: const Text(
+                                                            "OK",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 18,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ));
+                                                ));
+                                      }
                                     },
                                     style: TextButton.styleFrom(
                                       padding: EdgeInsets.zero,

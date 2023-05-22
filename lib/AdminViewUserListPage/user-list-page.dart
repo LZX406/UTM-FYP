@@ -3,6 +3,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/Services/Account_service.dart';
 import 'package:myapp/utils.dart';
 import 'package:myapp/models/user.dart';
@@ -115,8 +117,21 @@ class UserList extends State<UserListPage> {
                     child: FutureBuilder(
                         future: getalluser(),
                         builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Column(
+                              children: [
+                                Container(
+                                    child: LoadingAnimationWidget.hexagonDots(
+                                        color: Colors.white, size: 200)),
+                                const dialog2(
+                                  message: 'Loading, please wait',
+                                )
+                              ],
+                            );
+                          }
                           return ListView.separated(
-                            padding: EdgeInsets.all(5.0),
+                            padding: const EdgeInsets.all(5.0),
                             itemCount: Userlist!.length,
                             itemBuilder: (context, index) {
                               return Align(
@@ -130,8 +145,8 @@ class UserList extends State<UserListPage> {
                                   child: TextButton(
                                     onPressed: () {},
                                     style: TextButton.styleFrom(
-                                      padding:
-                                          EdgeInsets.fromLTRB(20, 10, 0, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 0, 0),
                                     ),
                                     child: Row(
                                       children: [

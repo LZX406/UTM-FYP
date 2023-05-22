@@ -22,20 +22,8 @@ class UserTaskDetailPage extends StatefulWidget {
 }
 
 class UserTaskDetail extends State<UserTaskDetailPage> {
-  final EndController = TextEditingController();
-  final StartController = TextEditingController();
-  final EstiController = TextEditingController();
   bool editmode = false;
   Uri httpsUri = Uri.https('www.google.com');
-
-  void setvalue() {
-    StartController.text =
-        DateFormat('yyyy-MM-dd').format(widget.Task!.startdate!);
-    EndController.text = DateFormat('yyyy-MM-dd').format(widget.Task!.enddate!);
-    EstiController.text =
-        DateFormat('yyyy-MM-dd').format(widget.Task!.estidate!);
-    httpsUri = Uri.https(widget.Task!.link);
-  }
 
   double progressvalue(String value) {
     double values = double.parse(value) / 100;
@@ -56,7 +44,6 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    setvalue();
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
@@ -320,7 +307,9 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                                   height: 35,
                                   child: Center(
                                     child: Text(
-                                      StartController.text,
+                                      DateFormat('yyyy-MM-dd').format(
+                                          widget.Task!.startdate ??
+                                              DateTime.now()),
                                       style: SafeGoogleFont(
                                         'Inter',
                                         fontSize: 12 * ffem,
@@ -360,7 +349,9 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                                   height: 35,
                                   child: Center(
                                     child: Text(
-                                      EndController.text,
+                                      DateFormat('yyyy-MM-dd').format(
+                                          widget.Task!.enddate ??
+                                              DateTime.now()),
                                       style: SafeGoogleFont(
                                         'Inter',
                                         fontSize: 12 * ffem,

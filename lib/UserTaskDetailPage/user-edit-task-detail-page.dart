@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/PERT_analysis/pert.dart';
 import 'package:myapp/Services/p_task_service.dart';
 import 'package:myapp/models/p_task.dart';
@@ -65,11 +66,26 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
     message = User_tasK_service().DeleteUserTask(task_id: taskid);
   }
 
-  String? validatenull(String value) {
-    if (value.isEmpty) {
-      return "This field cannot be empty";
+  bool? validatenull() {
+    if (TaskNameController.text.isEmpty) {
+      showdialog(context, 'Task name must be filled.');
+      return false;
+    } else if (TaskInfoController.text.isEmpty) {
+      showdialog(context, 'Task info must be filled.');
+      return false;
+    } else if (StartController.text.isEmpty) {
+      showdialog(context, 'Start date must be filled.');
+      return false;
+    } else if (EndController.text.isEmpty) {
+      showdialog(context, 'End date must be filled.');
+      return false;
+    } else if (DateTime.parse(StartController.text)
+        .isAfter(DateTime.parse(EndController.text))) {
+      showdialog(context, 'Start date must before End date.');
+      return false;
+    } else {
+      return true;
     }
-    return null;
   }
 
   @override
@@ -102,7 +118,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
 
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: SizedBox(
         width: double.infinity,
@@ -196,13 +212,11 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                         height: 50 * fem,
                         child: TextField(
                           controller: TaskNameController,
-                          decoration: InputDecoration(
-                            enabledBorder: const OutlineInputBorder(
+                          decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(width: 1, color: Colors.white)),
-                            errorText: validatenull(TaskNameController.text),
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           ),
                           style: SafeGoogleFont(
                             'Inter',
@@ -238,13 +252,11 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                           minLines: 1,
                           maxLines: 5,
                           controller: TaskInfoController,
-                          decoration: InputDecoration(
-                            enabledBorder: const OutlineInputBorder(
+                          decoration: const InputDecoration(
+                            enabledBorder: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(width: 1, color: Colors.white)),
-                            errorText: validatenull(TaskInfoController.text),
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           ),
                           style: SafeGoogleFont(
                             'Inter',
@@ -290,12 +302,10 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                                 color: const Color(0xff1e25de),
                                 decorationColor: const Color(0xff1e25de),
                               ),
-                              decoration: InputDecoration(
-                                enabledBorder: const OutlineInputBorder(
+                              decoration: const InputDecoration(
+                                enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 1, color: Colors.white)),
-                                errorText:
-                                    validatenull(TaskLinkController.text),
                               ),
                             ),
                           ),
@@ -541,59 +551,62 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                         children: [
                           TextButton(
                             onPressed: () {
-                              update();
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => Dialog(
-                                        backgroundColor: Colors.black,
-                                        insetPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 40, vertical: 40),
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 25, vertical: 30),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              const SizedBox(height: 14),
-                                              Text(
-                                                message!,
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 40),
-                                              TextButton(
-                                                onPressed: () {
-                                                  if (message ==
-                                                      "Update successful") {
-                                                    widget.switchpage(
-                                                        widget.page);
-                                                    Navigator.pop(context);
-                                                    Navigator.pop(context);
-                                                  } else {
-                                                    Navigator.pop(context);
-                                                  }
-                                                },
-                                                child: const Text(
-                                                  "OK",
-                                                  style: TextStyle(
+                              if (validatenull() == true) {
+                                update();
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => Dialog(
+                                          backgroundColor: Colors.black,
+                                          insetPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 40, vertical: 40),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 25, vertical: 30),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                const SizedBox(height: 14),
+                                                Text(
+                                                  message!,
+                                                  style: const TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 18,
                                                   ),
                                                 ),
-                                              ),
-                                            ],
+                                                const SizedBox(height: 40),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    if (message ==
+                                                        "Update successful") {
+                                                      widget.switchpage(
+                                                          widget.page);
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                    } else {
+                                                      Navigator.pop(context);
+                                                    }
+                                                  },
+                                                  child: const Text(
+                                                    "OK",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ));
+                                        ));
+                              }
                             },
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.zero,

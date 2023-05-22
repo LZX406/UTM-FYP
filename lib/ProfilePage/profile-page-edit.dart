@@ -1,12 +1,9 @@
-// ignore_for_file: file_names, non_constant_identifier_names
+// ignore_for_file: file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, no_logic_in_create_state
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:myapp/Dialog.dart';
 import 'package:myapp/Services/Account_service.dart';
-import 'package:myapp/Services/Auth.dart';
-import 'package:myapp/Services/notification.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/utils.dart';
 
@@ -38,12 +35,13 @@ class ProfileEdit extends State<ProfilePageEdit> {
       this.completephonenum,
       this.countrycode,
       this.phonenum});
+  @override
   initState() {
     super.initState();
   }
 
   Future<void> update() async {
-    message = await Accountservice().UpdateUser(
+    message = Accountservice().UpdateUser(
         completephonenum: completephonenum!,
         countrycode: countrycode!,
         phonenum: phonenum!,
@@ -93,12 +91,12 @@ class ProfileEdit extends State<ProfilePageEdit> {
               // mailregister9gc (116:47)
               top: 183 * fem,
               child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           border:
                               Border(bottom: BorderSide(color: Colors.white)),
                         ),
@@ -106,12 +104,12 @@ class ProfileEdit extends State<ProfilePageEdit> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                                 width: 50,
                                 height: 50,
-                                child: const Icon(Icons.mail,
+                                child: Icon(Icons.mail,
                                     color: Colors.white, size: 30)),
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                             ),
                             Container(
@@ -131,11 +129,11 @@ class ProfileEdit extends State<ProfilePageEdit> {
                             ),
                           ],
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           border:
                               Border(bottom: BorderSide(color: Colors.white)),
                         ),
@@ -143,12 +141,12 @@ class ProfileEdit extends State<ProfilePageEdit> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                                 width: 50,
                                 height: 50,
-                                child: const Icon(Icons.person_outline,
+                                child: Icon(Icons.person_outline,
                                     color: Colors.white, size: 30)),
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                             ),
                             Container(
@@ -168,25 +166,25 @@ class ProfileEdit extends State<ProfilePageEdit> {
                             ),
                           ],
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         border: Border(bottom: BorderSide(color: Colors.white)),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
+                          const SizedBox(
                               width: 50,
                               height: 50,
-                              child: const Icon(Icons.phone_android,
+                              child: Icon(Icons.phone_android,
                                   color: Colors.white, size: 30)),
                           Container(
                             alignment: Alignment.centerLeft,
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                             width: 280,
                             height: 50,
                             child: IntlPhoneField(
@@ -200,7 +198,7 @@ class ProfileEdit extends State<ProfilePageEdit> {
                                   color: const Color(0xffffffff),
                                   decorationColor: const Color(0xffffffff),
                                 ),
-                                border: OutlineInputBorder(
+                                border: const OutlineInputBorder(
                                   borderSide: BorderSide(),
                                 ),
                               ),
@@ -214,33 +212,33 @@ class ProfileEdit extends State<ProfilePageEdit> {
                               initialCountryCode: countrycode ?? 'IN',
                               initialValue: phonenum ?? '',
                               onChanged: (phone) {
-                                print(phone.number);
-                                print(phone.completeNumber);
+                                //print(phone.number);
+                                //print(phone.completeNumber);
                                 phonenum = phone.number;
                                 completephonenum = phone.completeNumber;
                               },
                               onCountryChanged: (country) {
                                 countrycode = country.code;
-                                print('Country changed to: ' + country.code);
+                                //print('Country changed to: ' + country.code);
                               },
                             ),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 260,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                             width: 50,
                             height: 50,
-                            child: const Icon(Icons.logout,
+                            child: Icon(Icons.logout,
                                 color: Colors.white, size: 30)),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         Container(
@@ -279,12 +277,12 @@ class ProfileEdit extends State<ProfilePageEdit> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                             width: 50,
                             height: 50,
-                            child: const Icon(Icons.logout,
+                            child: Icon(Icons.logout,
                                 color: Colors.white, size: 30)),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                         Container(

@@ -1,9 +1,8 @@
-// ignore_for_file: file_names, non_constant_identifier_names
+// ignore_for_file: file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/Dialog.dart';
-import 'package:myapp/RegisterPage/register-page.dart';
 import 'package:myapp/Services/Auth.dart';
 import 'package:myapp/utils.dart';
 
@@ -51,7 +50,7 @@ class ResetPassword extends State<ResetPasswordPage> {
 
     return GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
+          FocusScope.of(context).requestFocus(FocusNode());
         },
         child: SizedBox(
           width: double.infinity,
@@ -128,7 +127,7 @@ class ResetPassword extends State<ResetPasswordPage> {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return dialog(
+                              return const dialog(
                                 message:
                                     "A reset password email had been send to your email",
                               );

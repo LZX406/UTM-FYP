@@ -34,9 +34,6 @@ class GroupDetail extends State<GroupDetailPage> {
   Group_leader? groupleader;
   List<Group_member?> memberlist = [];
   bool editmode = false;
-  final GroupNameController = TextEditingController();
-  final GroupInfoController = TextEditingController();
-  final GroupMemberController = TextEditingController();
 
   Future<List<Group_member?>> getgroup() async {
     group = await Group_service().GetSingleGroup(groupid: widget.groupid);
@@ -96,10 +93,6 @@ class GroupDetail extends State<GroupDetailPage> {
             FutureBuilder(
                 future: getgroup(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    GroupNameController.text = group!.group_name;
-                    GroupInfoController.text = group!.info;
-                  }
                   if (widget.UserAccount?.uid == groupleader?.leader_id &&
                       groupleader?.leader_id != null) {
                     if (editmode == false) {
@@ -134,9 +127,9 @@ class GroupDetail extends State<GroupDetailPage> {
                               child: Row(
                                 children: [
                                   const SizedBox(width: 260),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 40,
-                                    child: const Icon(Icons.edit,
+                                    child: Icon(Icons.edit,
                                         color: Colors.white, size: 20),
                                   ),
                                   SizedBox(

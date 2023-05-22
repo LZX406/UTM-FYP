@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/MainTabPage/Tabclass.dart';
 import 'package:myapp/Services/p_task_service.dart';
 import 'package:myapp/UserTaskDetailPage/user-task-detail-page.dart';
@@ -144,6 +146,19 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
                       child: FutureBuilder(
                           future: getalltask(),
                           builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Column(
+                                children: [
+                                  Container(
+                                      child: LoadingAnimationWidget.hexagonDots(
+                                          color: Colors.white, size: 200)),
+                                  const dialog2(
+                                    message: 'Loading, please wait',
+                                  )
+                                ],
+                              );
+                            }
                             return ListView.separated(
                               padding: EdgeInsets.zero,
                               itemCount: Inactivetasklist!.length,
@@ -171,11 +186,10 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
                                         );
                                       },
                                       style: TextButton.styleFrom(
-                                        padding:
-                                            EdgeInsets.fromLTRB(20, 10, 0, 0),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 10, 0, 0),
                                       ),
-                                      child: Container(
-                                          child: Column(
+                                      child: Column(
                                         children: [
                                           Align(
                                             alignment: Alignment.center,
@@ -347,7 +361,7 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
                                             ),
                                           ),
                                         ],
-                                      )),
+                                      ),
                                     ),
                                   ),
                                 );

@@ -33,7 +33,7 @@ class Accountservice {
         .then(
       (value) async {
         if (value.exists) {
-          user = await User_Account.AdminMap(value.data()!);
+          user = User_Account.AdminMap(value.data()!);
           return user;
         } else {
           await firestoreInstance
@@ -43,7 +43,7 @@ class Accountservice {
               .then(
             (value) async {
               if (value.exists) {
-                user = await User_Account.Map(value.data()!);
+                user = User_Account.Map(value.data()!);
                 firestoreInstance
                     .collection("User")
                     .doc(Auth().currentUser!.uid)

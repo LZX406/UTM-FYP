@@ -1,7 +1,9 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:myapp/CreateNewGroupPage/create-new-group-page.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupTaskListPage/group-task-list-page.dart';
 import 'package:myapp/Services/group_service.dart';
 import 'package:myapp/models/group.dart';
@@ -23,7 +25,7 @@ class GroupList extends State<GroupListPage> {
     // Get the order
   }
 
-  void refresh() {
+  Future<void> refresh() async {
     setState(() {});
   }
 
@@ -100,25 +102,40 @@ class GroupList extends State<GroupListPage> {
                       child: FutureBuilder(
                           future: getallgroup(),
                           builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Column(
+                                children: [
+                                  Container(
+                                      child: LoadingAnimationWidget.hexagonDots(
+                                          color: Colors.white, size: 200)),
+                                  const dialog2(
+                                    message: 'Loading, please wait',
+                                  )
+                                ],
+                              );
+                            }
+
                             return ListView.separated(
-                              padding: EdgeInsets.all(0.0),
+                              padding: const EdgeInsets.all(0.0),
                               itemCount: grouplist.length,
                               itemBuilder: (context, index) {
                                 return Padding(
-                                  padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 5, 5),
                                   child: Container(
                                     width: 360 * fem,
                                     height: 81 * fem,
                                     decoration: BoxDecoration(
-                                        gradient:
-                                            LinearGradient(colors: <Color>[
-                                          Colors.black,
-                                          Colors.black87,
-                                          Colors.black54,
-                                          Colors.black38,
-                                          Colors.black26,
-                                          Colors.black12,
-                                        ]),
+                                        gradient: const LinearGradient(
+                                            colors: <Color>[
+                                              Colors.black,
+                                              Colors.black87,
+                                              Colors.black54,
+                                              Colors.black38,
+                                              Colors.black26,
+                                              Colors.black12,
+                                            ]),
                                         borderRadius: BorderRadius.circular(20),
                                         border:
                                             Border.all(color: Colors.white)),
@@ -137,68 +154,66 @@ class GroupList extends State<GroupListPage> {
                                         );
                                       },
                                       style: TextButton.styleFrom(
-                                        padding:
-                                            EdgeInsets.fromLTRB(20, 10, 0, 0),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 10, 0, 0),
                                       ),
-                                      child: Container(
-                                        child: Column(
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.topLeft,
-                                              child: SizedBox(
-                                                width: 350 * fem,
-                                                height: 25 * fem,
-                                                child: Text(
-                                                  grouplist[index]!.group_name,
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: 20 * ffem,
-                                                    fontWeight: FontWeight.w400,
-                                                    height: 1.2125 * ffem / fem,
-                                                    color:
-                                                        const Color(0xffffffff),
-                                                  ),
+                                      child: Column(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: SizedBox(
+                                              width: 350 * fem,
+                                              height: 25 * fem,
+                                              child: Text(
+                                                grouplist[index]!.group_name,
+                                                style: SafeGoogleFont(
+                                                  'Inter',
+                                                  fontSize: 20 * ffem,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.2125 * ffem / fem,
+                                                  color:
+                                                      const Color(0xffffffff),
                                                 ),
                                               ),
                                             ),
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: SizedBox(
-                                                width: 300 * fem,
-                                                height: 15 * fem,
-                                                child: Text(
-                                                  'Created by:    ${grouplist[index]!.group_leader!.leader!.username}',
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: 12 * ffem,
-                                                    fontWeight: FontWeight.w400,
-                                                    height: 1.2125 * ffem / fem,
-                                                    color:
-                                                        const Color(0xffffffff),
-                                                  ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: SizedBox(
+                                              width: 300 * fem,
+                                              height: 15 * fem,
+                                              child: Text(
+                                                'Created by:    ${grouplist[index]!.group_leader!.leader!.username}',
+                                                style: SafeGoogleFont(
+                                                  'Inter',
+                                                  fontSize: 12 * ffem,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.2125 * ffem / fem,
+                                                  color:
+                                                      const Color(0xffffffff),
                                                 ),
                                               ),
                                             ),
-                                            Align(
-                                              alignment: Alignment.topLeft,
-                                              child: SizedBox(
-                                                width: 153 * fem,
-                                                height: 15 * fem,
-                                                child: Text(
-                                                  '',
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: 12 * ffem,
-                                                    fontWeight: FontWeight.w400,
-                                                    height: 1.2125 * ffem / fem,
-                                                    color:
-                                                        const Color(0xffffffff),
-                                                  ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: SizedBox(
+                                              width: 153 * fem,
+                                              height: 15 * fem,
+                                              child: Text(
+                                                '',
+                                                style: SafeGoogleFont(
+                                                  'Inter',
+                                                  fontSize: 12 * ffem,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.2125 * ffem / fem,
+                                                  color:
+                                                      const Color(0xffffffff),
                                                 ),
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),

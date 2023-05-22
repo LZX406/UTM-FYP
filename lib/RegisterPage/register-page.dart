@@ -56,7 +56,7 @@ class Register extends State<RegisterPage> {
     double ffem = fem * 0.97;
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: SizedBox(
         width: double.infinity,

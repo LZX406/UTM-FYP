@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, camel_case_types, avoid_types_as_parameter_names, empty_catches
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:myapp/Services/group_task_service.dart';
 import 'package:myapp/models/group.dart';
 import 'package:myapp/models/group_leader_record.dart';
 import 'package:myapp/models/group_member_record.dart';
@@ -282,6 +283,15 @@ class Group_service {
 
   Future<String?> DeleteGroup({required Group group, required userid}) async {
     try {
+      await firestoreInstance
+          .collection("GroupTask")
+          .where("group_id", isEqualTo: group.group_id)
+          .get()
+          .then((QuerySnapshot) {
+        for (var document in QuerySnapshot.docs) {
+          Group_task_service().DeleteGroupTask(task_id: document.id);
+        }
+      });
       await firestoreInstance
           .collection("Group")
           .doc(group.group_id)
