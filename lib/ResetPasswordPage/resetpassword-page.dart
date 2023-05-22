@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables
+// ignore_for_file: file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +16,16 @@ class ResetPasswordPage extends StatefulWidget {
 class ResetPassword extends State<ResetPasswordPage> {
   String? errorMessage = '';
   bool isLogin = true;
-  bool resetPassword = false;
   final EmailController = TextEditingController();
-  bool passwordVisible = true;
+
+  bool? validatenull() {
+    if (EmailController.text.isEmpty || !EmailController.text.contains("@")) {
+      showdialog(context, 'Enter valid email.');
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   Switchpage() {
     if (isLogin) {
@@ -123,15 +130,11 @@ class ResetPassword extends State<ResetPasswordPage> {
                     ),
                     child: TextButton(
                       onPressed: () async {
-                        await resetpassword();
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const dialog(
-                                message:
-                                    "A reset password email had been send to your email",
-                              );
-                            });
+                        if (validatenull() == true) {
+                          await resetpassword();
+                          showdialog(context,
+                              "Please check your email to reset password");
+                        }
                       },
                       child: Text(
                         'Reset Password',

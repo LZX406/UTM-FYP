@@ -2,6 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/RegisterPage/register-page.dart';
 import 'package:myapp/ResetPasswordPage/resetpassword-page.dart';
 import 'package:myapp/Services/Auth.dart';
@@ -19,7 +20,19 @@ class Login extends State<LoginPage> {
   bool resetPassword = false;
   final EmailController = TextEditingController();
   final PasswordController = TextEditingController();
-  bool passwordVisible = true;
+  bool passwordInvisible = true;
+
+  bool? validatenull() {
+    if (EmailController.text.isEmpty || !EmailController.text.contains("@")) {
+      showdialog(context, 'Enter a valid email.');
+      return false;
+    } else if (PasswordController.text.isEmpty) {
+      showdialog(context, 'Password must be filled.');
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   Switchpage() {
     if (isLogin) {
@@ -45,13 +58,23 @@ class Login extends State<LoginPage> {
     }
   }
 
+  void visiblepassword() {
+    setState(() {
+      if (passwordInvisible) {
+        passwordInvisible = false;
+      } else {
+        passwordInvisible = true;
+      }
+    });
+  }
+
   Future<void> signin() async {
     try {
       await Auth()
           .sign(email: EmailController.text, password: PasswordController.text);
     } on FirebaseAuthException catch (e) {
       setState(() {
-        errorMessage = e.message;
+        errorMessage = 'Incorrect email or password';
       });
     }
   }
@@ -133,19 +156,40 @@ class Login extends State<LoginPage> {
                       decoration: BoxDecoration(
                         border: Border.all(color: const Color(0xff000000)),
                       ),
-                      child: TextField(
-                        controller: PasswordController,
-                        obscureText: passwordVisible,
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: const InputDecoration(
-                          filled: true,
-                          prefixIcon: Icon(Icons.key, color: Colors.black),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 260,
+                            child: TextField(
+                              controller: PasswordController,
+                              obscureText: passwordInvisible,
+                              textAlignVertical: TextAlignVertical.center,
+                              decoration: const InputDecoration(
+                                filled: true,
+                                prefixIcon:
+                                    Icon(Icons.key, color: Colors.black),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: EdgeInsets.zero,
+                                hintText: 'Password',
+                              ),
+                            ),
                           ),
-                          contentPadding: EdgeInsets.zero,
-                          hintText: 'Password',
-                        ),
+                          SizedBox(
+                            width: 38,
+                            height: 36,
+                            child: TextButton(
+                              onPressed: () {
+                                visiblepassword();
+                              },
+                              child: const Icon(
+                                Icons.remove_red_eye_outlined,
+                                color: Colors.black,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -175,7 +219,9 @@ class Login extends State<LoginPage> {
                       ),
                       child: TextButton(
                         onPressed: () async {
-                          await signin();
+                          if (validatenull() == true) {
+                            await signin();
+                          }
                         },
                         child: Text(
                           'Login',

@@ -1,7 +1,9 @@
-// ignore_for_file: file_names, prefer_typing_uninitialized_variables, non_constant_identifier_names
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, non_constant_identifier_names, use_build_context_synchronously
 
+import 'package:email_otp/email_otp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/Services/Auth.dart';
 import 'package:myapp/Services/Account_service.dart';
 import 'package:myapp/utils.dart';
@@ -20,6 +22,9 @@ class Register extends State<RegisterPage> {
   final PasswordController = TextEditingController();
   final PasswordController2 = TextEditingController();
   final UsernameController = TextEditingController();
+  TextEditingController otp = TextEditingController();
+  EmailOTP myauth = EmailOTP();
+  bool passwordInvisible = true;
 
   Future<void> create() async {
     try {
@@ -33,9 +38,21 @@ class Register extends State<RegisterPage> {
     }
   }
 
+  Future<bool> checkemailexist() async {
+    bool? exist;
+    exist = await Accountservice().Checkemailexist(EmailController.text);
+    return exist!;
+  }
+
+  Future<bool> checkuserexist() async {
+    bool? exist;
+    exist = await Accountservice().Checkuserexist(UsernameController.text);
+    return exist!;
+  }
+
   String validatecontroller() {
-    if (EmailController.text.isEmpty) {
-      return "Email is required";
+    if (EmailController.text.isEmpty || !EmailController.text.contains('@')) {
+      return "Enter a valid email";
     }
     if (UsernameController.text.isEmpty) {
       return "Username is required";
@@ -47,6 +64,16 @@ class Register extends State<RegisterPage> {
       return "Incorrect Confirm Password";
     }
     return "Validate complete";
+  }
+
+  void visiblepassword() {
+    setState(() {
+      if (passwordInvisible) {
+        passwordInvisible = false;
+      } else {
+        passwordInvisible = true;
+      }
+    });
   }
 
   @override
@@ -145,18 +172,39 @@ class Register extends State<RegisterPage> {
                   decoration: BoxDecoration(
                     border: Border.all(color: const Color(0xff000000)),
                   ),
-                  child: TextField(
-                    controller: PasswordController,
-                    textAlignVertical: TextAlignVertical.center,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      prefixIcon: Icon(Icons.key, color: Colors.black),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 260,
+                        child: TextField(
+                          controller: PasswordController,
+                          obscureText: passwordInvisible,
+                          textAlignVertical: TextAlignVertical.center,
+                          decoration: const InputDecoration(
+                            filled: true,
+                            prefixIcon: Icon(Icons.key, color: Colors.black),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: EdgeInsets.zero,
+                            hintText: 'Password',
+                          ),
+                        ),
                       ),
-                      contentPadding: EdgeInsets.zero,
-                      hintText: 'Password',
-                    ),
+                      SizedBox(
+                        width: 38,
+                        height: 36,
+                        child: TextButton(
+                          onPressed: () {
+                            visiblepassword();
+                          },
+                          child: const Icon(
+                            Icons.remove_red_eye_outlined,
+                            color: Colors.black,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 Container(
@@ -170,6 +218,7 @@ class Register extends State<RegisterPage> {
                   ),
                   child: TextField(
                     controller: PasswordController2,
+                    obscureText: passwordInvisible,
                     textAlignVertical: TextAlignVertical.center,
                     decoration: const InputDecoration(
                       filled: true,
@@ -198,60 +247,83 @@ class Register extends State<RegisterPage> {
                       onPressed: () async {
                         errorMessage = validatecontroller();
                         if (errorMessage == "Validate complete") {
-                          await create();
-                          if (Created == true) {
-                            setState(() {
-                              errorMessage = 'Create successful';
-                            });
-                            Accountservice().CreateUser(
-                                username: UsernameController.text,
-                                email: EmailController.text,
-                                password: PasswordController.text);
+                          if (await checkemailexist() == true) {
+                            showdialog(context, 'Email already exist.');
+                          } else if (await checkuserexist() == true) {
+                            showdialog(context, 'Username already exist.');
+                          } else {
+                            myauth.setConfig(
+                                appEmail: "me@rohitchouhan.com",
+                                appName: "Email OTP",
+                                userEmail: EmailController.text,
+                                otpLength: 6,
+                                otpType: OTPType.digitsOnly);
+                            if (await myauth.sendOTP() == true) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("OTP has been sent"),
+                              ));
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Card(
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: TextFormField(
+                                                controller: otp,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        hintText: "Enter OTP")),
+                                          ),
+                                          ElevatedButton(
+                                              onPressed: () async {
+                                                if (await myauth.verifyOTP(
+                                                        otp: otp.text) ==
+                                                    true) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                          const SnackBar(
+                                                    content:
+                                                        Text("OTP is verified"),
+                                                  ));
+                                                  Navigator.pop(context);
+                                                  await create();
+                                                  if (Created == true) {
+                                                    setState(() {});
+                                                    Accountservice().CreateUser(
+                                                        username:
+                                                            UsernameController
+                                                                .text,
+                                                        email: EmailController
+                                                            .text,
+                                                        password:
+                                                            PasswordController
+                                                                .text);
+                                                  }
+                                                } else {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                          const SnackBar(
+                                                    content:
+                                                        Text("Invalid OTP"),
+                                                  ));
+                                                }
+                                              },
+                                              child: const Text("Verify")),
+                                        ],
+                                      ),
+                                    );
+                                  });
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text("Oops, OTP send failed"),
+                              ));
+                            }
                           }
                         }
-                        showDialog(
-                            context: context,
-                            builder: (context) => Dialog(
-                                  backgroundColor: Colors.black,
-                                  insetPadding: const EdgeInsets.symmetric(
-                                      horizontal: 40, vertical: 40),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 25, vertical: 30),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        const SizedBox(height: 14),
-                                        Text(
-                                          errorMessage!,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 40),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text(
-                                            "OK",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ));
                       },
                       child: Text(
                         'Register',

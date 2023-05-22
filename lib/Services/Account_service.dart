@@ -105,4 +105,34 @@ class Accountservice {
       }, SetOptions(merge: true));
     }
   }
+
+  Future<bool?> Checkuserexist(String username) async {
+    bool? exist = false;
+    await firestoreInstance
+        .collection("User")
+        .where("username", isEqualTo: username)
+        .get()
+        .then((QuerySnapshot) {
+      if (QuerySnapshot.docs.isNotEmpty) {
+        exist = true;
+      } else if (username == 'Admin') {
+        exist = true;
+      }
+    });
+    return exist;
+  }
+
+  Future<bool?> Checkemailexist(String email) async {
+    bool? exist = false;
+    await firestoreInstance
+        .collection("User")
+        .where("email", isEqualTo: email)
+        .get()
+        .then((QuerySnapshot) {
+      if (QuerySnapshot.docs.isNotEmpty) {
+        exist = true;
+      }
+    });
+    return exist;
+  }
 }

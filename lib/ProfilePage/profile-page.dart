@@ -44,7 +44,6 @@ class Profile extends State<ProfilePage> {
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
-
     if (Edit == false) {
       return SizedBox(
         width: 360 * fem,
