@@ -60,6 +60,20 @@ class Accountservice {
     return user;
   }
 
+  Future<User_Account?> GetProfile({required String uid}) async {
+    User_Account? user;
+
+    await firestoreInstance.collection("User").doc(uid).get().then(
+      (value) async {
+        if (value.exists) {
+          user = User_Account.Map(value.data()!);
+        }
+      },
+    );
+
+    return user;
+  }
+
   Future<List<User_Account?>> GetAllUser() async {
     User_Account? user;
     List<User_Account?> userlist = [];

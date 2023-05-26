@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, prefer_typing_uninitialized_variables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupDetailPage/group-edit-detail-page.dart';
 import 'package:myapp/GroupDetailPage/group-normal-member-detail-page.dart';
 import 'package:myapp/Services/group_member_service.dart';
@@ -31,7 +32,7 @@ class GroupDetailPage extends StatefulWidget {
 
 class GroupDetail extends State<GroupDetailPage> {
   Group? group;
-  Group_leader? groupleader;
+  Group_leader_record? groupleader;
   List<Group_member?> memberlist = [];
   bool editmode = false;
 
@@ -278,12 +279,18 @@ class GroupDetail extends State<GroupDetailPage> {
                                               child: Row(
                                                 children: [
                                                   Align(
-                                                    child: SizedBox(
+                                                    child: Container(
                                                       width: 140 * fem,
                                                       height: 30 * fem,
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: TextButton(
+                                                        onPressed: () {
+                                                          showprofile(
+                                                              context,
+                                                              memberlist[index]!
+                                                                  .member_id);
+                                                        },
                                                         child: Text(
                                                           memberlist[index]!
                                                               .member_username,

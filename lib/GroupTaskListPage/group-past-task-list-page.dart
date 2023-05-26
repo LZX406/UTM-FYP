@@ -16,7 +16,7 @@ class GroupPastTaskListPage extends StatefulWidget {
   final Group? group;
   final grouppage;
   final switchpage;
-  final Group_leader? group_leader;
+  final Group_leader_record? group_leader;
   final User_Account? UserAccount;
   const GroupPastTaskListPage(
       {Key? key,
@@ -149,7 +149,7 @@ class GroupPastTaskList extends State<GroupPastTaskListPage> {
                               children: [
                                 Align(
                                   child: SizedBox(
-                                    width: 180 * fem,
+                                    width: 170 * fem,
                                     height: 15 * fem,
                                     child: Text(
                                       'start : ${Inactivetasklist![index]!.startdate == null ? "none" : DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.startdate!)}',

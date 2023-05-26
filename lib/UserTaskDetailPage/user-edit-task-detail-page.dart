@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/Dialog.dart';
 import 'package:myapp/PERT_analysis/pert.dart';
@@ -72,6 +73,10 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
       return false;
     } else if (TaskInfoController.text.isEmpty) {
       showdialog(context, 'Task info must be filled.');
+      return false;
+    } else if (TaskLinkController.text.isNotEmpty &&
+        !Uri.parse(TaskLinkController.text).isAbsolute) {
+      showdialog(context, 'Link must be an url or leave empty.');
       return false;
     } else if (StartController.text.isEmpty) {
       showdialog(context, 'Start date must be filled.');
@@ -211,6 +216,10 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                         width: 330 * fem,
                         height: 50 * fem,
                         child: TextField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(30),
+                          ],
+                          maxLines: 1,
                           controller: TaskNameController,
                           decoration: const InputDecoration(
                             enabledBorder: OutlineInputBorder(
@@ -498,6 +507,109 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                    Align(
+                      alignment: const Alignment(-0.85, 0),
+                      child: SizedBox(
+                        width: 155 * fem,
+                        height: 15 * fem,
+                        child: Text(
+                          'Estimate end date',
+                          style: SafeGoogleFont(
+                            'Inter',
+                            fontSize: 12 * ffem,
+                            decoration: TextDecoration.none,
+                            color: const Color(0xffffffff),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 15,
+                        ),
+                        Align(
+                          alignment: const Alignment(-0.85, 0),
+                          child: SizedBox(
+                            width: 155 * fem,
+                            height: 35 * fem,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(5),
+                                border:
+                                    Border.all(color: const Color(0xffffffff)),
+                              ),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 120,
+                                    height: 35,
+                                    child: Center(
+                                      child: Text(
+                                        DateFormat('yyyy-MM-dd').format(
+                                            widget.Task?.estidate! ??
+                                                DateTime.now()),
+                                        style: SafeGoogleFont(
+                                          'Inter',
+                                          fontSize: 12 * ffem,
+                                          fontWeight: FontWeight.w400,
+                                          height: 1.2125 * ffem / fem,
+                                          decoration: TextDecoration.none,
+                                          color: const Color(0xffffffff),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        if (widget.Task?.estidate != null)
+                          Align(
+                            alignment: const Alignment(-0.85, 0),
+                            child: SizedBox(
+                              width: 155 * fem,
+                              height: 35 * fem,
+                              child: TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    EndController.text =
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(widget.Task!.estidate!);
+                                  });
+                                },
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(color: Colors.black),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Adjust End date',
+                                      textAlign: TextAlign.center,
+                                      style: SafeGoogleFont(
+                                        'Inter',
+                                        fontSize: 15 * ffem,
+                                        fontWeight: FontWeight.w400,
+                                        decoration: TextDecoration.none,
+                                        height: 1.2125 * ffem / fem,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                     const SizedBox(height: 40),

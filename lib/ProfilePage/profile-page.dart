@@ -1,6 +1,8 @@
 // ignore_for_file: file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/countries.dart';
+import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:myapp/Dialog.dart';
 import 'package:myapp/ProfilePage/profile-page-edit.dart';
 import 'package:myapp/Services/Auth.dart';
@@ -160,19 +162,122 @@ class Profile extends State<ProfilePage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Container(
-                        decoration: const BoxDecoration(
-                          border:
-                              Border(bottom: BorderSide(color: Colors.white)),
+                      if (widget.UserAccount?.username != 'Admin')
+                        Column(
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(color: Colors.white)),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: Icon(Icons.phone_android,
+                                          color: Colors.white, size: 30)),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    width: 280,
+                                    height: 50,
+                                    child: Text(
+                                      widget.UserAccount?.completephonenum ??
+                                          '',
+                                      style: SafeGoogleFont(
+                                        'Inter',
+                                        fontSize: 15 * ffem,
+                                        decoration: TextDecoration.none,
+                                        color: const Color(0xffffffff),
+                                        decorationColor:
+                                            const Color(0xffffffff),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(color: Colors.white)),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: Icon(Icons.place,
+                                          color: Colors.white, size: 30)),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    width: 280,
+                                    height: 50,
+                                    child: Row(
+                                      children: [
+                                        if (widget.UserAccount?.countrycode !=
+                                            '')
+                                          Image.asset(
+                                            'assets/flags/${widget.UserAccount?.countrycode.toLowerCase()}.png',
+                                            package: 'intl_phone_field',
+                                            width: 32,
+                                          ),
+                                        const SizedBox(
+                                          width: 40,
+                                        ),
+                                        if (widget.UserAccount?.countrycode !=
+                                            '')
+                                          Text(
+                                            countries[countries.indexWhere(
+                                                    (country) =>
+                                                        country.code ==
+                                                        widget.UserAccount
+                                                            ?.countrycode)]
+                                                .name,
+                                            style: SafeGoogleFont(
+                                              'Inter',
+                                              fontSize: 15 * ffem,
+                                              decoration: TextDecoration.none,
+                                              color: const Color(0xffffffff),
+                                              decorationColor:
+                                                  const Color(0xffffffff),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        child: Row(
+                      const SizedBox(
+                        height: 250,
+                      ),
+                      if (widget.UserAccount?.username != 'Admin')
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(
                                 width: 50,
                                 height: 50,
-                                child: Icon(Icons.phone_android,
+                                child: Icon(Icons.edit,
                                     color: Colors.white, size: 30)),
                             const SizedBox(
                               width: 20,
@@ -181,57 +286,24 @@ class Profile extends State<ProfilePage> {
                               alignment: Alignment.centerLeft,
                               width: 280,
                               height: 50,
-                              child: Text(
-                                widget.UserAccount?.completephonenum ?? '',
-                                style: SafeGoogleFont(
-                                  'Inter',
-                                  fontSize: 15 * ffem,
-                                  decoration: TextDecoration.none,
-                                  color: const Color(0xffffffff),
-                                  decorationColor: const Color(0xffffffff),
+                              child: TextButton(
+                                onPressed: () {
+                                  changestate(true);
+                                },
+                                child: Text(
+                                  'Edit Profile',
+                                  textAlign: TextAlign.center,
+                                  style: SafeGoogleFont(
+                                    'Inter',
+                                    fontSize: 20 * ffem,
+                                    decoration: TextDecoration.none,
+                                    color: const Color(0xffffffff),
+                                  ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      const SizedBox(
-                        height: 260,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Icon(Icons.edit,
-                                  color: Colors.white, size: 30)),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            width: 280,
-                            height: 50,
-                            child: TextButton(
-                              onPressed: () {
-                                changestate(true);
-                              },
-                              child: Text(
-                                'Edit Profile',
-                                textAlign: TextAlign.center,
-                                style: SafeGoogleFont(
-                                  'Inter',
-                                  fontSize: 20 * ffem,
-                                  decoration: TextDecoration.none,
-                                  color: const Color(0xffffffff),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,

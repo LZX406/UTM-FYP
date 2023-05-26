@@ -106,7 +106,7 @@ class Group_service {
     Group? group;
     List<Group?> grouplist = [];
     User_Account? user;
-    Group_leader? groupleader;
+    Group_leader_record? groupleader;
 
     await firestoreInstance.collection("Group").get().then((QuerySnapshot) {
       for (var document in QuerySnapshot.docs) {
@@ -134,7 +134,7 @@ class Group_service {
         .get()
         .then((QuerySnapshot) {
       for (var document in QuerySnapshot.docs) {
-        groupleader = Group_leader.fromMap(document.data());
+        groupleader = Group_leader_record.fromMap(document.data());
         for (var group in grouplist) {
           if (group!.group_leader_id == groupleader!.group_leader_id) {
             group.addgroupleader(groupleader!);
@@ -165,8 +165,8 @@ class Group_service {
   Future<List<Group?>> GetGroup({required String userid}) async {
     Group? group;
     List<Group?> grouplist = [];
-    Group_leader? groupleader;
-    List<Group_leader?> groupleaderlist = [];
+    Group_leader_record? groupleader;
+    List<Group_leader_record?> groupleaderlist = [];
     Group_member? member;
     User_Account? user;
     List<Group_member?> memberlist = [];
@@ -176,7 +176,7 @@ class Group_service {
         .get()
         .then((QuerySnapshot) {
       for (var document in QuerySnapshot.docs) {
-        groupleader = Group_leader.fromMap(document.data());
+        groupleader = Group_leader_record.fromMap(document.data());
         groupleaderlist.add(groupleader);
       }
     });
@@ -244,7 +244,7 @@ class Group_service {
 
   Future<Group?> GetSingleGroup({required groupid}) async {
     Group? group;
-    Group_leader? group_leader;
+    Group_leader_record? group_leader;
     await firestoreInstance
         .collection("Group")
         .doc(groupid)
@@ -259,7 +259,7 @@ class Group_service {
         .then((value) {
       if (value.docs.isNotEmpty) {
         for (var groupleader in value.docs) {
-          group_leader = Group_leader.fromMap(groupleader);
+          group_leader = Group_leader_record.fromMap(groupleader);
         }
         group!.addgroupleader(group_leader!);
       }
@@ -267,15 +267,16 @@ class Group_service {
     return group;
   }
 
-  Future<Group_leader?> GetSingleGroupleader({required Group group}) async {
-    Group_leader? groupleader;
+  Future<Group_leader_record?> GetSingleGroupleader(
+      {required Group group}) async {
+    Group_leader_record? groupleader;
     try {
       await firestoreInstance
           .collection("Group_leader")
           .doc(group.group_leader_id)
           .get()
           .then((value) {
-        groupleader = Group_leader.fromMap(value.data());
+        groupleader = Group_leader_record.fromMap(value.data());
       });
     } catch (e) {}
     return groupleader;

@@ -105,7 +105,7 @@ class MainTabPage extends State<MainTab> {
       child: SizedBox(
         // grouptasklistpageXSY (107:18)
         width: double.infinity,
-        height: 720 * fem,
+        height: 800 * fem,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Stack(
@@ -117,6 +117,7 @@ class MainTabPage extends State<MainTab> {
                 child: Align(
                   child: SizedBox(
                     width: 360 * fem,
+                    height: 800 * fem,
                     child: Image.asset(
                       'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
                       fit: BoxFit.cover,

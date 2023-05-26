@@ -41,7 +41,7 @@ BoxDecoration border2(int grouppage) {
 class GroupTaskList extends State<GroupTaskListPage> {
   int grouppage = 1;
   Group? group;
-  Group_leader? groupleader;
+  Group_leader_record? groupleader;
   bool leaving = true;
   @override
   void initState() {

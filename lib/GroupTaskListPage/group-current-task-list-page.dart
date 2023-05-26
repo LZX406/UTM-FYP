@@ -16,7 +16,7 @@ import 'package:myapp/utils.dart';
 class GroupCurrentTaskListPage extends StatefulWidget {
   final grouppage;
   final Group? group;
-  final Group_leader? group_leader;
+  final Group_leader_record? group_leader;
   final switchpage;
   final User_Account? UserAccount;
   const GroupCurrentTaskListPage(
@@ -150,7 +150,7 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
                                   children: [
                                     Align(
                                       child: SizedBox(
-                                        width: 180 * fem,
+                                        width: 170 * fem,
                                         height: 15 * fem,
                                         child: Text(
                                           'start : ${Activetasklist![index]!.startdate == null ? "none" : ' ${DateFormat('yyyy-MM-dd').format(Activetasklist![index]!.startdate!)}'}',

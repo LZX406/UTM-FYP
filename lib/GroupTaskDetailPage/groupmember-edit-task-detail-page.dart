@@ -21,7 +21,7 @@ class GroupMemberEditTaskDetailPage extends StatefulWidget {
   final editmode;
   final switchmode;
   final Group? group;
-  final Group_leader? group_leader;
+  final Group_leader_record? group_leader;
   final User_Account? UserAccount;
   final Group_Task_record? grouptask;
   final Group_task_progress? progress;
@@ -162,7 +162,7 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 50 * fem,
+                      height: 100 * fem,
                     ),
                     Row(
                       children: [
@@ -390,7 +390,7 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: 133,
+                                    width: 123,
                                     height: 35,
                                     child: Center(
                                       child: Text(
@@ -432,7 +432,7 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                               child: Row(
                                 children: [
                                   SizedBox(
-                                    width: 133,
+                                    width: 123,
                                     height: 35,
                                     child: Center(
                                       child: Text(
@@ -548,7 +548,7 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                                     alignment: const Alignment(-0.10, 0),
                                     child: SizedBox(
                                       width: 330 * fem,
-                                      height: 70 * fem,
+                                      height: 80 * fem,
                                       child: Column(
                                         children: [
                                           Row(

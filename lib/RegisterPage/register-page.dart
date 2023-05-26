@@ -52,15 +52,22 @@ class Register extends State<RegisterPage> {
 
   String validatecontroller() {
     if (EmailController.text.isEmpty || !EmailController.text.contains('@')) {
-      return "Enter a valid email";
-    }
-    if (UsernameController.text.isEmpty) {
-      return "Username is required";
-    }
-    if (PasswordController.text.isEmpty) {
-      return "Password is required";
-    }
-    if (PasswordController.text != PasswordController2.text) {
+      showdialog(context, 'Enter a valid email.');
+      return " ";
+    } else if (UsernameController.text.isEmpty) {
+      showdialog(context, 'Username is required.');
+      return " ";
+    } else if (UsernameController.text.length < 6) {
+      showdialog(context, 'Username must have at least 6 character.');
+      return " ";
+    } else if (PasswordController.text.isEmpty) {
+      showdialog(context, 'Password is required.');
+      return " ";
+    } else if (PasswordController.text.length < 6) {
+      showdialog(context, 'Password must have at least 6 character.');
+      return " ";
+    } else if (PasswordController.text != PasswordController2.text) {
+      showdialog(context, 'Incorrect Confirm Password.');
       return "Incorrect Confirm Password";
     }
     return "Validate complete";

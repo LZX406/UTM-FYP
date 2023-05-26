@@ -2,6 +2,7 @@
 
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/Dialog.dart';
 import 'package:myapp/Services/group_member_service.dart';
@@ -11,6 +12,7 @@ import 'package:myapp/Services/notification_service.dart';
 import 'package:myapp/models/g_task.dart';
 import 'package:myapp/models/g_task_progress.dart';
 import 'package:myapp/models/group.dart';
+import 'package:myapp/models/group_leader_record.dart';
 import 'package:myapp/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:myapp/models/user.dart';
@@ -23,6 +25,7 @@ class GroupEditTaskDetailPage extends StatefulWidget {
   final Group? group;
   final User_Account? UserAccount;
   final Group_Task_record? grouptask;
+  final Group_leader_record? group_leader;
   List<User_Account?> userlist = [];
   GroupEditTaskDetailPage(
       {Key? key,
@@ -33,7 +36,8 @@ class GroupEditTaskDetailPage extends StatefulWidget {
       this.editmode,
       this.switchpage,
       required this.userlist,
-      this.grouppage})
+      this.grouppage,
+      this.group_leader})
       : super(key: key);
   @override
   State<GroupEditTaskDetailPage> createState() => UserEditTaskDetail();
@@ -49,6 +53,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
   final ProgressController = TextEditingController();
   String? taskid;
   late bool activestate;
+  bool deletetask = false;
   String? message;
   List<Group_task_progress?> progresslist = [];
   List<User_Account?> userlist = [];
@@ -133,6 +138,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
         group: group!,
         user_list: user_list,
         group_task: widget.grouptask!);
+    Group_task_progress_service().EstimateEndDate(
+        grouptask: newTask, group_leader: widget.group_leader!);
   }
 
   Future<void> delete() async {
@@ -211,7 +218,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 50 * fem,
+                        height: 100 * fem,
                       ),
                       Row(
                         children: [
@@ -286,6 +293,10 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                             border: Border.all(color: const Color(0xffffffff)),
                           ),
                           child: TextField(
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(30),
+                            ],
+                            maxLines: 1,
                             controller: TaskNameController,
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(
@@ -591,6 +602,109 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                           ),
                         ],
                       ),
+                      Align(
+                        alignment: const Alignment(-0.85, 0),
+                        child: SizedBox(
+                          width: 155 * fem,
+                          height: 15 * fem,
+                          child: Text(
+                            'Estimate end date',
+                            style: SafeGoogleFont(
+                              'Inter',
+                              fontSize: 12 * ffem,
+                              decoration: TextDecoration.none,
+                              color: const Color(0xffffffff),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Align(
+                            alignment: const Alignment(-0.85, 0),
+                            child: SizedBox(
+                              width: 155 * fem,
+                              height: 35 * fem,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                      color: const Color(0xffffffff)),
+                                ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 120,
+                                      height: 35,
+                                      child: Center(
+                                        child: Text(
+                                          DateFormat('yyyy-MM-dd').format(
+                                              widget.grouptask?.estidate! ??
+                                                  DateTime.now()),
+                                          style: SafeGoogleFont(
+                                            'Inter',
+                                            fontSize: 12 * ffem,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.2125 * ffem / fem,
+                                            decoration: TextDecoration.none,
+                                            color: const Color(0xffffffff),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          if (widget.grouptask?.estidate != null)
+                            Align(
+                              alignment: const Alignment(-0.85, 0),
+                              child: SizedBox(
+                                width: 155 * fem,
+                                height: 35 * fem,
+                                child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      EndController.text =
+                                          DateFormat('yyyy-MM-dd').format(
+                                              widget.grouptask!.estidate!);
+                                    });
+                                  },
+                                  style: TextButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(color: Colors.black),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'Adjust End date',
+                                        textAlign: TextAlign.center,
+                                        style: SafeGoogleFont(
+                                          'Inter',
+                                          fontSize: 15 * ffem,
+                                          fontWeight: FontWeight.w400,
+                                          decoration: TextDecoration.none,
+                                          height: 1.2125 * ffem / fem,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                       const SizedBox(height: 20),
                       Row(
                         children: [
@@ -636,7 +750,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                                     alignment: const Alignment(-0.10, 0),
                                     child: SizedBox(
                                       width: 330 * fem,
-                                      height: 70 * fem,
+                                      height: 80 * fem,
                                       child: Column(
                                         children: [
                                           Row(
@@ -905,58 +1019,72 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {
-                          delete();
-                          showDialog(
+                        onPressed: () async {
+                          deletetask = await showDialog(
                               context: context,
-                              builder: (context) => Dialog(
-                                    backgroundColor: Colors.black,
-                                    insetPadding: const EdgeInsets.symmetric(
-                                        horizontal: 40, vertical: 40),
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 25, vertical: 30),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 14),
-                                          Text(
-                                            message!,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 40),
-                                          TextButton(
-                                            onPressed: () {
-                                              if (message ==
-                                                  "Delete successful") {
-                                                widget.switchpage(1);
-                                                Navigator.pop(context);
-                                                Navigator.pop(context);
-                                              } else {
-                                                Navigator.pop(context);
-                                              }
-                                            },
-                                            child: const Text(
-                                              "OK",
-                                              style: TextStyle(
+                              builder: (BuildContext context) {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    confirmationdialog(
+                                      statement: deletetask,
+                                    )
+                                  ],
+                                );
+                              });
+                          if (deletetask) {
+                            delete();
+                            showDialog(
+                                context: context,
+                                builder: (context) => Dialog(
+                                      backgroundColor: Colors.black,
+                                      insetPadding: const EdgeInsets.symmetric(
+                                          horizontal: 40, vertical: 40),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 25, vertical: 30),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            const SizedBox(height: 14),
+                                            Text(
+                                              message!,
+                                              style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18,
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                            const SizedBox(height: 40),
+                                            TextButton(
+                                              onPressed: () {
+                                                if (message ==
+                                                    "Delete successful") {
+                                                  widget.switchpage(1);
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                } else {
+                                                  Navigator.pop(context);
+                                                }
+                                              },
+                                              child: const Text(
+                                                "OK",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ));
+                                    ));
+                          }
                         },
                         style: TextButton.styleFrom(
                           padding: EdgeInsets.zero,

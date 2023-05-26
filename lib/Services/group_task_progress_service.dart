@@ -98,7 +98,7 @@ class Group_task_progress_service {
       {required Group_Task_record grouptask,
       required Group_task_progress progress,
       required Group_task_progress newprogress,
-      required Group_leader group_leader}) async {
+      required Group_leader_record group_leader}) async {
     try {
       firestoreInstance
           .collection("GroupTask")
@@ -109,40 +109,46 @@ class Group_task_progress_service {
         'progress': newprogress.progress,
         'task_involved': newprogress.task_involved,
       }, SetOptions(merge: true));
-      num newprogressvalue = 0;
-      await firestoreInstance
-          .collection("GroupTask")
-          .doc(grouptask.task_id)
-          .collection("GroupTaskProgress")
-          .where("task_involved", isEqualTo: true)
-          .get()
-          .then((QuerySnapshot) async {
-        for (var document in QuerySnapshot.docs) {
-          newprogressvalue += document.get("progress");
-        }
-        if (QuerySnapshot.docs.isNotEmpty) {
-          newprogressvalue = newprogressvalue / QuerySnapshot.docs.length;
-        }
-        if (newprogressvalue == 100) {
-          Group? group =
-              await Group_service().GetSingleGroup(groupid: grouptask.group_id);
-          List<Group_member?> user_list = await Group_member_service()
-              .GetGroupMember(groupid: progress.group_id);
-          Notification_service().Update_group_task_complete_Notification(
-              group_leader: group_leader,
-              group: group!,
-              user_list: user_list,
-              group_task: grouptask);
-        }
-      });
-      DateTime esti =
-          estimate(grouptask.startdate!, grouptask.enddate!, newprogressvalue);
-      Group_task_service().UpdateGroupProgress(
-          a: newprogressvalue, group_task_id: grouptask.task_id, esti: esti);
+      await EstimateEndDate(grouptask: grouptask, group_leader: group_leader);
     } catch (e) {
       return e.toString();
     }
     return "Update successful";
+  }
+
+  Future<void> EstimateEndDate(
+      {required Group_Task_record grouptask,
+      required Group_leader_record group_leader}) async {
+    num newprogressvalue = 0;
+    await firestoreInstance
+        .collection("GroupTask")
+        .doc(grouptask.task_id)
+        .collection("GroupTaskProgress")
+        .where("task_involved", isEqualTo: true)
+        .get()
+        .then((QuerySnapshot) async {
+      for (var document in QuerySnapshot.docs) {
+        newprogressvalue += document.get("progress");
+      }
+      if (QuerySnapshot.docs.isNotEmpty) {
+        newprogressvalue = newprogressvalue / QuerySnapshot.docs.length;
+      }
+      if (newprogressvalue == 100) {
+        Group? group =
+            await Group_service().GetSingleGroup(groupid: grouptask.group_id);
+        List<Group_member?> user_list = await Group_member_service()
+            .GetGroupMember(groupid: grouptask.group_id);
+        Notification_service().Update_group_task_complete_Notification(
+            group_leader: group_leader,
+            group: group!,
+            user_list: user_list,
+            group_task: grouptask);
+      }
+    });
+    DateTime esti =
+        estimate(grouptask.startdate!, grouptask.enddate!, newprogressvalue);
+    Group_task_service().UpdateGroupProgress(
+        a: newprogressvalue, group_task_id: grouptask.task_id, esti: esti);
   }
 
   void DeleteGroupTaskProgress(

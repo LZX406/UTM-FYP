@@ -54,7 +54,7 @@ class Notification_service {
   }
 
   void Update_group_task_complete_Notification({
-    required Group_leader group_leader,
+    required Group_leader_record group_leader,
     required Group group,
     required List<Group_member?> user_list,
     required Group_Task_record group_task,

@@ -25,6 +25,7 @@ class CreateNewGroup extends State<CreateNewGroupPage> {
   List<double> extra = [];
   List<bool> showextra = [];
   bool validinput = true;
+  bool deletemember = false;
   final GroupNameController = TextEditingController();
   final GroupInfoController = TextEditingController();
   final GroupMemberController = TextEditingController();
@@ -440,29 +441,49 @@ class CreateNewGroup extends State<CreateNewGroupPage> {
                                                   child: Container(
                                                       color: Colors.red,
                                                       child: TextButton(
-                                                          onPressed: () {
-                                                            message =
-                                                                "delete successful";
-                                                            showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return dialog(
-                                                                    message:
-                                                                        message,
-                                                                  );
-                                                                }).whenComplete(() {
-                                                              memberlist
-                                                                  .removeAt(
-                                                                      index);
-                                                              showextra
-                                                                  .removeAt(
-                                                                      index);
-                                                              extra.removeAt(
-                                                                  index);
-                                                            });
+                                                          onPressed: () async {
+                                                            deletemember =
+                                                                await showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          removedialog(
+                                                                            statement:
+                                                                                deletemember,
+                                                                          )
+                                                                        ],
+                                                                      );
+                                                                    });
+                                                            if (deletemember) {
+                                                              message =
+                                                                  "remove successful";
+                                                              await showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return dialog(
+                                                                      message:
+                                                                          message,
+                                                                    );
+                                                                  }).whenComplete(() {
+                                                                memberlist
+                                                                    .removeAt(
+                                                                        index);
+                                                                showextra
+                                                                    .removeAt(
+                                                                        index);
+                                                                extra.removeAt(
+                                                                    index);
+                                                              });
+                                                            }
                                                           },
                                                           child: const Icon(
                                                             Icons

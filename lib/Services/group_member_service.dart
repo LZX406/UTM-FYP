@@ -79,6 +79,6 @@ class Group_member_service {
     } catch (e) {
       return e.toString();
     }
-    return "Delete successful";
+    return "Remove successful";
   }
 }

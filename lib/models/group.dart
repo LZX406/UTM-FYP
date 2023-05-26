@@ -8,7 +8,7 @@ class Group {
   final String group_name;
   final String info;
   final String group_leader_id;
-  Group_leader? group_leader;
+  Group_leader_record? group_leader;
   List<Group_member?>? memberlist;
 
   Group(
@@ -18,7 +18,7 @@ class Group {
       this.group_leader_id = '',
       this.group_leader});
 
-  void addgroupleader(Group_leader group_leader) {
+  void addgroupleader(Group_leader_record group_leader) {
     this.group_leader = group_leader;
   }
 

@@ -48,6 +48,12 @@ class ProfileEdit extends State<ProfilePageEdit> {
         username: username!);
   }
 
+  Future<bool> checkuserexist() async {
+    bool? exist;
+    exist = await Accountservice().Checkuserexist(username!);
+    return exist!;
+  }
+
   @override
   Widget build(BuildContext context) {
     double baseWidth = 360;
@@ -236,7 +242,7 @@ class ProfileEdit extends State<ProfilePageEdit> {
                         const SizedBox(
                             width: 50,
                             height: 50,
-                            child: Icon(Icons.logout,
+                            child: Icon(Icons.save_as_outlined,
                                 color: Colors.white, size: 30)),
                         const SizedBox(
                           width: 20,

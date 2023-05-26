@@ -192,7 +192,7 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                                     color: const Color(0x00000000),
                                     child: TextField(
                                       inputFormatters: [
-                                        LengthLimitingTextInputFormatter(60),
+                                        LengthLimitingTextInputFormatter(30),
                                       ],
                                       maxLines: 1,
                                       controller: TaskNameController,

@@ -16,7 +16,7 @@ class GroupEditDetailPage extends StatefulWidget {
   final switchmode;
   final editmode;
   final Group? group;
-  final Group_leader? group_leader;
+  final Group_leader_record? group_leader;
   final User_Account? UserAccount;
   final refresh;
   final grouppage;
@@ -45,6 +45,7 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
   final GroupInfoController = TextEditingController();
   final GroupMemberController = TextEditingController();
   bool delete = false;
+  bool deletemember = false;
   String? message;
   String? checkmessage;
   List<double> extra = [];
@@ -480,25 +481,48 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
                                         child: Container(
                                             color: Colors.red,
                                             child: TextButton(
-                                                onPressed: () {
-                                                  String? message =
-                                                      removemember(
-                                                          widget.group!,
-                                                          widget
-                                                              .memberlist[
-                                                                  index]!
-                                                              .member_id);
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return dialog(
-                                                          message: message,
-                                                        );
-                                                      }).whenComplete(() async {
-                                                    widget.switchmode(true);
-                                                    await refreshlist();
-                                                  });
+                                                onPressed: () async {
+                                                  deletemember =
+                                                      await showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                removedialog(
+                                                                  statement:
+                                                                      deletemember,
+                                                                )
+                                                              ],
+                                                            );
+                                                          });
+                                                  if (deletemember) {
+                                                    String? message =
+                                                        removemember(
+                                                            widget.group!,
+                                                            widget
+                                                                .memberlist[
+                                                                    index]!
+                                                                .member_id);
+                                                    await showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return dialog(
+                                                                message:
+                                                                    message,
+                                                              );
+                                                            })
+                                                        .whenComplete(() async {
+                                                      widget.switchmode(true);
+                                                      await refreshlist();
+                                                    });
+                                                    deletemember = false;
+                                                  }
                                                 },
                                                 child: const Icon(
                                                   Icons.delete_outline,

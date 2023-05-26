@@ -72,6 +72,7 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
               child: Align(
                 child: SizedBox(
                   width: 360 * fem,
+                  height: 800 * fem,
                   child: Image.asset(
                     'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
                     fit: BoxFit.cover,

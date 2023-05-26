@@ -22,7 +22,7 @@ class GroupDetailPage2 extends StatefulWidget {
 
 class GroupDetail2 extends State<GroupDetailPage2> {
   Group? group;
-  Group_leader? groupleader;
+  Group_leader_record? groupleader;
   List<Group_member?> memberlist = [];
 
   Future<List<Group_member?>> getgroup() async {

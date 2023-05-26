@@ -42,6 +42,10 @@ class UserCreateTask extends State<UserCreateTaskPage> {
     } else if (TaskInfoController.text.isEmpty) {
       showdialog(context, 'Task info must be filled.');
       return false;
+    } else if (LinkController.text.isNotEmpty &&
+        !Uri.parse(LinkController.text).isAbsolute) {
+      showdialog(context, 'Link must be an url or leave empty.');
+      return false;
     } else if (StartController.text.isEmpty) {
       showdialog(context, 'Start date must be filled.');
       return false;
@@ -157,7 +161,7 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                             color: const Color(0x00000000),
                             child: TextField(
                               inputFormatters: [
-                                LengthLimitingTextInputFormatter(60),
+                                LengthLimitingTextInputFormatter(30),
                               ],
                               maxLines: 1,
                               controller: TaskNameController,

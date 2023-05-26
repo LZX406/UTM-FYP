@@ -29,6 +29,9 @@ class Login extends State<LoginPage> {
     } else if (PasswordController.text.isEmpty) {
       showdialog(context, 'Password must be filled.');
       return false;
+    } else if (PasswordController.text.length < 6) {
+      showdialog(context, 'Password must have at least 6 character.');
+      return false;
     } else {
       return true;
     }

@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, must_be_immutable, prefer_typing_uninitialized_variables, non_constant_identifier_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/Services/group_member_service.dart';
 import 'package:myapp/models/group.dart';
 import 'package:myapp/models/group_member_record.dart';
@@ -30,6 +31,7 @@ class GroupMemberDetailPage extends StatefulWidget {
 }
 
 class GroupMemberDetail extends State<GroupMemberDetailPage> {
+  bool leave = false;
   Future<void> leavegroup() async {
     Group_member_service()
         .RemoveMember(group: widget.group!, userid: widget.UserAccount!.uid);
@@ -301,11 +303,25 @@ class GroupMemberDetail extends State<GroupMemberDetailPage> {
                       padding: EdgeInsets.zero,
                     ),
                     onPressed: () async {
-                      await leavegroup().then((value) async {
-                        await widget.refresh();
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      });
+                      leave = await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                leavedialog(
+                                  statement: leave,
+                                )
+                              ],
+                            );
+                          });
+                      if (leave) {
+                        await leavegroup().then((value) async {
+                          await widget.refresh();
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        });
+                      }
                     },
                     child: Container(
                       width: 360 * fem,
