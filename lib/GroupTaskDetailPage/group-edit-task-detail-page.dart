@@ -207,9 +207,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                     child: SizedBox(
                       width: 360 * fem,
                       height: 800 * fem,
-                      child: Image.asset(
-                        'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                        fit: BoxFit.cover,
+                      child: const DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.black),
                       ),
                     ),
                   ),
@@ -288,9 +287,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                           width: 330 * fem,
                           height: 50 * fem,
                           decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: const Color(0xffffffff)),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextField(
                             inputFormatters: [
@@ -336,9 +334,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                           height: 120 * fem,
                           alignment: Alignment.topLeft,
                           decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: const Color(0xffffffff)),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextField(
                             minLines: 1,
@@ -382,9 +379,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                           width: 330 * fem,
                           height: 30 * fem,
                           decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: const Color(0xffffffff)),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Material(
                             color: const Color(0x00000000),
@@ -459,10 +455,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                               width: 155 * fem,
                               height: 35 * fem,
                               decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: const Color(0xffffffff)),
+                                color: Colors.blueGrey[900],
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
@@ -531,10 +525,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                               width: 155 * fem,
                               height: 35 * fem,
                               decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: const Color(0xffffffff)),
+                                color: Colors.blueGrey[900],
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
@@ -630,10 +622,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                               height: 35 * fem,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(5),
-                                  border: Border.all(
-                                      color: const Color(0xffffffff)),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Row(
                                   children: [

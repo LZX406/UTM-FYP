@@ -126,7 +126,7 @@ class ProfileEdit extends State<ProfilePageEdit> {
                                 widget.UserAccount?.email ?? '',
                                 style: SafeGoogleFont(
                                   'Inter',
-                                  fontSize: 12 * ffem,
+                                  fontSize: 15 * ffem,
                                   decoration: TextDecoration.none,
                                   color: const Color(0xffffffff),
                                   decorationColor: const Color(0xffffffff),
@@ -163,7 +163,7 @@ class ProfileEdit extends State<ProfilePageEdit> {
                                 username ?? '',
                                 style: SafeGoogleFont(
                                   'Inter',
-                                  fontSize: 12 * ffem,
+                                  fontSize: 15 * ffem,
                                   decoration: TextDecoration.none,
                                   color: const Color(0xffffffff),
                                   decorationColor: const Color(0xffffffff),
@@ -192,14 +192,14 @@ class ProfileEdit extends State<ProfilePageEdit> {
                             alignment: Alignment.centerLeft,
                             padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                             width: 280,
-                            height: 50,
+                            height: 70,
                             child: IntlPhoneField(
                               autovalidateMode: AutovalidateMode.disabled,
                               decoration: InputDecoration(
                                 labelText: 'Phone Number',
                                 labelStyle: SafeGoogleFont(
                                   'Inter',
-                                  fontSize: 12 * ffem,
+                                  fontSize: 15 * ffem,
                                   decoration: TextDecoration.none,
                                   color: const Color(0xffffffff),
                                   decorationColor: const Color(0xffffffff),
@@ -210,7 +210,7 @@ class ProfileEdit extends State<ProfilePageEdit> {
                               ),
                               style: SafeGoogleFont(
                                 'Inter',
-                                fontSize: 12 * ffem,
+                                fontSize: 15 * ffem,
                                 decoration: TextDecoration.none,
                                 color: const Color(0xffffffff),
                                 decorationColor: const Color(0xffffffff),
@@ -218,14 +218,11 @@ class ProfileEdit extends State<ProfilePageEdit> {
                               initialCountryCode: countrycode ?? 'IN',
                               initialValue: phonenum ?? '',
                               onChanged: (phone) {
-                                //print(phone.number);
-                                //print(phone.completeNumber);
                                 phonenum = phone.number;
                                 completephonenum = phone.completeNumber;
                               },
                               onCountryChanged: (country) {
                                 countrycode = country.code;
-                                //print('Country changed to: ' + country.code);
                               },
                             ),
                           ),
@@ -235,84 +232,91 @@ class ProfileEdit extends State<ProfilePageEdit> {
                     const SizedBox(
                       height: 260,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Icon(Icons.save_as_outlined,
-                                color: Colors.white, size: 30)),
-                        const SizedBox(
-                          width: 20,
+                    Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          width: 280,
-                          height: 50,
-                          child: TextButton(
-                            onPressed: () async {
-                              await update();
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return dialog(
-                                      message: message ?? '',
-                                    );
-                                  }).whenComplete(() {
-                                widget.changestate(false);
-                                widget.refreshpage(1);
-                              });
-                            },
-                            child: Text(
-                              'Save',
-                              textAlign: TextAlign.center,
-                              style: SafeGoogleFont(
-                                'Inter',
-                                fontSize: 20 * ffem,
-                                decoration: TextDecoration.none,
-                                color: const Color(0xffffffff),
+                        child: Column(children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Icon(Icons.save_as_outlined,
+                                      color: Colors.white, size: 30)),
+                              const SizedBox(
+                                width: 20,
                               ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Icon(Icons.logout,
-                                color: Colors.white, size: 30)),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          width: 280,
-                          height: 50,
-                          child: TextButton(
-                            onPressed: () {
-                              widget.changestate(false);
-                            },
-                            child: Text(
-                              'Cancel',
-                              textAlign: TextAlign.center,
-                              style: SafeGoogleFont(
-                                'Inter',
-                                fontSize: 20 * ffem,
-                                decoration: TextDecoration.none,
-                                color: const Color(0xffffffff),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                width: 280,
+                                height: 50,
+                                child: TextButton(
+                                  onPressed: () async {
+                                    await update();
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return dialog(
+                                            message: message ?? '',
+                                          );
+                                        }).whenComplete(() {
+                                      widget.changestate(false);
+                                      widget.refreshpage(1);
+                                    });
+                                  },
+                                  child: Text(
+                                    'Save',
+                                    textAlign: TextAlign.center,
+                                    style: SafeGoogleFont(
+                                      'Inter',
+                                      fontSize: 20 * ffem,
+                                      decoration: TextDecoration.none,
+                                      color: const Color(0xffffffff),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: Icon(Icons.logout,
+                                      color: Colors.white, size: 30)),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                width: 280,
+                                height: 50,
+                                child: TextButton(
+                                  onPressed: () {
+                                    widget.changestate(false);
+                                  },
+                                  child: Text(
+                                    'Cancel',
+                                    textAlign: TextAlign.center,
+                                    style: SafeGoogleFont(
+                                      'Inter',
+                                      fontSize: 20 * ffem,
+                                      decoration: TextDecoration.none,
+                                      color: const Color(0xffffffff),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ])),
                   ],
                 ),
               ),

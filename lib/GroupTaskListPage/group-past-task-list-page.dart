@@ -80,9 +80,9 @@ class GroupPastTaskList extends State<GroupPastTaskListPage> {
                       width: 360 * fem,
                       height: 122 * fem,
                       decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.white)),
+                        color: Colors.blueGrey[900],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: TextButton(
                         onPressed: () {
                           Navigator.push(

@@ -115,9 +115,8 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                     child: SizedBox(
                       width: 360 * fem,
                       height: 799 * fem,
-                      child: Image.asset(
-                        'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-5Gk.png',
-                        fit: BoxFit.cover,
+                      child: const DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.black),
                       ),
                     ),
                   ),
@@ -183,10 +182,8 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                                 height: 20 * fem,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: const Color(0xffffffff)),
+                                    color: Colors.blueGrey[900],
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Material(
                                     color: const Color(0x00000000),
@@ -239,10 +236,8 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                                 height: 120 * fem,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: const Color(0xffffffff)),
+                                    color: Colors.blueGrey[900],
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Material(
                                     color: const Color(0x00000000),
@@ -292,10 +287,8 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                                 height: 60 * fem,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.black,
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                        color: const Color(0xffffffff)),
+                                    color: Colors.blueGrey[900],
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Material(
                                     color: const Color(0x00000000),
@@ -371,10 +364,8 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                                     height: 35 * fem,
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                            color: const Color(0xffffffff)),
+                                        color: Colors.blueGrey[900],
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Row(
                                         children: [
@@ -450,10 +441,8 @@ class GroupCreateTask extends State<GroupCreateTaskPage> {
                                     height: 35 * fem,
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.black,
-                                        borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(
-                                            color: const Color(0xffffffff)),
+                                        color: Colors.blueGrey[900],
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Row(
                                         children: [

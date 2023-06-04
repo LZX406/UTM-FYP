@@ -68,7 +68,7 @@ class GroupList extends State<GroupListPage> {
                   width: 116 * fem,
                   height: 40 * fem,
                   decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xffffffff)),
+                    color: Colors.blueGrey[900],
                     borderRadius: BorderRadius.circular(25 * fem),
                   ),
                   child: Center(
@@ -122,23 +122,14 @@ class GroupList extends State<GroupListPage> {
                               itemBuilder: (context, index) {
                                 return Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(5, 0, 5, 5),
+                                      const EdgeInsets.fromLTRB(5, 0, 5, 2),
                                   child: Container(
                                     width: 360 * fem,
-                                    height: 81 * fem,
+                                    height: 61 * fem,
                                     decoration: BoxDecoration(
-                                        gradient: const LinearGradient(
-                                            colors: <Color>[
-                                              Colors.black,
-                                              Colors.black87,
-                                              Colors.black54,
-                                              Colors.black38,
-                                              Colors.black26,
-                                              Colors.black12,
-                                            ]),
-                                        borderRadius: BorderRadius.circular(20),
-                                        border:
-                                            Border.all(color: Colors.white)),
+                                      color: Colors.blueGrey[900],
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                     child: TextButton(
                                       onPressed: () {
                                         Navigator.push(
@@ -183,25 +174,7 @@ class GroupList extends State<GroupListPage> {
                                               width: 300 * fem,
                                               height: 15 * fem,
                                               child: Text(
-                                                'Created by:    ${grouplist[index]!.group_leader!.leader!.username}',
-                                                style: SafeGoogleFont(
-                                                  'Inter',
-                                                  fontSize: 12 * ffem,
-                                                  fontWeight: FontWeight.w400,
-                                                  height: 1.2125 * ffem / fem,
-                                                  color:
-                                                      const Color(0xffffffff),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: SizedBox(
-                                              width: 153 * fem,
-                                              height: 15 * fem,
-                                              child: Text(
-                                                '',
+                                                'Owner:    ${grouplist[index]!.group_leader!.leader!.username}',
                                                 style: SafeGoogleFont(
                                                   'Inter',
                                                   fontSize: 12 * ffem,

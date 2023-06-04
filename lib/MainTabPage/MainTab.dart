@@ -78,16 +78,6 @@ class MainTabPage extends State<MainTab> {
 
     if (user?.username != "Admin") {
       NotificationService().UpdateToken(user: user!, token: fcmToken!);
-
-      // NotificationSettings settings = await messaging!.requestPermission(
-      //   alert: true,
-      //   announcement: false,
-      //   badge: true,
-      //   carPlay: false,
-      //   criticalAlert: false,
-      //   provisional: false,
-      //   sound: true,
-      // );
       bool isallowed = await AwesomeNotifications().isNotificationAllowed();
       if (!isallowed) {
         //no permission of local notification
@@ -118,9 +108,8 @@ class MainTabPage extends State<MainTab> {
                   child: SizedBox(
                     width: 360 * fem,
                     height: 800 * fem,
-                    child: Image.asset(
-                      'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                      fit: BoxFit.cover,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(color: Colors.black),
                     ),
                   ),
                 ),

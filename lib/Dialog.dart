@@ -1,5 +1,6 @@
-// ignore_for_file: camel_case_types, file_names, must_be_immutable
+// ignore_for_file: camel_case_types, file_names, must_be_immutable, use_build_context_synchronously, non_constant_identifier_names, unused_element
 
+import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/countries.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -16,6 +17,11 @@ class dialog extends StatelessWidget {
       backgroundColor: Colors.black,
       insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: const Color(0xffffffff)),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -61,6 +67,11 @@ class dialog2 extends StatelessWidget {
       backgroundColor: Colors.black,
       insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: const Color(0xffffffff)),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -93,6 +104,11 @@ class confirmationdialog extends StatelessWidget {
       backgroundColor: Colors.black,
       insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: const Color(0xffffffff)),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -160,6 +176,11 @@ class removedialog extends StatelessWidget {
       backgroundColor: Colors.black,
       insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: const Color(0xffffffff)),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -227,6 +248,11 @@ class leavedialog extends StatelessWidget {
       backgroundColor: Colors.black,
       insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: const Color(0xffffffff)),
+        ),
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -310,7 +336,7 @@ void showprofile(BuildContext context, String uid) {
           child: Container(
             height: 300,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.white)),
             child: FutureBuilder(
               future: getProfile(),
@@ -517,6 +543,83 @@ void showprofile(BuildContext context, String uid) {
                   ],
                 );
               },
+            ),
+          ),
+        );
+      });
+}
+
+void OTPdialog(
+    BuildContext context,
+    TextEditingController otp,
+    EmailOTP myauth,
+    create,
+    bool Created,
+    UsernameController,
+    EmailController,
+    PasswordController) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding:
+              const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xffffffff)),
+            ),
+            height: 200,
+            child: Card(
+              semanticContainer: true,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                        controller: otp,
+                        decoration:
+                            const InputDecoration(hintText: "Enter OTP")),
+                  ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (await myauth.verifyOTP(otp: otp.text) == true) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("OTP is verified"),
+                          ));
+                          Navigator.pop(context);
+                          await create();
+                          if (Created == true) {
+                            Accountservice().CreateUser(
+                                username: UsernameController.text,
+                                email: EmailController.text,
+                                password: PasswordController.text);
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text("Invalid OTP"),
+                          ));
+                        }
+                      },
+                      child: const Text("Verify")),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Please check your mail box for OTP code.",
+                      style: SafeGoogleFont(
+                        'Inter',
+                        fontSize: 15,
+                        decoration: TextDecoration.none,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        decorationColor: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

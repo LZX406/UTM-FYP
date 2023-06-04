@@ -73,9 +73,8 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
                 child: SizedBox(
                   width: 360 * fem,
                   height: 800 * fem,
-                  child: Image.asset(
-                    'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                    fit: BoxFit.cover,
+                  child: const DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.black),
                   ),
                 ),
               ),
@@ -164,11 +163,16 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
                               padding: EdgeInsets.zero,
                               itemCount: Inactivetasklist!.length,
                               itemBuilder: (context, index) {
-                                return Align(
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 5, 2),
                                   child: Container(
                                     width: 360 * fem,
                                     height: 122 * fem,
-                                    color: Colors.black54,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blueGrey[900],
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
                                     child: TextButton(
                                       onPressed: () {
                                         Navigator.push(
@@ -384,7 +388,7 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blueGrey[900],
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,
         selectedLabelStyle: const TextStyle(fontSize: 12),

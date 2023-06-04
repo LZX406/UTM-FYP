@@ -151,9 +151,8 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                   child: SizedBox(
                     width: 360 * fem,
                     height: 800 * fem,
-                    child: Image.asset(
-                      'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                      fit: BoxFit.cover,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(color: Colors.black),
                     ),
                   ),
                 ),
@@ -233,8 +232,9 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                         height: 50 * fem,
                         child: Container(
                           decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xffffffff)),
-                          ),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                           child: Text(
                             widget.grouptask!.task_nam,
                             style: SafeGoogleFont(
@@ -272,8 +272,9 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                         height: 120 * fem,
                         child: Container(
                           decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xffffffff)),
-                          ),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                           child: Text(
                             widget.grouptask!.info,
                             style: SafeGoogleFont(
@@ -312,8 +313,9 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                         height: 30 * fem,
                         child: Container(
                           decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xffffffff)),
-                          ),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                           child: Material(
                             color: const Color(0x00000000),
                             child: InkWell(
@@ -384,9 +386,9 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: const Color(0xffffffff)),
-                              ),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                               child: Row(
                                 children: [
                                   SizedBox(
@@ -426,9 +428,9 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: const Color(0xffffffff)),
-                              ),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                               child: Row(
                                 children: [
                                   SizedBox(

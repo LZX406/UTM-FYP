@@ -100,9 +100,8 @@ class GroupTaskList extends State<GroupTaskListPage> {
                     child: SizedBox(
                       width: 360 * fem,
                       height: 799 * fem,
-                      child: Image.asset(
-                        'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                        fit: BoxFit.cover,
+                      child: const DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.black),
                       ),
                     ),
                   ),
@@ -233,7 +232,7 @@ class GroupTaskList extends State<GroupTaskListPage> {
           ),
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.blueGrey[900],
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.grey,
             selectedLabelStyle: const TextStyle(fontSize: 12),

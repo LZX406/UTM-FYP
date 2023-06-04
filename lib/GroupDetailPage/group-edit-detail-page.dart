@@ -226,9 +226,8 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
                 height: 20 * fem,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: const Color(0xffffffff)),
+                    color: Colors.blueGrey[900],
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Material(
                     color: const Color(0x00000000),
@@ -277,9 +276,8 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
                 child: Container(
                   alignment: Alignment.topLeft,
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: const Color(0xffffffff)),
+                    color: Colors.blueGrey[900],
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: Material(
                     color: const Color(0x00000000),
@@ -325,7 +323,8 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
                   height: 230 * fem,
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: const Color(0xffffffff)),
+                      color: Colors.blueGrey[900],
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListView.separated(
                       padding: EdgeInsets.zero,
@@ -353,6 +352,7 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                       color: const Color(0xffffffff)),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Row(
                                   children: [

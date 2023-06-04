@@ -119,9 +119,8 @@ class CreateNewGroup extends State<CreateNewGroupPage> {
                     child: SizedBox(
                       width: 360 * fem,
                       height: 799 * fem,
-                      child: Image.asset(
-                        'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-iSC.png',
-                        fit: BoxFit.cover,
+                      child: const DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.black),
                       ),
                     ),
                   ),
@@ -183,9 +182,8 @@ class CreateNewGroup extends State<CreateNewGroupPage> {
                           width: 330 * fem,
                           height: 50 * fem,
                           decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: const Color(0xffffffff)),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextField(
                             controller: GroupNameController,
@@ -227,9 +225,8 @@ class CreateNewGroup extends State<CreateNewGroupPage> {
                           width: 330 * fem,
                           height: 120 * fem,
                           decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: const Color(0xffffffff)),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextField(
                             keyboardType: TextInputType.multiline,
@@ -276,10 +273,8 @@ class CreateNewGroup extends State<CreateNewGroupPage> {
                             height: 280 * fem,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: const Color(0xffffffff)),
+                                color: Colors.blueGrey[900],
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: ListView.separated(
                                 padding: EdgeInsets.zero,

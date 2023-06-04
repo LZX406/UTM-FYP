@@ -269,117 +269,130 @@ class Profile extends State<ProfilePage> {
                       const SizedBox(
                         height: 250,
                       ),
-                      if (widget.UserAccount?.username != 'Admin')
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: Icon(Icons.edit,
-                                    color: Colors.white, size: 30)),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              width: 280,
-                              height: 50,
-                              child: TextButton(
-                                onPressed: () {
-                                  changestate(true);
-                                },
-                                child: Text(
-                                  'Edit Profile',
-                                  textAlign: TextAlign.center,
-                                  style: SafeGoogleFont(
-                                    'Inter',
-                                    fontSize: 20 * ffem,
-                                    decoration: TextDecoration.none,
-                                    color: const Color(0xffffffff),
+                      Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              if (widget.UserAccount?.username != 'Admin')
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: Icon(Icons.edit,
+                                            color: Colors.white, size: 30)),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      width: 280,
+                                      height: 50,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          changestate(true);
+                                        },
+                                        child: Text(
+                                          'Edit Profile',
+                                          textAlign: TextAlign.center,
+                                          style: SafeGoogleFont(
+                                            'Inter',
+                                            fontSize: 20 * ffem,
+                                            decoration: TextDecoration.none,
+                                            color: const Color(0xffffffff),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: Icon(Icons.key_off,
+                                          color: Colors.white, size: 30)),
+                                  const SizedBox(
+                                    width: 20,
                                   ),
-                                ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    width: 280,
+                                    height: 50,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        Auth().resetpassword(
+                                            widget.UserAccount!.email);
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return const dialog(
+                                                message:
+                                                    "A reset password email had been send to your email",
+                                              );
+                                            });
+                                      },
+                                      child: Text(
+                                        'Reset Password',
+                                        textAlign: TextAlign.center,
+                                        style: SafeGoogleFont(
+                                          'Inter',
+                                          fontSize: 20 * ffem,
+                                          decoration: TextDecoration.none,
+                                          color: const Color(0xffffffff),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Icon(Icons.key_off,
-                                  color: Colors.white, size: 30)),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            width: 280,
-                            height: 50,
-                            child: TextButton(
-                              onPressed: () {
-                                Auth().resetpassword(widget.UserAccount!.email);
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const dialog(
-                                        message:
-                                            "A reset password email had been send to your email",
-                                      );
-                                    });
-                              },
-                              child: Text(
-                                'Reset Password',
-                                textAlign: TextAlign.center,
-                                style: SafeGoogleFont(
-                                  'Inter',
-                                  fontSize: 20 * ffem,
-                                  decoration: TextDecoration.none,
-                                  color: const Color(0xffffffff),
-                                ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: Icon(Icons.logout,
+                                          color: Colors.white, size: 30)),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Container(
+                                    alignment: Alignment.centerLeft,
+                                    width: 280,
+                                    height: 50,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        signout(widget.UserAccount);
+                                      },
+                                      child: Text(
+                                        'Log out',
+                                        textAlign: TextAlign.center,
+                                        style: SafeGoogleFont(
+                                          'Inter',
+                                          fontSize: 20 * ffem,
+                                          decoration: TextDecoration.none,
+                                          color: const Color(0xffffffff),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Icon(Icons.logout,
-                                  color: Colors.white, size: 30)),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            width: 280,
-                            height: 50,
-                            child: TextButton(
-                              onPressed: () {
-                                signout(widget.UserAccount);
-                              },
-                              child: Text(
-                                'Log out',
-                                textAlign: TextAlign.center,
-                                style: SafeGoogleFont(
-                                  'Inter',
-                                  fontSize: 20 * ffem,
-                                  decoration: TextDecoration.none,
-                                  color: const Color(0xffffffff),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                            ],
+                          )),
                     ],
                   ),
                 ),

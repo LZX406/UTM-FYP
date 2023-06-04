@@ -81,9 +81,9 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
                           width: 360 * fem,
                           height: 122 * fem,
                           decoration: BoxDecoration(
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.white)),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                           child: TextButton(
                             onPressed: () {
                               Navigator.push(
@@ -261,7 +261,7 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
                       left: 230 * fem,
                       top: 500 * fem,
                       child: FloatingActionButton.extended(
-                          backgroundColor: Colors.black,
+                          backgroundColor: Colors.blueGrey[900],
                           hoverColor: Colors.grey,
                           onPressed: () {
                             Navigator.push(

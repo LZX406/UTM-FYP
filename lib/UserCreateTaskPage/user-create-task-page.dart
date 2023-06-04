@@ -42,11 +42,13 @@ class UserCreateTask extends State<UserCreateTaskPage> {
     } else if (TaskInfoController.text.isEmpty) {
       showdialog(context, 'Task info must be filled.');
       return false;
-    } else if (LinkController.text.isNotEmpty &&
-        !Uri.parse(LinkController.text).isAbsolute) {
-      showdialog(context, 'Link must be an url or leave empty.');
-      return false;
-    } else if (StartController.text.isEmpty) {
+    }
+    // else if (LinkController.text.isNotEmpty &&
+    //     !Uri.parse(LinkController.text).isAbsolute) {
+    //   showdialog(context, 'Link must be an url or leave empty.');
+    //   return false;
+    // }
+    else if (StartController.text.isEmpty) {
       showdialog(context, 'Start date must be filled.');
       return false;
     } else if (EndController.text.isEmpty) {
@@ -88,9 +90,8 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                   child: SizedBox(
                     width: 360 * fem,
                     height: 799 * fem,
-                    child: Image.asset(
-                      'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-5Gk.png',
-                      fit: BoxFit.cover,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(color: Colors.black),
                     ),
                   ),
                 ),
@@ -153,9 +154,8 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                         height: 20 * fem,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: const Color(0xffffffff)),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Material(
                             color: const Color(0x00000000),
@@ -204,9 +204,8 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                         width: 330 * fem,
                         height: 120 * fem,
                         decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(5),
-                          border: Border.all(color: const Color(0xffffffff)),
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Material(
                           color: const Color(0x00000000),
@@ -234,7 +233,7 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                         width: 330 * fem,
                         height: 15 * fem,
                         child: Text(
-                          'Important link',
+                          'URL link (*optional)',
                           style: SafeGoogleFont(
                             'Inter',
                             fontSize: 12 * ffem,
@@ -252,9 +251,8 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                         height: 60 * fem,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(color: const Color(0xffffffff)),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Material(
                             color: const Color(0x00000000),
@@ -328,10 +326,8 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: const Color(0xffffffff)),
+                                color: Colors.blueGrey[900],
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
@@ -402,10 +398,8 @@ class UserCreateTask extends State<UserCreateTaskPage> {
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: const Color(0xffffffff)),
+                                color: Colors.blueGrey[900],
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [

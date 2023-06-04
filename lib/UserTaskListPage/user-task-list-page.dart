@@ -82,9 +82,8 @@ class UserTaskList extends State<UserTaskListPage> {
                   child: SizedBox(
                     width: 360 * fem,
                     height: 800 * fem,
-                    child: Image.asset(
-                      'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                      fit: BoxFit.cover,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(color: Colors.black),
                     ),
                   ),
                 ),
@@ -177,16 +176,14 @@ class UserTaskList extends State<UserTaskListPage> {
                                 itemBuilder: (context, index) {
                                   return Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(5, 0, 5, 5),
+                                        const EdgeInsets.fromLTRB(5, 0, 5, 2),
                                     child: Container(
                                       width: 360 * fem,
                                       height: 122 * fem,
                                       decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          border:
-                                              Border.all(color: Colors.white)),
+                                        color: Colors.blueGrey[900],
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
                                       child: TextButton(
                                         onPressed: () {
                                           Navigator.push(
@@ -401,7 +398,7 @@ class UserTaskList extends State<UserTaskListPage> {
                 left: 220 * fem,
                 top: 609 * fem,
                 child: FloatingActionButton.extended(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.blueGrey[900],
                     hoverColor: Colors.grey,
                     onPressed: () {
                       Navigator.push(
@@ -421,7 +418,7 @@ class UserTaskList extends State<UserTaskListPage> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.blueGrey[900],
           selectedItemColor: Colors.white,
           unselectedItemColor: Colors.grey,
           selectedLabelStyle: const TextStyle(fontSize: 12),

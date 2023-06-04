@@ -84,9 +84,8 @@ class GroupDetail extends State<GroupDetailPage> {
                 child: SizedBox(
                   width: 360 * fem,
                   height: 799 * fem,
-                  child: Image.asset(
-                    'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-bPE.png',
-                    fit: BoxFit.cover,
+                  child: const DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.black),
                   ),
                 ),
               ),
@@ -181,8 +180,8 @@ class GroupDetail extends State<GroupDetailPage> {
                                 height: 20 * fem,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color(0xffffffff)),
+                                    color: Colors.blueGrey[900],
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Material(
                                     color: const Color(0x00000000),
@@ -220,8 +219,8 @@ class GroupDetail extends State<GroupDetailPage> {
                                 child: Container(
                                   alignment: Alignment.topLeft,
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color(0xffffffff)),
+                                    color: Colors.blueGrey[900],
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Material(
                                     color: const Color(0x00000000),
@@ -259,8 +258,8 @@ class GroupDetail extends State<GroupDetailPage> {
                                   height: 320 * fem,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xffffffff)),
+                                      color: Colors.blueGrey[900],
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: ListView.separated(
                                       padding: EdgeInsets.zero,
@@ -275,6 +274,8 @@ class GroupDetail extends State<GroupDetailPage> {
                                                 border: Border.all(
                                                     color: const Color(
                                                         0xffffffff)),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                               ),
                                               child: Row(
                                                 children: [

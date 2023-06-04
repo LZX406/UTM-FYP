@@ -270,59 +270,15 @@ class Register extends State<RegisterPage> {
                                   .showSnackBar(const SnackBar(
                                 content: Text("OTP has been sent"),
                               ));
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Card(
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: TextFormField(
-                                                controller: otp,
-                                                decoration:
-                                                    const InputDecoration(
-                                                        hintText: "Enter OTP")),
-                                          ),
-                                          ElevatedButton(
-                                              onPressed: () async {
-                                                if (await myauth.verifyOTP(
-                                                        otp: otp.text) ==
-                                                    true) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                          const SnackBar(
-                                                    content:
-                                                        Text("OTP is verified"),
-                                                  ));
-                                                  Navigator.pop(context);
-                                                  await create();
-                                                  if (Created == true) {
-                                                    setState(() {});
-                                                    Accountservice().CreateUser(
-                                                        username:
-                                                            UsernameController
-                                                                .text,
-                                                        email: EmailController
-                                                            .text,
-                                                        password:
-                                                            PasswordController
-                                                                .text);
-                                                  }
-                                                } else {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                          const SnackBar(
-                                                    content:
-                                                        Text("Invalid OTP"),
-                                                  ));
-                                                }
-                                              },
-                                              child: const Text("Verify")),
-                                        ],
-                                      ),
-                                    );
-                                  });
+                              OTPdialog(
+                                  context,
+                                  otp,
+                                  myauth,
+                                  create,
+                                  Created,
+                                  UsernameController,
+                                  EmailController,
+                                  PasswordController);
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(

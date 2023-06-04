@@ -42,7 +42,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
   int positionmember = 1;
   Group? group;
   Group_Task_record? task;
-  final httpsUri = Uri.https('www.google.com');
+  Uri httpsUri = Uri.https('www.google.com');
   bool editmode = false;
   List<Group_task_progress?> progresslist = [];
   List<User_Account?> userlist = [];
@@ -90,6 +90,14 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
+    if (widget.grouptask!.link.isNotEmpty &&
+        widget.grouptask!.link.length > 9) {
+      if (widget.grouptask!.link.substring(1, 5) == 'https') {
+        httpsUri = Uri.https(widget.grouptask!.link.substring(8));
+      } else {
+        httpsUri = Uri.https(widget.grouptask!.link.substring(7));
+      }
+    }
     if (editmode == false) {
       return SizedBox(
         width: double.infinity,
@@ -118,9 +126,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                     child: SizedBox(
                       width: 360 * fem,
                       height: 800 * fem,
-                      child: Image.asset(
-                        'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-dck.png',
-                        fit: BoxFit.cover,
+                      child: const DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.black),
                       ),
                     ),
                   ),
@@ -219,8 +226,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               height: 20 * fem,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xffffffff)),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
                                   task?.task_nam ?? '',
@@ -258,8 +265,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               height: 120 * fem,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xffffffff)),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
                                   task?.info ?? '',
@@ -297,8 +304,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               height: 30 * fem,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xffffffff)),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Material(
                                   color: const Color(0x00000000),
@@ -368,8 +375,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                   height: 35 * fem,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xffffffff)),
+                                      color: Colors.blueGrey[900],
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: SizedBox(
                                       width: 120,
@@ -400,8 +407,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                   height: 35 * fem,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xffffffff)),
+                                      color: Colors.blueGrey[900],
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: SizedBox(
                                       width: 120,
@@ -449,8 +456,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               height: 35 * fem,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xffffffff)),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: SizedBox(
                                   width: 120,

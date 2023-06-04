@@ -74,10 +74,6 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
     } else if (TaskInfoController.text.isEmpty) {
       showdialog(context, 'Task info must be filled.');
       return false;
-    } else if (TaskLinkController.text.isNotEmpty &&
-        !Uri.parse(TaskLinkController.text).isAbsolute) {
-      showdialog(context, 'Link must be an url or leave empty.');
-      return false;
     } else if (StartController.text.isEmpty) {
       showdialog(context, 'Start date must be filled.');
       return false;
@@ -106,7 +102,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
         DateFormat('yyyy-MM-dd').format(widget.Task!.estidate!);
     ProgressController.text = widget.Task!.progress.toString();
     activestate = widget.Task!.activestate;
-    httpsUri = Uri.https(TaskLinkController.text);
+    httpsUri = Uri.https(TaskLinkController.text.substring(8));
     taskid = widget.Task!.task_id;
   }
 
@@ -140,9 +136,8 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                   child: SizedBox(
                     width: 360 * fem,
                     height: 799 * fem,
-                    child: Image.asset(
-                      'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                      fit: BoxFit.cover,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(color: Colors.black),
                     ),
                   ),
                 ),
@@ -212,21 +207,19 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                       ),
                     ),
                     Align(
-                      child: SizedBox(
+                      child: Container(
                         width: 330 * fem,
                         height: 50 * fem,
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         child: TextField(
                           inputFormatters: [
                             LengthLimitingTextInputFormatter(30),
                           ],
                           maxLines: 1,
                           controller: TaskNameController,
-                          decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.white)),
-                            contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          ),
                           style: SafeGoogleFont(
                             'Inter',
                             fontSize: 16 * ffem,
@@ -254,19 +247,17 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                       ),
                     ),
                     Align(
-                      child: SizedBox(
+                      child: Container(
                         width: 330 * fem,
                         height: 120 * fem,
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         child: TextField(
                           minLines: 1,
                           maxLines: 5,
                           controller: TaskInfoController,
-                          decoration: const InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 1, color: Colors.white)),
-                            contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          ),
                           style: SafeGoogleFont(
                             'Inter',
                             fontSize: 14 * ffem,
@@ -295,9 +286,13 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                       ),
                     ),
                     Align(
-                      child: SizedBox(
+                      child: Container(
                         width: 330 * fem,
                         height: 30 * fem,
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         child: Material(
                           color: const Color(0x00000000),
                           child: InkWell(
@@ -308,13 +303,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                                 'Inter',
                                 fontSize: 14 * ffem,
                                 decoration: TextDecoration.none,
-                                color: const Color(0xff1e25de),
-                                decorationColor: const Color(0xff1e25de),
-                              ),
-                              decoration: const InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 1, color: Colors.white)),
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -370,8 +359,8 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: const Color(0xffffffff)),
+                                color: Colors.blueGrey[900],
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
@@ -441,8 +430,8 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: const Color(0xffffffff)),
+                                color: Colors.blueGrey[900],
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
@@ -537,10 +526,8 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(5),
-                                border:
-                                    Border.all(color: const Color(0xffffffff)),
+                                color: Colors.blueGrey[900],
+                                borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
                                 children: [
