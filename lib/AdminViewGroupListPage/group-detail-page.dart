@@ -1,6 +1,8 @@
 // ignore_for_file: file_names, prefer_typing_uninitialized_variables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/Services/group_member_service.dart';
 import 'package:myapp/Services/group_service.dart';
 import 'package:myapp/models/group.dart';
@@ -20,7 +22,7 @@ class GroupDetailPage2 extends StatefulWidget {
 
 class GroupDetail2 extends State<GroupDetailPage2> {
   Group? group;
-  Group_leader? groupleader;
+  Group_leader_record? groupleader;
   List<Group_member?> memberlist = [];
 
   Future<List<Group_member?>> getgroup() async {
@@ -74,6 +76,18 @@ class GroupDetail2 extends State<GroupDetailPage2> {
             FutureBuilder(
                 future: getgroup(),
                 builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Column(
+                      children: [
+                        Container(
+                            child: LoadingAnimationWidget.hexagonDots(
+                                color: Colors.white, size: 200)),
+                        const dialog2(
+                          message: 'Loading, please wait',
+                        )
+                      ],
+                    );
+                  }
                   return SingleChildScrollView(
                     child: Column(
                       children: [

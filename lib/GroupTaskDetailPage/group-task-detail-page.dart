@@ -3,6 +3,8 @@
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupTaskDetailPage/group-edit-task-detail-page.dart';
 import 'package:myapp/GroupTaskDetailPage/groupmember-edit-task-detail-page.dart';
 import 'package:myapp/Services/group_member_service.dart';
@@ -19,7 +21,7 @@ import 'package:url_launcher/url_launcher.dart';
 class GroupTaskDetailPage extends StatefulWidget {
   final grouppage;
   final switchpage;
-  final Group_leader? group_leader;
+  final Group_leader_record? group_leader;
   final Group? group;
   final User_Account? UserAccount;
   final Group_Task_record? grouptask;
@@ -40,7 +42,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
   int positionmember = 1;
   Group? group;
   Group_Task_record? task;
-  final httpsUri = Uri.https('www.google.com');
+  Uri httpsUri = Uri.https('www.google.com');
   bool editmode = false;
   List<Group_task_progress?> progresslist = [];
   List<User_Account?> userlist = [];
@@ -74,11 +76,28 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
     return values;
   }
 
+  bool checkuserinvolve() {
+    for (var user in userlist) {
+      if (user!.uid == widget.UserAccount!.uid) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
+    if (widget.grouptask!.link.isNotEmpty &&
+        widget.grouptask!.link.length > 9) {
+      if (widget.grouptask!.link.substring(1, 5) == 'https') {
+        httpsUri = Uri.https(widget.grouptask!.link.substring(8));
+      } else {
+        httpsUri = Uri.https(widget.grouptask!.link.substring(7));
+      }
+    }
     if (editmode == false) {
       return SizedBox(
         width: double.infinity,
@@ -107,9 +126,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                     child: SizedBox(
                       width: 360 * fem,
                       height: 800 * fem,
-                      child: Image.asset(
-                        'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-dck.png',
-                        fit: BoxFit.cover,
+                      child: const DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.black),
                       ),
                     ),
                   ),
@@ -117,11 +135,23 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                 FutureBuilder(
                   future: getallprogress(),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Column(
+                        children: [
+                          Container(
+                              child: LoadingAnimationWidget.hexagonDots(
+                                  color: Colors.white, size: 200)),
+                          const dialog2(
+                            message: 'Loading, please wait',
+                          )
+                        ],
+                      );
+                    }
                     return SingleChildScrollView(
                       child: Column(
                         children: [
                           SizedBox(
-                            height: 50 * fem,
+                            height: 100 * fem,
                           ),
                           Row(
                             children: [
@@ -132,10 +162,10 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               Center(
                                 child: Align(
                                   child: SizedBox(
-                                    width: 280 * fem,
+                                    width: 240 * fem,
                                     height: 25 * fem,
                                     child: Text(
-                                      "${widget.group!.group_name} TASK",
+                                      widget.group!.group_name,
                                       textAlign: TextAlign.center,
                                       style: SafeGoogleFont(
                                         'Inter',
@@ -149,18 +179,29 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 30 * fem,
-                                height: 25 * fem,
-                                child: Switch(
-                                  onChanged: switchmode,
-                                  value: editmode,
-                                  activeColor: Colors.blue,
-                                  activeTrackColor: Colors.blue[100],
-                                  inactiveThumbColor: Colors.grey,
-                                  inactiveTrackColor: Colors.white,
+                              if (widget.UserAccount!.uid ==
+                                      widget.group_leader!.leader_id ||
+                                  checkuserinvolve() == true)
+                                const SizedBox(
+                                  width: 40,
+                                  child: Icon(Icons.edit,
+                                      color: Colors.white, size: 20),
                                 ),
-                              )
+                              if (widget.UserAccount!.uid ==
+                                      widget.group_leader!.leader_id ||
+                                  checkuserinvolve() == true)
+                                SizedBox(
+                                  width: 30 * fem,
+                                  height: 25 * fem,
+                                  child: Switch(
+                                    onChanged: switchmode,
+                                    value: editmode,
+                                    activeColor: Colors.blue,
+                                    activeTrackColor: Colors.blue[100],
+                                    inactiveThumbColor: Colors.grey,
+                                    inactiveTrackColor: Colors.white,
+                                  ),
+                                )
                             ],
                           ),
                           const SizedBox(height: 30),
@@ -185,8 +226,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               height: 20 * fem,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xffffffff)),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
                                   task?.task_nam ?? '',
@@ -224,8 +265,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               height: 120 * fem,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xffffffff)),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
                                   task?.info ?? '',
@@ -263,8 +304,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               height: 30 * fem,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xffffffff)),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Material(
                                   color: const Color(0x00000000),
@@ -334,42 +375,27 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                   height: 35 * fem,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xffffffff)),
+                                      color: Colors.blueGrey[900],
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 120,
-                                          height: 35,
-                                          child: Center(
-                                            child: Text(
-                                              DateFormat('yyyy-MM-dd').format(
-                                                  task?.startdate! ??
-                                                      DateTime.now()),
-                                              style: SafeGoogleFont(
-                                                'Inter',
-                                                fontSize: 12 * ffem,
-                                                fontWeight: FontWeight.w400,
-                                                height: 1.2125 * ffem / fem,
-                                                decoration: TextDecoration.none,
-                                                color: const Color(0xffffffff),
-                                              ),
-                                            ),
+                                    child: SizedBox(
+                                      width: 120,
+                                      height: 35,
+                                      child: Center(
+                                        child: Text(
+                                          DateFormat('yyyy-MM-dd').format(
+                                              task?.startdate! ??
+                                                  DateTime.now()),
+                                          style: SafeGoogleFont(
+                                            'Inter',
+                                            fontSize: 12 * ffem,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.2125 * ffem / fem,
+                                            decoration: TextDecoration.none,
+                                            color: const Color(0xffffffff),
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 30,
-                                          height: 20,
-                                          child: Container(
-                                            alignment: Alignment.topLeft,
-                                            child: const Icon(
-                                                Icons.calendar_month,
-                                                color: Colors.white,
-                                                size: 25),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -381,41 +407,26 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                   height: 35 * fem,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xffffffff)),
+                                      color: Colors.blueGrey[900],
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 120,
-                                          height: 35,
-                                          child: Center(
-                                            child: Text(
-                                              DateFormat('yyyy-MM-dd').format(
-                                                  task?.enddate! ??
-                                                      DateTime.now()),
-                                              style: SafeGoogleFont(
-                                                'Inter',
-                                                fontSize: 12 * ffem,
-                                                fontWeight: FontWeight.w400,
-                                                height: 1.2125 * ffem / fem,
-                                                decoration: TextDecoration.none,
-                                                color: const Color(0xffffffff),
-                                              ),
-                                            ),
+                                    child: SizedBox(
+                                      width: 120,
+                                      height: 35,
+                                      child: Center(
+                                        child: Text(
+                                          DateFormat('yyyy-MM-dd').format(
+                                              task?.enddate! ?? DateTime.now()),
+                                          style: SafeGoogleFont(
+                                            'Inter',
+                                            fontSize: 12 * ffem,
+                                            fontWeight: FontWeight.w400,
+                                            height: 1.2125 * ffem / fem,
+                                            decoration: TextDecoration.none,
+                                            color: const Color(0xffffffff),
                                           ),
                                         ),
-                                        SizedBox(
-                                          width: 30,
-                                          height: 20,
-                                          child: Container(
-                                              alignment: Alignment.topLeft,
-                                              child: const Icon(
-                                                  Icons.calendar_month,
-                                                  color: Colors.white,
-                                                  size: 25)),
-                                        ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -445,46 +456,31 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                               height: 35 * fem,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: const Color(0xffffffff)),
+                                  color: Colors.blueGrey[900],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 120,
-                                      height: 35,
-                                      child: Center(
-                                        child: Text(
-                                          DateFormat('yyyy-MM-dd').format(
-                                              task?.estidate! ??
-                                                  DateTime.now()),
-                                          style: SafeGoogleFont(
-                                            'Inter',
-                                            fontSize: 12 * ffem,
-                                            fontWeight: FontWeight.w400,
-                                            height: 1.2125 * ffem / fem,
-                                            decoration: TextDecoration.none,
-                                            color: const Color(0xffffffff),
-                                          ),
-                                        ),
+                                child: SizedBox(
+                                  width: 120,
+                                  height: 35,
+                                  child: Center(
+                                    child: Text(
+                                      DateFormat('yyyy-MM-dd').format(
+                                          task?.estidate! ?? DateTime.now()),
+                                      style: SafeGoogleFont(
+                                        'Inter',
+                                        fontSize: 12 * ffem,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.2125 * ffem / fem,
+                                        decoration: TextDecoration.none,
+                                        color: const Color(0xffffffff),
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: 30,
-                                      height: 20,
-                                      child: Container(
-                                          alignment: Alignment.topLeft,
-                                          child: const Icon(
-                                              Icons.calendar_month,
-                                              color: Colors.white,
-                                              size: 25)),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Row(
@@ -538,34 +534,33 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                             height: 10 * fem,
                           ),
                           for (int a = 0; a < progresslist.length; a++)
-                            Align(
-                              alignment: const Alignment(-0.10, 0),
-                              child: SizedBox(
-                                width: 330 * fem,
-                                height: 50 * fem,
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 145 * fem,
-                                          height: 15 * fem,
-                                          child: Text(
-                                            getname(progresslist[a]!),
-                                            textAlign: TextAlign.left,
-                                            style: SafeGoogleFont(
-                                              'Inter',
-                                              fontSize: 12 * ffem,
-                                              fontWeight: FontWeight.w400,
-                                              height: 1.2125 * ffem / fem,
-                                              decoration: TextDecoration.none,
-                                              color: const Color(0xffffffff),
+                            if (progresslist[a]!.task_involved == true)
+                              Align(
+                                alignment: const Alignment(-0.10, 0),
+                                child: SizedBox(
+                                  width: 330 * fem,
+                                  height: 50 * fem,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 145 * fem,
+                                            height: 15 * fem,
+                                            child: Text(
+                                              getname(progresslist[a]!),
+                                              textAlign: TextAlign.left,
+                                              style: SafeGoogleFont(
+                                                'Inter',
+                                                fontSize: 12 * ffem,
+                                                fontWeight: FontWeight.w400,
+                                                height: 1.2125 * ffem / fem,
+                                                decoration: TextDecoration.none,
+                                                color: const Color(0xffffffff),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(width: 80),
-                                        if (progresslist[a]!.task_involved ==
-                                            true)
+                                          const SizedBox(width: 80),
                                           SizedBox(
                                             width: 45 * fem,
                                             height: 15 * fem,
@@ -581,31 +576,11 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                               ),
                                             ),
                                           ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    if (progresslist[a]!.task_involved == false)
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: SizedBox(
-                                          width: 250 * fem,
-                                          height: 15 * fem,
-                                          child: Text(
-                                            '* No involved',
-                                            textAlign: TextAlign.left,
-                                            style: SafeGoogleFont('Inter',
-                                                fontSize: 12 * ffem,
-                                                fontWeight: FontWeight.w400,
-                                                height: 1.2125 * ffem / fem,
-                                                color: const Color(0xffffffff),
-                                                decoration:
-                                                    TextDecoration.none),
-                                          ),
-                                        ),
+                                        ],
                                       ),
-                                    if (progresslist[a]!.task_involved == true)
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: SizedBox(
@@ -620,10 +595,10 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                           ),
                                         ),
                                       ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
                           if (progresslist.isEmpty)
                             const SizedBox(
                               height: 95,
@@ -679,6 +654,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
     } else if (editmode == true &&
         widget.group_leader?.leader_id == widget.UserAccount!.uid) {
       return GroupEditTaskDetailPage(
+        group_leader: widget.group_leader,
         userlist: userlist,
         group: widget.group,
         grouptask: task,
@@ -696,6 +672,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
         }
       }
       return GroupMemberEditTaskDetailPage(
+        group_leader: widget.group_leader,
         progress: progress,
         group: widget.group,
         grouptask: task,

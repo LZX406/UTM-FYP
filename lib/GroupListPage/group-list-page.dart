@@ -1,7 +1,9 @@
 // ignore_for_file: file_names, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:myapp/CreateNewGroupPage/create-new-group-page.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupTaskListPage/group-task-list-page.dart';
 import 'package:myapp/Services/group_service.dart';
 import 'package:myapp/models/group.dart';
@@ -23,7 +25,7 @@ class GroupList extends State<GroupListPage> {
     // Get the order
   }
 
-  void refresh() {
+  Future<void> refresh() async {
     setState(() {});
   }
 
@@ -63,10 +65,10 @@ class GroupList extends State<GroupListPage> {
                   padding: EdgeInsets.zero,
                 ),
                 child: Container(
-                  width: 106 * fem,
-                  height: 30 * fem,
+                  width: 116 * fem,
+                  height: 40 * fem,
                   decoration: BoxDecoration(
-                    border: Border.all(color: const Color(0xffffffff)),
+                    color: Colors.blueGrey[900],
                     borderRadius: BorderRadius.circular(25 * fem),
                   ),
                   child: Center(
@@ -76,7 +78,7 @@ class GroupList extends State<GroupListPage> {
                         textAlign: TextAlign.center,
                         style: SafeGoogleFont(
                           'Inter',
-                          fontSize: 10 * ffem,
+                          fontSize: 13 * ffem,
                           fontWeight: FontWeight.w400,
                           height: 1.2125 * ffem / fem,
                           color: const Color(0xffffffff),
@@ -100,15 +102,34 @@ class GroupList extends State<GroupListPage> {
                       child: FutureBuilder(
                           future: getallgroup(),
                           builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Column(
+                                children: [
+                                  Container(
+                                      child: LoadingAnimationWidget.hexagonDots(
+                                          color: Colors.white, size: 200)),
+                                  const dialog2(
+                                    message: 'Loading, please wait',
+                                  )
+                                ],
+                              );
+                            }
+
                             return ListView.separated(
-                              padding: EdgeInsets.zero,
+                              padding: const EdgeInsets.all(0.0),
                               itemCount: grouplist.length,
                               itemBuilder: (context, index) {
-                                return Align(
-                                  alignment: Alignment.topLeft,
-                                  child: SizedBox(
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 5, 2),
+                                  child: Container(
                                     width: 360 * fem,
-                                    height: 81 * fem,
+                                    height: 61 * fem,
+                                    decoration: BoxDecoration(
+                                      color: Colors.blueGrey[900],
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
                                     child: TextButton(
                                       onPressed: () {
                                         Navigator.push(
@@ -124,53 +145,48 @@ class GroupList extends State<GroupListPage> {
                                         );
                                       },
                                       style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 10, 0, 0),
                                       ),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: const Color(0xffffffff)),
-                                        ),
-                                        child: Column(
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.topLeft,
-                                              child: SizedBox(
-                                                width: 350 * fem,
-                                                height: 25 * fem,
-                                                child: Text(
-                                                  grouplist[index]!.group_name,
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: 20 * ffem,
-                                                    fontWeight: FontWeight.w400,
-                                                    height: 1.2125 * ffem / fem,
-                                                    color:
-                                                        const Color(0xffffffff),
-                                                  ),
+                                      child: Column(
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.topLeft,
+                                            child: SizedBox(
+                                              width: 350 * fem,
+                                              height: 25 * fem,
+                                              child: Text(
+                                                grouplist[index]!.group_name,
+                                                style: SafeGoogleFont(
+                                                  'Inter',
+                                                  fontSize: 20 * ffem,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.2125 * ffem / fem,
+                                                  color:
+                                                      const Color(0xffffffff),
                                                 ),
                                               ),
                                             ),
-                                            Align(
-                                              alignment: Alignment.topLeft,
-                                              child: SizedBox(
-                                                width: 153 * fem,
-                                                height: 15 * fem,
-                                                child: Text(
-                                                  'Active task: compile report',
-                                                  style: SafeGoogleFont(
-                                                    'Inter',
-                                                    fontSize: 12 * ffem,
-                                                    fontWeight: FontWeight.w400,
-                                                    height: 1.2125 * ffem / fem,
-                                                    color:
-                                                        const Color(0xffffffff),
-                                                  ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: SizedBox(
+                                              width: 300 * fem,
+                                              height: 15 * fem,
+                                              child: Text(
+                                                'Owner:    ${grouplist[index]!.group_leader!.leader!.username}',
+                                                style: SafeGoogleFont(
+                                                  'Inter',
+                                                  fontSize: 12 * ffem,
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 1.2125 * ffem / fem,
+                                                  color:
+                                                      const Color(0xffffffff),
                                                 ),
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -178,7 +194,7 @@ class GroupList extends State<GroupListPage> {
                               },
                               separatorBuilder: (context, index) {
                                 return const Divider(
-                                  height: 0,
+                                  height: 2,
                                 );
                               },
                             );
@@ -198,7 +214,7 @@ class GroupList extends State<GroupListPage> {
                   child: Container(
                     alignment: Alignment.center,
                     child: Text(
-                      'My group',
+                      'Group',
                       textAlign: TextAlign.center,
                       style: SafeGoogleFont(
                         'Inter',

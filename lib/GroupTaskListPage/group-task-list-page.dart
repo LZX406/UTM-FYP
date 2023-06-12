@@ -1,6 +1,8 @@
 // ignore_for_file: file_names, prefer_typing_uninitialized_variables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupTaskListPage/group-current-task-list-page.dart';
 import 'package:myapp/GroupDetailPage/group-leader-detail-page.dart';
 import 'package:myapp/GroupTaskListPage/group-past-task-list-page.dart';
@@ -39,7 +41,8 @@ BoxDecoration border2(int grouppage) {
 class GroupTaskList extends State<GroupTaskListPage> {
   int grouppage = 1;
   Group? group;
-  Group_leader? groupleader;
+  Group_leader_record? groupleader;
+  bool leaving = true;
   @override
   void initState() {
     super.initState();
@@ -97,9 +100,8 @@ class GroupTaskList extends State<GroupTaskListPage> {
                     child: SizedBox(
                       width: 360 * fem,
                       height: 799 * fem,
-                      child: Image.asset(
-                        'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                        fit: BoxFit.cover,
+                      child: const DecoratedBox(
+                        decoration: BoxDecoration(color: Colors.black),
                       ),
                     ),
                   ),
@@ -118,9 +120,15 @@ class GroupTaskList extends State<GroupTaskListPage> {
                       child: Row(
                         children: [
                           TextButton(
-                            onPressed: () {
-                              widget.getallgroup();
+                            onPressed: () async {
+                              if (!leaving) {
+                                return;
+                              }
+                              leaving = false;
+
                               Navigator.pop(context);
+                              widget.refresh();
+                              leaving = true;
                             },
                             child: SizedBox(
                               width: 50 * fem,
@@ -185,6 +193,23 @@ class GroupTaskList extends State<GroupTaskListPage> {
                     FutureBuilder(
                         future: getgroup(),
                         builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Container(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        child:
+                                            LoadingAnimationWidget.hexagonDots(
+                                                color: Colors.white,
+                                                size: 200)),
+                                    const dialog2(
+                                      message: 'Loading, please wait',
+                                    )
+                                  ],
+                                ));
+                          }
                           if (grouppage == 2) {
                             return GroupPastTaskListPage(
                                 group: group,
@@ -207,7 +232,7 @@ class GroupTaskList extends State<GroupTaskListPage> {
           ),
           bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.blueGrey[900],
             selectedItemColor: Colors.white,
             unselectedItemColor: Colors.grey,
             selectedLabelStyle: const TextStyle(fontSize: 12),

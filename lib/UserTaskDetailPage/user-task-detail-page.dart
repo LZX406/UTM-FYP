@@ -22,20 +22,8 @@ class UserTaskDetailPage extends StatefulWidget {
 }
 
 class UserTaskDetail extends State<UserTaskDetailPage> {
-  final EndController = TextEditingController();
-  final StartController = TextEditingController();
-  final EstiController = TextEditingController();
   bool editmode = false;
   Uri httpsUri = Uri.https('www.google.com');
-
-  void setvalue() {
-    StartController.text =
-        DateFormat('yyyy-MM-dd').format(widget.Task!.startdate!);
-    EndController.text = DateFormat('yyyy-MM-dd').format(widget.Task!.enddate!);
-    EstiController.text =
-        DateFormat('yyyy-MM-dd').format(widget.Task!.estidate!);
-    httpsUri = Uri.https(widget.Task!.link);
-  }
 
   double progressvalue(String value) {
     double values = double.parse(value) / 100;
@@ -56,10 +44,16 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    setvalue();
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
+    if (widget.Task!.link.isNotEmpty && widget.Task!.link.length > 9) {
+      if (widget.Task!.link.substring(1, 5) == 'https') {
+        httpsUri = Uri.https(widget.Task!.link.substring(8));
+      } else {
+        httpsUri = Uri.https(widget.Task!.link.substring(7));
+      }
+    }
     if (editmode == false) {
       return SizedBox(
         width: double.infinity,
@@ -76,9 +70,8 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                   child: SizedBox(
                     width: 360 * fem,
                     height: 799 * fem,
-                    child: Image.asset(
-                      'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                      fit: BoxFit.cover,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(color: Colors.black),
                     ),
                   ),
                 ),
@@ -152,7 +145,8 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                       height: 40 * fem,
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffffffff)),
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -194,7 +188,8 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                       child: Container(
                         alignment: Alignment.topLeft,
                         decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffffffff)),
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           widget.Task!.info,
@@ -234,7 +229,8 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                       height: 30 * fem,
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffffffff)),
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Material(
                           color: const Color(0x00000000),
@@ -248,8 +244,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                                 fontWeight: FontWeight.w400,
                                 height: 1.2125 * ffem / fem,
                                 decoration: TextDecoration.underline,
-                                color: const Color(0xff1e25de),
-                                decorationColor: const Color(0xff1e25de),
+                                color: const Color(0xffffffff),
                               ),
                             ),
                           ),
@@ -310,8 +305,8 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                           height: 35 * fem,
                           child: Container(
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xffffffff)),
+                              color: Colors.blueGrey[900],
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
                               children: [
@@ -320,7 +315,9 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                                   height: 35,
                                   child: Center(
                                     child: Text(
-                                      StartController.text,
+                                      DateFormat('yyyy-MM-dd').format(
+                                          widget.Task!.startdate ??
+                                              DateTime.now()),
                                       style: SafeGoogleFont(
                                         'Inter',
                                         fontSize: 12 * ffem,
@@ -350,8 +347,8 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                           height: 35 * fem,
                           child: Container(
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xffffffff)),
+                              color: Colors.blueGrey[900],
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
                               children: [
@@ -360,7 +357,9 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                                   height: 35,
                                   child: Center(
                                     child: Text(
-                                      EndController.text,
+                                      DateFormat('yyyy-MM-dd').format(
+                                          widget.Task!.enddate ??
+                                              DateTime.now()),
                                       style: SafeGoogleFont(
                                         'Inter',
                                         fontSize: 12 * ffem,
@@ -408,7 +407,8 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                       height: 35 * fem,
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffffffff)),
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Row(
                           children: [
@@ -443,7 +443,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 29),
                   Row(
                     children: [
                       const SizedBox(width: 15),

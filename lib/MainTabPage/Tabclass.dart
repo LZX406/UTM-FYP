@@ -1,10 +1,11 @@
+// ignore_for_file: file_names, camel_case_types, prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
-import 'package:myapp/MainTabPage/MainTab.dart';
 
 class tab extends StatelessWidget {
   final refreshpage;
   final Icon icon;
-  tab({this.refreshpage, required this.icon});
+  const tab({super.key, this.refreshpage, required this.icon});
   @override
   Widget build(BuildContext context) {
     double baseWidth = 360;
@@ -58,60 +59,20 @@ class tab extends StatelessWidget {
               padding: EdgeInsets.zero,
             ),
             child: Container(
-                padding:
-                    EdgeInsets.fromLTRB(50 * fem, 19 * fem, 20 * fem, 0 * fem),
-                width: 67 * fem,
-                height: 100 * fem,
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xff000000)),
-                  color: const Color.fromARGB(255, 57, 61, 61),
-                ),
-                child: null),
-          ),
-        ),
-        Positioned(
-          // line3c8x (116:11)
-          left: 20 * fem,
-          top: 68 * fem,
-          child: Align(
-            child: SizedBox(
-              width: 27 * fem,
-              height: 2 * fem,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
+              padding: EdgeInsets.fromLTRB(0 * fem, 0 * fem, 0 * fem, 0 * fem),
+              width: 67 * fem,
+              height: 100 * fem,
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xff000000)),
+                color: const Color.fromARGB(255, 57, 61, 61),
               ),
-            ),
-          ),
-        ),
-        Positioned(
-          // line3c8x (116:11)
-          left: 20 * fem,
-          top: 78 * fem,
-          child: Align(
-            child: SizedBox(
-              width: 27 * fem,
-              height: 2 * fem,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 255, 255, 255),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          // line3c8x (116:11)
-          left: 20 * fem,
-          top: 88 * fem,
-          child: Align(
-            child: SizedBox(
-              width: 27 * fem,
-              height: 2 * fem,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 255, 255, 255),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: SizedBox(
+                  width: 57 * fem,
+                  height: 45 * fem,
+                  child:
+                      const Icon(Icons.person, color: Colors.white, size: 50),
                 ),
               ),
             ),

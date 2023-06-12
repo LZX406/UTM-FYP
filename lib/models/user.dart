@@ -5,6 +5,9 @@ class User_Account {
   final String email;
   final String username;
   final String uid;
+  final String countrycode;
+  final String? phonenum;
+  final String? completephonenum;
   DateTime? lastlogin;
   bool ban;
 
@@ -14,6 +17,9 @@ class User_Account {
       this.username = '',
       this.uid = '',
       this.lastlogin,
+      this.countrycode = '',
+      this.phonenum,
+      this.completephonenum,
       this.ban = false});
 
   factory User_Account.AdminMap(map) {
@@ -31,6 +37,9 @@ class User_Account {
       username: map['username'],
       uid: map['uid'],
       lastlogin: map['lastlogin'].toDate(),
+      countrycode: map['countrycode'],
+      phonenum: map['phonenum'],
+      completephonenum: map['completephonenum'],
       ban: map['ban'],
     );
   }
@@ -41,16 +50,10 @@ class User_Account {
       password: map['password'],
       uid: map['uid'],
       username: map['username'],
+      countrycode: map['countrycode'],
+      phonenum: map['phonenum'],
+      completephonenum: map['completephonenum'],
       lastlogin: map['lastlogin'].toDate(),
     );
   }
-
-  Map<String, dynamic> toJson() =>
-      {'password': password, 'email': email, 'username': username, 'id': uid};
-
-  copyWith({username, password, email, id}) => User_Account(
-      password: password ?? this.password,
-      email: email ?? this.email,
-      username: username ?? this.username,
-      uid: id ?? uid);
 }

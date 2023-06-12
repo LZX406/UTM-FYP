@@ -3,6 +3,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:myapp/AdminViewGroupListPage/group-list-page.dart';
 import 'package:myapp/AdminViewUserListPage/user-list-page.dart';
 import 'package:myapp/Dialog.dart';
@@ -28,7 +29,8 @@ class MainTabPage extends State<MainTab> {
   int page = 1;
   User_Account? user;
   String? fcmToken;
-  late FirebaseMessaging messaging;
+  bool checkuser = false;
+  late FirebaseMessaging? messaging;
 
   Icon icon = const Icon(Icons.task, color: Colors.black, size: 40);
   @override
@@ -57,7 +59,7 @@ class MainTabPage extends State<MainTab> {
   Future<void> getUser() async {
     Future<User_Account?> futureuser = Accountservice().GetUser();
     user = await futureuser;
-    if (user!.ban == true) {
+    if (user?.ban == true) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -68,27 +70,19 @@ class MainTabPage extends State<MainTab> {
         Auth().signOut();
       });
     }
-    display(user);
-    fcmToken = await FirebaseMessaging.instance.getToken();
-    if (user!.username != 'Admin') {
-      NotificationService().UpdateToken(user: user!, token: fcmToken!);
+    if (checkuser == false) {
+      display(user);
     }
-    print(fcmToken);
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
+    checkuser = true;
+    fcmToken = await FirebaseMessaging.instance.getToken();
 
-    print('User granted permission: ${settings.authorizationStatus}');
-    bool isallowed = await AwesomeNotifications().isNotificationAllowed();
-    if (!isallowed) {
-      //no permission of local notification
-      AwesomeNotifications().requestPermissionToSendNotifications();
+    if (user?.username != "Admin") {
+      NotificationService().UpdateToken(user: user!, token: fcmToken!);
+      bool isallowed = await AwesomeNotifications().isNotificationAllowed();
+      if (!isallowed) {
+        //no permission of local notification
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
     }
   }
 
@@ -101,7 +95,7 @@ class MainTabPage extends State<MainTab> {
       child: SizedBox(
         // grouptasklistpageXSY (107:18)
         width: double.infinity,
-        height: 760 * fem,
+        height: 800 * fem,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Stack(
@@ -113,10 +107,9 @@ class MainTabPage extends State<MainTab> {
                 child: Align(
                   child: SizedBox(
                     width: 360 * fem,
-                    height: 799 * fem,
-                    child: Image.asset(
-                      'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-xfr.png',
-                      fit: BoxFit.cover,
+                    height: 800 * fem,
+                    child: const DecoratedBox(
+                      decoration: BoxDecoration(color: Colors.black),
                     ),
                   ),
                 ),
@@ -125,11 +118,24 @@ class MainTabPage extends State<MainTab> {
               FutureBuilder(
                   future: getUser(),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Column(
+                        children: [
+                          Container(
+                              child: LoadingAnimationWidget.hexagonDots(
+                                  color: Colors.white, size: 200)),
+                          const dialog2(
+                            message: 'Loading, please wait',
+                          )
+                        ],
+                      );
+                    }
                     if (snapshot.connectionState != ConnectionState.done) {
                       return Container();
                     } else {
                       if (page == 1) {
                         return ProfilePage(
+                          refreshpage: refreshpage,
                           UserAccount: user,
                         );
                       } else if (page == 2) {

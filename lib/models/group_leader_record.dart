@@ -2,14 +2,14 @@
 
 import 'package:myapp/models/user.dart';
 
-class Group_leader {
+class Group_leader_record {
   final String group_id;
   final String leader_id;
   final String group_leader_id;
   final int member_type;
   User_Account? leader;
 
-  Group_leader(
+  Group_leader_record(
       {this.group_id = '',
       this.leader_id = '',
       this.group_leader_id = '',
@@ -20,17 +20,17 @@ class Group_leader {
     this.leader = leader;
   }
 
-  factory Group_leader.fromMap(map) {
-    return Group_leader(
+  factory Group_leader_record.fromMap(map) {
+    return Group_leader_record(
         group_id: map['group_id'],
         leader_id: map['leader_id'],
         group_leader_id: map['group_leader_id'],
         member_type: map['member_type']);
   }
 
-  factory Group_leader.create(
+  factory Group_leader_record.create(
       group_id, leader_id, group_leader_id, member_type) {
-    return Group_leader(
+    return Group_leader_record(
         group_id: group_id,
         leader_id: leader_id,
         group_leader_id: group_leader_id,

@@ -1,6 +1,7 @@
-// ignore_for_file: file_names, must_be_immutable, prefer_typing_uninitialized_variables, non_constant_identifier_names
+// ignore_for_file: file_names, must_be_immutable, prefer_typing_uninitialized_variables, non_constant_identifier_names, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/Services/group_member_service.dart';
 import 'package:myapp/models/group.dart';
 import 'package:myapp/models/group_member_record.dart';
@@ -30,6 +31,7 @@ class GroupMemberDetailPage extends StatefulWidget {
 }
 
 class GroupMemberDetail extends State<GroupMemberDetailPage> {
+  bool leave = false;
   Future<void> leavegroup() async {
     Group_member_service()
         .RemoveMember(group: widget.group!, userid: widget.UserAccount!.uid);
@@ -59,9 +61,8 @@ class GroupMemberDetail extends State<GroupMemberDetailPage> {
                 child: SizedBox(
                   width: 360 * fem,
                   height: 799 * fem,
-                  child: Image.asset(
-                    'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-bPE.png',
-                    fit: BoxFit.cover,
+                  child: const DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.black),
                   ),
                 ),
               ),
@@ -123,7 +124,8 @@ class GroupMemberDetail extends State<GroupMemberDetailPage> {
                       height: 20 * fem,
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffffffff)),
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Material(
                           color: const Color(0x00000000),
@@ -160,7 +162,8 @@ class GroupMemberDetail extends State<GroupMemberDetailPage> {
                       child: Container(
                         alignment: Alignment.topLeft,
                         decoration: BoxDecoration(
-                          border: Border.all(color: const Color(0xffffffff)),
+                          color: Colors.blueGrey[900],
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Material(
                           color: const Color(0x00000000),
@@ -197,7 +200,8 @@ class GroupMemberDetail extends State<GroupMemberDetailPage> {
                         height: 280 * fem,
                         child: Container(
                           decoration: BoxDecoration(
-                            border: Border.all(color: const Color(0xffffffff)),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: ListView.separated(
                             padding: EdgeInsets.zero,
@@ -211,6 +215,7 @@ class GroupMemberDetail extends State<GroupMemberDetailPage> {
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                           color: const Color(0xffffffff)),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Row(
                                       children: [
@@ -254,23 +259,35 @@ class GroupMemberDetail extends State<GroupMemberDetailPage> {
                                                   height: 25 * fem,
                                                   child: Container(
                                                     alignment: Alignment.center,
-                                                    child: Text(
-                                                      widget.memberposition(
-                                                          widget
-                                                              .memberlist[
-                                                                  index]!
-                                                              .member_type),
-                                                      style: SafeGoogleFont(
-                                                        'Inter',
-                                                        fontSize: 12 * ffem,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        decoration:
-                                                            TextDecoration.none,
-                                                        height:
-                                                            1.2125 * ffem / fem,
-                                                        color: const Color(
-                                                            0xffffffff),
+                                                    child: TextButton(
+                                                      onPressed: () {
+                                                        showprofile(
+                                                            context,
+                                                            widget
+                                                                .memberlist[
+                                                                    index]!
+                                                                .member_id);
+                                                      },
+                                                      child: Text(
+                                                        widget.memberposition(
+                                                            widget
+                                                                .memberlist[
+                                                                    index]!
+                                                                .member_type),
+                                                        style: SafeGoogleFont(
+                                                          'Inter',
+                                                          fontSize: 12 * ffem,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .none,
+                                                          height: 1.2125 *
+                                                              ffem /
+                                                              fem,
+                                                          color: const Color(
+                                                              0xffffffff),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -301,11 +318,25 @@ class GroupMemberDetail extends State<GroupMemberDetailPage> {
                       padding: EdgeInsets.zero,
                     ),
                     onPressed: () async {
-                      await leavegroup().then((value) {
-                        widget.refresh();
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      });
+                      leave = await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                leavedialog(
+                                  statement: leave,
+                                )
+                              ],
+                            );
+                          });
+                      if (leave) {
+                        await leavegroup().then((value) async {
+                          await widget.refresh();
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        });
+                      }
                     },
                     child: Container(
                       width: 360 * fem,

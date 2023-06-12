@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupTaskDetailPage/group-task-detail-page.dart';
 import 'package:myapp/Services/group_task_service.dart';
 import 'package:myapp/models/g_task.dart';
@@ -14,7 +16,7 @@ class GroupPastTaskListPage extends StatefulWidget {
   final Group? group;
   final grouppage;
   final switchpage;
-  final Group_leader? group_leader;
+  final Group_leader_record? group_leader;
   final User_Account? UserAccount;
   const GroupPastTaskListPage(
       {Key? key,
@@ -51,19 +53,36 @@ class GroupPastTaskList extends State<GroupPastTaskListPage> {
     return FutureBuilder(
         future: getalltask(),
         builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Column(
+              children: [
+                Container(
+                    child: LoadingAnimationWidget.hexagonDots(
+                        color: Colors.white, size: 200)),
+                const dialog2(
+                  message: 'Loading, please wait',
+                )
+              ],
+            );
+          }
           return SizedBox(
             width: 360 * fem,
-            height: 580 * fem,
+            height: 558 * fem,
             child: Container(
               alignment: Alignment.topLeft,
               child: ListView.separated(
-                padding: EdgeInsets.zero,
+                padding: const EdgeInsets.all(0.0),
                 itemCount: Inactivetasklist!.length,
                 itemBuilder: (context, index) {
-                  return Align(
-                    child: SizedBox(
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+                    child: Container(
                       width: 360 * fem,
                       height: 122 * fem,
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey[900],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       child: TextButton(
                         onPressed: () {
                           Navigator.push(
@@ -75,149 +94,45 @@ class GroupPastTaskList extends State<GroupPastTaskListPage> {
                                       group_leader: widget.group_leader,
                                       switchpage: widget.switchpage,
                                       UserAccount: widget.UserAccount,
-                                      grouptask: Inactivetasklist![index],
+                                      grouptask: Inactivetasklist?[index],
                                     )),
                           );
                         },
                         style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
+                          padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
                         ),
-                        child: Container(
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: const Color(0xff00ff19)),
+                        child: Column(
+                          children: [
+                            const SizedBox(
+                              height: 10,
                             ),
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Align(
-                                  child: SizedBox(
-                                    width: 131 * fem,
-                                    height: 15 * fem,
-                                    child: Text(
-                                      Inactivetasklist![index]!.task_nam,
-                                      style: SafeGoogleFont(
-                                        'Inter',
-                                        fontSize: 12 * ffem,
-                                        fontWeight: FontWeight.w400,
-                                        height: 1.2125 * ffem / fem,
-                                        color: const Color(0xffffffff),
-                                      ),
-                                    ),
+                            Align(
+                              child: SizedBox(
+                                width: 131 * fem,
+                                height: 15 * fem,
+                                child: Text(
+                                  Inactivetasklist![index]!.task_nam,
+                                  style: SafeGoogleFont(
+                                    'Inter',
+                                    fontSize: 12 * ffem,
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.2125 * ffem / fem,
+                                    color: const Color(0xffffffff),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    Align(
-                                      child: SizedBox(
-                                        width: 180 * fem,
-                                        height: 15 * fem,
-                                        child: Text(
-                                          'Project link: ${Inactivetasklist![index]!.link}',
-                                          style: SafeGoogleFont(
-                                            'Inter',
-                                            fontSize: 12 * ffem,
-                                            fontWeight: FontWeight.w400,
-                                            height: 1.2125 * ffem / fem,
-                                            color: const Color(0xffffffff),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Align(
-                                      child: SizedBox(
-                                        width: 180 * fem,
-                                        height: 15 * fem,
-                                        child: Text(
-                                          'start : ${Inactivetasklist![index]!.startdate == null ? "none" : DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.startdate!)}',
-                                          style: SafeGoogleFont(
-                                            'Inter',
-                                            fontSize: 12 * ffem,
-                                            fontWeight: FontWeight.w400,
-                                            height: 1.2125 * ffem / fem,
-                                            color: const Color(0xffffffff),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: SizedBox(
-                                        width: 150 * fem,
-                                        height: 15 * fem,
-                                        child: Text(
-                                          'end : ${Inactivetasklist![index]!.enddate == null ? "none" : DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.enddate!)}',
-                                          style: SafeGoogleFont(
-                                            'Inter',
-                                            fontSize: 12 * ffem,
-                                            fontWeight: FontWeight.w400,
-                                            height: 1.2125 * ffem / fem,
-                                            color: const Color(0xffffffff),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Align(
-                                      child: SizedBox(
-                                        width: 60 * fem,
-                                        height: 15 * fem,
-                                        child: Text(
-                                          'Progress  ',
-                                          textAlign: TextAlign.left,
-                                          style: SafeGoogleFont(
-                                            'Inter',
-                                            fontSize: 12 * ffem,
-                                            fontWeight: FontWeight.w400,
-                                            height: 1.2125 * ffem / fem,
-                                            color: const Color(0xffffffff),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      child: SizedBox(
-                                        width: 180 * fem,
-                                        height: 15 * fem,
-                                      ),
-                                    ),
-                                    Align(
-                                      child: SizedBox(
-                                        width: 50 * fem,
-                                        height: 15 * fem,
-                                        child: Text(
-                                          '${Inactivetasklist![index]!.progress} %',
-                                          style: SafeGoogleFont(
-                                            'Inter',
-                                            fontSize: 12 * ffem,
-                                            fontWeight: FontWeight.w400,
-                                            height: 1.2125 * ffem / fem,
-                                            color: const Color(0xffffffff),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
                                 Align(
-                                  alignment: Alignment.topLeft,
                                   child: SizedBox(
-                                    width: 170 * fem,
+                                    width: 180 * fem,
                                     height: 15 * fem,
                                     child: Text(
-                                      'Estimate end date: ${Inactivetasklist![index]!.estidate == null ? "none" : 'start : ${DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.estidate!)}'}',
+                                      'Project link: ${Inactivetasklist![index]!.link}',
                                       style: SafeGoogleFont(
                                         'Inter',
                                         fontSize: 12 * ffem,
@@ -229,7 +144,106 @@ class GroupPastTaskList extends State<GroupPastTaskListPage> {
                                   ),
                                 ),
                               ],
-                            )),
+                            ),
+                            Row(
+                              children: [
+                                Align(
+                                  child: SizedBox(
+                                    width: 170 * fem,
+                                    height: 15 * fem,
+                                    child: Text(
+                                      'start : ${Inactivetasklist![index]!.startdate == null ? "none" : DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.startdate!)}',
+                                      style: SafeGoogleFont(
+                                        'Inter',
+                                        fontSize: 12 * ffem,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.2125 * ffem / fem,
+                                        color: const Color(0xffffffff),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: SizedBox(
+                                    width: 150 * fem,
+                                    height: 15 * fem,
+                                    child: Text(
+                                      'end : ${Inactivetasklist![index]!.enddate == null ? "none" : DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.enddate!)}',
+                                      style: SafeGoogleFont(
+                                        'Inter',
+                                        fontSize: 12 * ffem,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.2125 * ffem / fem,
+                                        color: const Color(0xffffffff),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Align(
+                                  child: SizedBox(
+                                    width: 60 * fem,
+                                    height: 15 * fem,
+                                    child: Text(
+                                      'Progress  ',
+                                      textAlign: TextAlign.left,
+                                      style: SafeGoogleFont(
+                                        'Inter',
+                                        fontSize: 12 * ffem,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.2125 * ffem / fem,
+                                        color: const Color(0xffffffff),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  child: SizedBox(
+                                    width: 180 * fem,
+                                    height: 15 * fem,
+                                  ),
+                                ),
+                                Align(
+                                  child: SizedBox(
+                                    width: 50 * fem,
+                                    height: 15 * fem,
+                                    child: Text(
+                                      '${Inactivetasklist![index]!.progress} %',
+                                      style: SafeGoogleFont(
+                                        'Inter',
+                                        fontSize: 12 * ffem,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.2125 * ffem / fem,
+                                        color: const Color(0xffffffff),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: SizedBox(
+                                width: 170 * fem,
+                                height: 15 * fem,
+                                child: Text(
+                                  'Estimate end date: ${Inactivetasklist![index]!.estidate == null ? "none" : 'start : ${DateFormat('yyyy-MM-dd').format(Inactivetasklist![index]!.estidate!)}'}',
+                                  style: SafeGoogleFont(
+                                    'Inter',
+                                    fontSize: 12 * ffem,
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.2125 * ffem / fem,
+                                    color: const Color(0xffffffff),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

@@ -15,6 +15,9 @@ class Accountservice {
       "username": username,
       "password": password,
       "uid": Auth().currentUser!.uid,
+      "countrycode": '',
+      "phonenum": '',
+      "completephonenum": '',
       "ban": false,
       "lastlogin": DateTime.now(),
     });
@@ -28,29 +31,46 @@ class Accountservice {
         .doc(Auth().currentUser!.uid)
         .get()
         .then(
-      (value) {
+      (value) async {
         if (value.exists) {
           user = User_Account.AdminMap(value.data()!);
+          return user;
+        } else {
+          await firestoreInstance
+              .collection("User")
+              .doc(Auth().currentUser!.uid)
+              .get()
+              .then(
+            (value) async {
+              if (value.exists) {
+                user = User_Account.Map(value.data()!);
+                firestoreInstance
+                    .collection("User")
+                    .doc(Auth().currentUser!.uid)
+                    .set({
+                  "lastlogin": DateTime.now(),
+                }, SetOptions(merge: true));
+              }
+            },
+          );
         }
       },
     );
-    await firestoreInstance
-        .collection("User")
-        .doc(Auth().currentUser!.uid)
-        .get()
-        .then(
+
+    return user;
+  }
+
+  Future<User_Account?> GetProfile({required String uid}) async {
+    User_Account? user;
+
+    await firestoreInstance.collection("User").doc(uid).get().then(
       (value) async {
         if (value.exists) {
           user = User_Account.Map(value.data()!);
-          firestoreInstance
-              .collection("User")
-              .doc(Auth().currentUser!.uid)
-              .set({
-            "lastlogin": DateTime.now(),
-          }, SetOptions(merge: true));
         }
       },
     );
+
     return user;
   }
 
@@ -70,10 +90,22 @@ class Accountservice {
     return userlist;
   }
 
-  void UpdateUser({required String username}) {
-    firestoreInstance.collection("User").doc(Auth().currentUser!.uid).set({
-      "username": username,
-    }, SetOptions(merge: true));
+  String UpdateUser(
+      {required String username,
+      required String countrycode,
+      required String phonenum,
+      required String completephonenum}) {
+    try {
+      firestoreInstance.collection("User").doc(Auth().currentUser!.uid).set({
+        "username": username,
+        "phonenum": phonenum,
+        "countrycode": countrycode,
+        "completephonenum": completephonenum,
+      }, SetOptions(merge: true));
+    } catch (e) {
+      return e.toString();
+    }
+    return "Update successful";
   }
 
   void UpdateState({required User_Account user}) {
@@ -86,5 +118,35 @@ class Accountservice {
         "ban": false,
       }, SetOptions(merge: true));
     }
+  }
+
+  Future<bool?> Checkuserexist(String username) async {
+    bool? exist = false;
+    await firestoreInstance
+        .collection("User")
+        .where("username", isEqualTo: username)
+        .get()
+        .then((QuerySnapshot) {
+      if (QuerySnapshot.docs.isNotEmpty) {
+        exist = true;
+      } else if (username == 'Admin') {
+        exist = true;
+      }
+    });
+    return exist;
+  }
+
+  Future<bool?> Checkemailexist(String email) async {
+    bool? exist = false;
+    await firestoreInstance
+        .collection("User")
+        .where("email", isEqualTo: email)
+        .get()
+        .then((QuerySnapshot) {
+      if (QuerySnapshot.docs.isNotEmpty) {
+        exist = true;
+      }
+    });
+    return exist;
   }
 }

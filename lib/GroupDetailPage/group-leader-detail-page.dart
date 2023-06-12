@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, prefer_typing_uninitialized_variables, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupDetailPage/group-edit-detail-page.dart';
 import 'package:myapp/GroupDetailPage/group-normal-member-detail-page.dart';
 import 'package:myapp/Services/group_member_service.dart';
@@ -31,12 +32,9 @@ class GroupDetailPage extends StatefulWidget {
 
 class GroupDetail extends State<GroupDetailPage> {
   Group? group;
-  Group_leader? groupleader;
+  Group_leader_record? groupleader;
   List<Group_member?> memberlist = [];
   bool editmode = false;
-  final GroupNameController = TextEditingController();
-  final GroupInfoController = TextEditingController();
-  final GroupMemberController = TextEditingController();
 
   Future<List<Group_member?>> getgroup() async {
     group = await Group_service().GetSingleGroup(groupid: widget.groupid);
@@ -50,7 +48,7 @@ class GroupDetail extends State<GroupDetailPage> {
     if (a == 1) {
       return "member";
     } else if (a == 2) {
-      return "manager";
+      return "admin";
     }
     return "leader";
   }
@@ -86,9 +84,8 @@ class GroupDetail extends State<GroupDetailPage> {
                 child: SizedBox(
                   width: 360 * fem,
                   height: 799 * fem,
-                  child: Image.asset(
-                    'assets/page-1/images/hd-wallpaper-homero-simpsons-homer-simpsons-phone-sad-the-simpsons-thumbnail-1-bPE.png',
-                    fit: BoxFit.cover,
+                  child: const DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.black),
                   ),
                 ),
               ),
@@ -96,10 +93,6 @@ class GroupDetail extends State<GroupDetailPage> {
             FutureBuilder(
                 future: getgroup(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    GroupNameController.text = group!.group_name;
-                    GroupInfoController.text = group!.info;
-                  }
                   if (widget.UserAccount?.uid == groupleader?.leader_id &&
                       groupleader?.leader_id != null) {
                     if (editmode == false) {
@@ -133,7 +126,12 @@ class GroupDetail extends State<GroupDetailPage> {
                               height: 30,
                               child: Row(
                                 children: [
-                                  const SizedBox(width: 300),
+                                  const SizedBox(width: 260),
+                                  const SizedBox(
+                                    width: 40,
+                                    child: Icon(Icons.edit,
+                                        color: Colors.white, size: 20),
+                                  ),
                                   SizedBox(
                                       width: 60,
                                       child: SizedBox(
@@ -182,8 +180,8 @@ class GroupDetail extends State<GroupDetailPage> {
                                 height: 20 * fem,
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color(0xffffffff)),
+                                    color: Colors.blueGrey[900],
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Material(
                                     color: const Color(0x00000000),
@@ -221,8 +219,8 @@ class GroupDetail extends State<GroupDetailPage> {
                                 child: Container(
                                   alignment: Alignment.topLeft,
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color(0xffffffff)),
+                                    color: Colors.blueGrey[900],
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Material(
                                     color: const Color(0x00000000),
@@ -260,8 +258,8 @@ class GroupDetail extends State<GroupDetailPage> {
                                   height: 320 * fem,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xffffffff)),
+                                      color: Colors.blueGrey[900],
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: ListView.separated(
                                       padding: EdgeInsets.zero,
@@ -276,16 +274,24 @@ class GroupDetail extends State<GroupDetailPage> {
                                                 border: Border.all(
                                                     color: const Color(
                                                         0xffffffff)),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                               ),
                                               child: Row(
                                                 children: [
                                                   Align(
-                                                    child: SizedBox(
+                                                    child: Container(
                                                       width: 140 * fem,
                                                       height: 30 * fem,
-                                                      child: Container(
-                                                        alignment:
-                                                            Alignment.center,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: TextButton(
+                                                        onPressed: () {
+                                                          showprofile(
+                                                              context,
+                                                              memberlist[index]!
+                                                                  .member_id);
+                                                        },
                                                         child: Text(
                                                           memberlist[index]!
                                                               .member_username,
