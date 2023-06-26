@@ -10,6 +10,7 @@ import 'package:myapp/GroupTaskDetailPage/groupmember-edit-task-detail-page.dart
 import 'package:myapp/Services/group_member_service.dart';
 import 'package:myapp/Services/group_task_progress_service.dart';
 import 'package:myapp/Services/group_task_service.dart';
+import 'package:myapp/Uri.dart';
 import 'package:myapp/models/g_task.dart';
 import 'package:myapp/models/g_task_progress.dart';
 import 'package:myapp/models/group.dart';
@@ -42,7 +43,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
   int positionmember = 1;
   Group? group;
   Group_Task_record? task;
-  Uri httpsUri = Uri.https('www.google.com');
+  Uri? httpsUri;
   bool editmode = false;
   List<Group_task_progress?> progresslist = [];
   List<User_Account?> userlist = [];
@@ -90,14 +91,7 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
-    if (widget.grouptask!.link.isNotEmpty &&
-        widget.grouptask!.link.length > 9) {
-      if (widget.grouptask!.link.substring(1, 5) == 'https') {
-        httpsUri = Uri.https(widget.grouptask!.link.substring(8));
-      } else {
-        httpsUri = Uri.https(widget.grouptask!.link.substring(7));
-      }
-    }
+    httpsUri = setUri(widget.grouptask!.link);
     if (editmode == false) {
       return SizedBox(
         width: double.infinity,
@@ -310,7 +304,11 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                 child: Material(
                                   color: const Color(0x00000000),
                                   child: InkWell(
-                                    onTap: () => launchUrl(httpsUri),
+                                    onTap: () {
+                                      if (httpsUri != Uri.https('')) {
+                                        launchUrl(httpsUri!);
+                                      }
+                                    },
                                     child: Text(
                                       task?.link ?? '',
                                       style: SafeGoogleFont(
@@ -319,9 +317,8 @@ class GroupTaskDetail extends State<GroupTaskDetailPage> {
                                         fontWeight: FontWeight.w400,
                                         height: 1.2125 * ffem / fem,
                                         decoration: TextDecoration.underline,
-                                        color: const Color(0xff1e25de),
-                                        decorationColor:
-                                            const Color(0xff1e25de),
+                                        color: Colors.white,
+                                        decorationColor: Colors.white,
                                       ),
                                     ),
                                   ),
