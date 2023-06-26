@@ -115,7 +115,11 @@ class GroupList extends State<GroupListPage> {
                                 ],
                               );
                             }
-
+                            if (grouplist.isEmpty) {
+                              return const dialog2(
+                                message: 'No group joined.',
+                              );
+                            }
                             return ListView.separated(
                               padding: const EdgeInsets.all(0.0),
                               itemCount: grouplist.length,

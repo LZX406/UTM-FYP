@@ -267,7 +267,7 @@ class Profile extends State<ProfilePage> {
                           ],
                         ),
                       const SizedBox(
-                        height: 250,
+                        height: 200,
                       ),
                       Container(
                           decoration: BoxDecoration(

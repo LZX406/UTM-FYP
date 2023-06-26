@@ -170,6 +170,11 @@ class UserTaskList extends State<UserTaskListPage> {
                                   ],
                                 );
                               }
+                              if (Activetasklist!.isEmpty) {
+                                return const dialog2(
+                                  message: 'No task available.',
+                                );
+                              }
                               return ListView.separated(
                                 padding: EdgeInsets.zero,
                                 itemCount: Activetasklist!.length,
