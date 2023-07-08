@@ -73,6 +73,30 @@ class Notification_service {
     });
   }
 
+  void Update_group_task_progress_Notification({
+    required Group_leader_record group_leader,
+    required Group group,
+    required List<Group_member?> user_list,
+    required Group_Task_record group_task,
+    required progress,
+  }) {
+    for (var user in user_list) {
+      print("${user!.member_id}\n");
+      firestoreInstance.collection("Notification").doc().set({
+        "title": "${group.group_name}'s task progress updated",
+        "body":
+            "${group_task.task_nam} progress has reach ${progress.toString().substring(0, progress.toString().indexOf("."))}%!",
+        "user_id": user!.member_id
+      });
+    }
+    firestoreInstance.collection("Notification").doc().set({
+      "title": "${group.group_name}'s task progress updated",
+      "body":
+          "${group_task.task_nam} progress has reach ${progress.toString().substring(0, progress.toString().indexOf("."))}%!",
+      "user_id": group_leader.leader_id
+    });
+  }
+
   void Update_group_new_task_Notification({
     required User_Account User,
     required Group group,

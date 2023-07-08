@@ -114,94 +114,97 @@ class GroupList extends State<GroupListPage> {
                                   )
                                 ],
                               );
-                            }
-                            if (grouplist.isEmpty) {
-                              return const dialog2(
-                                message: 'No group joined.',
+                            } else {
+                              if (grouplist.isEmpty) {
+                                return const dialog2(
+                                  message: 'No group joined.',
+                                );
+                              }
+                              return ListView.separated(
+                                padding: const EdgeInsets.all(0.0),
+                                itemCount: grouplist.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(5, 0, 5, 2),
+                                    child: Container(
+                                      width: 360 * fem,
+                                      height: 61 * fem,
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey[900],
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    GroupTaskListPage(
+                                                        refresh: refresh,
+                                                        getallgroup:
+                                                            getallgroup,
+                                                        UserAccount:
+                                                            widget.UserAccount,
+                                                        group:
+                                                            grouplist[index])),
+                                          );
+                                        },
+                                        style: TextButton.styleFrom(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 10, 0, 0),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topLeft,
+                                              child: SizedBox(
+                                                width: 350 * fem,
+                                                height: 25 * fem,
+                                                child: Text(
+                                                  grouplist[index]!.group_name,
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 20 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: SizedBox(
+                                                width: 300 * fem,
+                                                height: 15 * fem,
+                                                child: Text(
+                                                  'Owner:    ${grouplist[index]!.group_leader!.leader!.username}',
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 12 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return const Divider(
+                                    height: 2,
+                                  );
+                                },
                               );
                             }
-                            return ListView.separated(
-                              padding: const EdgeInsets.all(0.0),
-                              itemCount: grouplist.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(5, 0, 5, 2),
-                                  child: Container(
-                                    width: 360 * fem,
-                                    height: 61 * fem,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blueGrey[900],
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  GroupTaskListPage(
-                                                      refresh: refresh,
-                                                      getallgroup: getallgroup,
-                                                      UserAccount:
-                                                          widget.UserAccount,
-                                                      group: grouplist[index])),
-                                        );
-                                      },
-                                      style: TextButton.styleFrom(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            20, 10, 0, 0),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: SizedBox(
-                                              width: 350 * fem,
-                                              height: 25 * fem,
-                                              child: Text(
-                                                grouplist[index]!.group_name,
-                                                style: SafeGoogleFont(
-                                                  'Inter',
-                                                  fontSize: 20 * ffem,
-                                                  fontWeight: FontWeight.w400,
-                                                  height: 1.2125 * ffem / fem,
-                                                  color:
-                                                      const Color(0xffffffff),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: SizedBox(
-                                              width: 300 * fem,
-                                              height: 15 * fem,
-                                              child: Text(
-                                                'Owner:    ${grouplist[index]!.group_leader!.leader!.username}',
-                                                style: SafeGoogleFont(
-                                                  'Inter',
-                                                  fontSize: 12 * ffem,
-                                                  fontWeight: FontWeight.w400,
-                                                  height: 1.2125 * ffem / fem,
-                                                  color:
-                                                      const Color(0xffffffff),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return const Divider(
-                                  height: 2,
-                                );
-                              },
-                            );
                           })),
                 ),
               ),

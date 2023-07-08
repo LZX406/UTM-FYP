@@ -133,16 +133,23 @@ class Group_task_progress_service {
       if (QuerySnapshot.docs.isNotEmpty) {
         newprogressvalue = newprogressvalue / QuerySnapshot.docs.length;
       }
+      Group? group =
+          await Group_service().GetSingleGroup(groupid: grouptask.group_id);
+      List<Group_member?> user_list = await Group_member_service()
+          .GetGroupMember(groupid: grouptask.group_id);
       if (newprogressvalue == 100) {
-        Group? group =
-            await Group_service().GetSingleGroup(groupid: grouptask.group_id);
-        List<Group_member?> user_list = await Group_member_service()
-            .GetGroupMember(groupid: grouptask.group_id);
         Notification_service().Update_group_task_complete_Notification(
             group_leader: group_leader,
             group: group!,
             user_list: user_list,
             group_task: grouptask);
+      } else {
+        Notification_service().Update_group_task_progress_Notification(
+            group_leader: group_leader,
+            group: group!,
+            user_list: user_list,
+            group_task: grouptask,
+            progress: newprogressvalue);
       }
     });
     DateTime esti =

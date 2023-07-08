@@ -237,7 +237,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                               }
                             },
                             child: Text(
-                              widget.Task!.link,
+                              widget.Task?.link ?? '',
                               style: SafeGoogleFont(
                                 'Inter',
                                 fontSize: 12 * ffem,

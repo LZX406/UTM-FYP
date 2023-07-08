@@ -725,7 +725,7 @@ class CreateNewGroup extends State<CreateNewGroupPage> {
                         ],
                       ),
                       const SizedBox(
-                        height: 15,
+                        height: 30,
                       ),
                       Align(
                         alignment: Alignment.bottomLeft,
