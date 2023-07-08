@@ -159,6 +159,11 @@ class UserPastTaskList extends State<UserPastTaskListPage> {
                                 ],
                               );
                             }
+                            if (Inactivetasklist!.isEmpty) {
+                              return const dialog2(
+                                message: 'No task created.',
+                              );
+                            }
                             return ListView.separated(
                               padding: EdgeInsets.zero,
                               itemCount: Inactivetasklist!.length,

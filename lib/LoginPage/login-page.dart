@@ -162,7 +162,7 @@ class Login extends State<LoginPage> {
                       child: Row(
                         children: [
                           SizedBox(
-                            width: 260,
+                            width: 230,
                             child: TextField(
                               controller: PasswordController,
                               obscureText: passwordInvisible,

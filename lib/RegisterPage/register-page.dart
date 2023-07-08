@@ -182,7 +182,7 @@ class Register extends State<RegisterPage> {
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 260,
+                        width: 230,
                         child: TextField(
                           controller: PasswordController,
                           obscureText: passwordInvisible,

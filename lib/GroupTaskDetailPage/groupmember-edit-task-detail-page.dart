@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/Services/group_member_service.dart';
 import 'package:myapp/Services/group_task_progress_service.dart';
+import 'package:myapp/Uri.dart';
 import 'package:myapp/models/g_task.dart';
 import 'package:myapp/models/g_task_progress.dart';
 import 'package:myapp/models/group.dart';
@@ -50,7 +51,7 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
   Group_member? member;
   List<Group_task_progress?> progresslist = [];
   List<User_Account?> userlist = [];
-  Uri httpsUri = Uri.https('www.google.com');
+  Uri? httpsUri;
 
   Future<void> getdata() async {
     member = await Group_member_service().GetSingleGroupMember(
@@ -131,6 +132,7 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
+    httpsUri = setUri(widget.grouptask!.link);
 
     return GestureDetector(
       onTap: () {
@@ -232,9 +234,9 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                         height: 50 * fem,
                         child: Container(
                           decoration: BoxDecoration(
-                                  color: Colors.blueGrey[900],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Text(
                             widget.grouptask!.task_nam,
                             style: SafeGoogleFont(
@@ -272,9 +274,9 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                         height: 120 * fem,
                         child: Container(
                           decoration: BoxDecoration(
-                                  color: Colors.blueGrey[900],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Text(
                             widget.grouptask!.info,
                             style: SafeGoogleFont(
@@ -313,13 +315,17 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                         height: 30 * fem,
                         child: Container(
                           decoration: BoxDecoration(
-                                  color: Colors.blueGrey[900],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
+                            color: Colors.blueGrey[900],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           child: Material(
                             color: const Color(0x00000000),
                             child: InkWell(
-                              onTap: () => launchUrl(httpsUri),
+                              onTap: () {
+                                if (httpsUri != Uri.https('')) {
+                                  launchUrl(httpsUri!);
+                                }
+                              },
                               child: Text(
                                 widget.grouptask!.link,
                                 style: SafeGoogleFont(
@@ -328,8 +334,8 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                                   fontWeight: FontWeight.w400,
                                   height: 1.2125 * ffem / fem,
                                   decoration: TextDecoration.underline,
-                                  color: const Color(0xff1e25de),
-                                  decorationColor: const Color(0xff1e25de),
+                                  color: Colors.white,
+                                  decorationColor: Colors.white,
                                 ),
                               ),
                             ),
@@ -386,9 +392,9 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: Colors.blueGrey[900],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
+                                color: Colors.blueGrey[900],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               child: Row(
                                 children: [
                                   SizedBox(
@@ -428,9 +434,9 @@ class UserEditTaskDetail extends State<GroupMemberEditTaskDetailPage> {
                             height: 35 * fem,
                             child: Container(
                               decoration: BoxDecoration(
-                                  color: Colors.blueGrey[900],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
+                                color: Colors.blueGrey[900],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               child: Row(
                                 children: [
                                   SizedBox(

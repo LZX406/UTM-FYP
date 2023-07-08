@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:myapp/Dialog.dart';
 import 'package:myapp/PERT_analysis/pert.dart';
 import 'package:myapp/Services/p_task_service.dart';
+import 'package:myapp/Uri.dart';
 import 'package:myapp/models/p_task.dart';
 import 'package:myapp/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -43,7 +44,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
   String? taskid;
   late bool activestate;
   String? message;
-  Uri httpsUri = Uri.https('www.google.com');
+  Uri? httpsUri;
 
   Future<void> update() async {
     DateTime esti = estimate(widget.Task!.startdate!, widget.Task!.enddate!,
@@ -102,7 +103,6 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
         DateFormat('yyyy-MM-dd').format(widget.Task!.estidate!);
     ProgressController.text = widget.Task!.progress.toString();
     activestate = widget.Task!.activestate;
-    httpsUri = Uri.https(TaskLinkController.text.substring(8));
     taskid = widget.Task!.task_id;
   }
 
@@ -116,7 +116,7 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
-
+    httpsUri = setUri(widget.Task!.link);
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -296,7 +296,11 @@ class UserEditTaskDetail extends State<UserEditTaskDetailPage> {
                         child: Material(
                           color: const Color(0x00000000),
                           child: InkWell(
-                            onTap: () => launchUrl(httpsUri),
+                            onTap: () {
+                              if (httpsUri != Uri.https('')) {
+                                launchUrl(httpsUri!);
+                              }
+                            },
                             child: TextField(
                               controller: TaskLinkController,
                               style: SafeGoogleFont(

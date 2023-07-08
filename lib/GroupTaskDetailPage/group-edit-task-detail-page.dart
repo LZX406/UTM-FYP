@@ -9,6 +9,7 @@ import 'package:myapp/Services/group_member_service.dart';
 import 'package:myapp/Services/group_task_progress_service.dart';
 import 'package:myapp/Services/group_task_service.dart';
 import 'package:myapp/Services/notification_service.dart';
+import 'package:myapp/Uri.dart';
 import 'package:myapp/models/g_task.dart';
 import 'package:myapp/models/g_task_progress.dart';
 import 'package:myapp/models/group.dart';
@@ -57,7 +58,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
   String? message;
   List<Group_task_progress?> progresslist = [];
   List<User_Account?> userlist = [];
-  Uri httpsUri = Uri.https('www.google.com');
+  Uri? httpsUri;
 
   bool? validatenull() {
     if (TaskNameController.text.isEmpty) {
@@ -161,7 +162,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
         DateFormat('yyyy-MM-dd').format(widget.grouptask!.estidate!);
     ProgressController.text = widget.grouptask!.progress.toString();
     activestate = widget.grouptask!.activestate;
-    httpsUri = Uri.https(TaskLinkController.text);
+    httpsUri = setUri(TaskLinkController.text);
     taskid = widget.grouptask!.task_id;
   }
 
@@ -385,7 +386,11 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                           child: Material(
                             color: const Color(0x00000000),
                             child: InkWell(
-                              onTap: () => launchUrl(httpsUri),
+                              onTap: () {
+                                if (httpsUri != Uri.https('')) {
+                                  launchUrl(httpsUri!);
+                                }
+                              },
                               child: TextField(
                                 controller: TaskLinkController,
                                 style: SafeGoogleFont(

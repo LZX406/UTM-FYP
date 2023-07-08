@@ -147,7 +147,7 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
         child: Column(
           children: [
             const SizedBox(
-              height: 30,
+              height: 60,
             ),
             Center(
               child: Align(
@@ -155,7 +155,7 @@ class GroupEditDetail extends State<GroupEditDetailPage> {
                   width: 360 * fem,
                   height: 25 * fem,
                   child: Text(
-                    'NEW GROUP ',
+                    widget.group?.group_name ?? '',
                     textAlign: TextAlign.center,
                     style: SafeGoogleFont(
                       'Inter',

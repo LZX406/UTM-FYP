@@ -3,6 +3,7 @@
 import 'package:cupertino_progress_bar/cupertino_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:myapp/Uri.dart';
 import 'package:myapp/UserTaskDetailPage/user-edit-task-detail-page.dart';
 import 'package:myapp/models/p_task.dart';
 import 'package:myapp/utils.dart';
@@ -23,7 +24,7 @@ class UserTaskDetailPage extends StatefulWidget {
 
 class UserTaskDetail extends State<UserTaskDetailPage> {
   bool editmode = false;
-  Uri httpsUri = Uri.https('www.google.com');
+  Uri? httpsUri;
 
   double progressvalue(String value) {
     double values = double.parse(value) / 100;
@@ -47,13 +48,8 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
-    if (widget.Task!.link.isNotEmpty && widget.Task!.link.length > 9) {
-      if (widget.Task!.link.substring(1, 5) == 'https') {
-        httpsUri = Uri.https(widget.Task!.link.substring(8));
-      } else {
-        httpsUri = Uri.https(widget.Task!.link.substring(7));
-      }
-    }
+
+    httpsUri = setUri(widget.Task!.link);
     if (editmode == false) {
       return SizedBox(
         width: double.infinity,
@@ -235,9 +231,13 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                         child: Material(
                           color: const Color(0x00000000),
                           child: InkWell(
-                            onTap: () => launchUrl(httpsUri),
+                            onTap: () {
+                              if (httpsUri != Uri.https('')) {
+                                launchUrl(httpsUri!);
+                              }
+                            },
                             child: Text(
-                              widget.Task!.link,
+                              widget.Task?.link ?? '',
                               style: SafeGoogleFont(
                                 'Inter',
                                 fontSize: 12 * ffem,
@@ -245,6 +245,7 @@ class UserTaskDetail extends State<UserTaskDetailPage> {
                                 height: 1.2125 * ffem / fem,
                                 decoration: TextDecoration.underline,
                                 color: const Color(0xffffffff),
+                                decorationColor: Colors.white,
                               ),
                             ),
                           ),

@@ -35,10 +35,9 @@ class NotificationService {
     FirebaseMessaging.onMessage.listen((event) async {
       //LocalNotificationService.showNotificationOnForeground(event);
 
-      notificationMsg =
-          "${event.notification!.title} ${event.notification!.body}";
+      notificationMsg = " I am coming from front state";
 
-      //print(notificationMsg);
+      print(notificationMsg);
 
       //show notification
       AwesomeNotifications().createNotification(
@@ -55,9 +54,8 @@ class NotificationService {
 
     // background State
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      notificationMsg =
-          "${event.notification!.title} ${event.notification!.body} I am coming from background";
-
+      notificationMsg = " I am coming from background";
+      print(notificationMsg);
       //print("opened " + notificationMsg);
       AwesomeNotifications().createNotification(
           content: NotificationContent(
