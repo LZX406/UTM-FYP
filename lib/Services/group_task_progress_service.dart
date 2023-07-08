@@ -143,7 +143,10 @@ class Group_task_progress_service {
             group: group!,
             user_list: user_list,
             group_task: grouptask);
-      } else {
+      } else if (int.parse(newprogressvalue
+              .toString()
+              .substring(0, newprogressvalue.toString().indexOf("."))) !=
+          grouptask.progress) {
         Notification_service().Update_group_task_progress_Notification(
             group_leader: group_leader,
             group: group!,
