@@ -81,7 +81,6 @@ class Notification_service {
     required progress,
   }) {
     for (var user in user_list) {
-      print("${user!.member_id}\n");
       firestoreInstance.collection("Notification").doc().set({
         "title": "${group.group_name}'s task progress updated",
         "body":

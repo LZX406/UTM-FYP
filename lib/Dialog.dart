@@ -335,6 +335,7 @@ void showprofile(BuildContext context, String uid) {
               const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
           child: Container(
             height: 300,
+            width: 400,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.white)),
@@ -389,7 +390,7 @@ void showprofile(BuildContext context, String uid) {
                             ),
                             Container(
                               alignment: Alignment.centerLeft,
-                              width: 220,
+                              width: 200,
                               height: 50,
                               child: Text(
                                 UserAccount?.email ?? '',
@@ -426,7 +427,7 @@ void showprofile(BuildContext context, String uid) {
                             ),
                             Container(
                               alignment: Alignment.centerLeft,
-                              width: 220,
+                              width: 200,
                               height: 50,
                               child: Text(
                                 UserAccount?.username ?? '',
@@ -465,7 +466,7 @@ void showprofile(BuildContext context, String uid) {
                               ),
                               Container(
                                 alignment: Alignment.centerLeft,
-                                width: 220,
+                                width: 200,
                                 height: 50,
                                 child: Text(
                                   UserAccount?.completephonenum ?? '',
@@ -503,7 +504,7 @@ void showprofile(BuildContext context, String uid) {
                               ),
                               Container(
                                 alignment: Alignment.centerLeft,
-                                width: 220,
+                                width: 200,
                                 height: 50,
                                 child: Row(
                                   children: [

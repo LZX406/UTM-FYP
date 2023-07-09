@@ -6,6 +6,8 @@ import 'package:myapp/CreateNewGroupPage/create-new-group-page.dart';
 import 'package:myapp/Dialog.dart';
 import 'package:myapp/GroupTaskListPage/group-task-list-page.dart';
 import 'package:myapp/Services/group_service.dart';
+import 'package:myapp/Services/group_task_service.dart';
+import 'package:myapp/models/g_task.dart';
 import 'package:myapp/models/group.dart';
 import 'package:myapp/models/user.dart';
 import 'package:myapp/utils.dart';
@@ -19,6 +21,7 @@ class GroupListPage extends StatefulWidget {
 
 class GroupList extends State<GroupListPage> {
   List<Group?> grouplist = [];
+  List<int> activelist = [];
   @override
   void initState() {
     super.initState();
@@ -26,11 +29,24 @@ class GroupList extends State<GroupListPage> {
   }
 
   Future<void> refresh() async {
-    setState(() {});
+    setState(() {
+      activelist = [];
+    });
   }
 
   Future<void> getallgroup() async {
     grouplist = await Group_service().GetGroup(userid: widget.UserAccount!.uid);
+
+    List<Group_Task_record?>? Activetasklist = [];
+    for (var group in grouplist) {
+      Activetasklist =
+          await Group_task_service().Getcurrenttask(groupid: group!.group_id);
+      if (Activetasklist.isNotEmpty) {
+        activelist.add(Activetasklist.length);
+      } else {
+        activelist.add(0);
+      }
+    }
   }
 
   @override
@@ -129,7 +145,7 @@ class GroupList extends State<GroupListPage> {
                                         const EdgeInsets.fromLTRB(5, 0, 5, 2),
                                     child: Container(
                                       width: 360 * fem,
-                                      height: 61 * fem,
+                                      height: 81 * fem,
                                       decoration: BoxDecoration(
                                         color: Colors.blueGrey[900],
                                         borderRadius: BorderRadius.circular(10),
@@ -181,6 +197,24 @@ class GroupList extends State<GroupListPage> {
                                                 height: 15 * fem,
                                                 child: Text(
                                                   'Owner:    ${grouplist[index]!.group_leader!.leader!.username}',
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 12 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: SizedBox(
+                                                width: 300 * fem,
+                                                height: 15 * fem,
+                                                child: Text(
+                                                  'Active task:    ${activelist[index]}',
                                                   style: SafeGoogleFont(
                                                     'Inter',
                                                     fontSize: 12 * ffem,

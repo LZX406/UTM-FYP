@@ -1028,7 +1028,7 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                                 );
                               });
                           if (deletetask) {
-                            delete();
+                            await delete();
                             showDialog(
                                 context: context,
                                 builder: (context) => Dialog(

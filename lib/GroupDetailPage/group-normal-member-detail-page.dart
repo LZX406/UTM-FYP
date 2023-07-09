@@ -225,18 +225,26 @@ class GroupMemberDetail extends State<GroupMemberDetailPage> {
                                             height: 30 * fem,
                                             child: Container(
                                               alignment: Alignment.center,
-                                              child: Text(
-                                                widget.memberlist[index]!
-                                                    .member_username,
-                                                style: SafeGoogleFont(
-                                                  'Inter',
-                                                  fontSize: 12 * ffem,
-                                                  fontWeight: FontWeight.w400,
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                  height: 1.2125 * ffem / fem,
-                                                  color:
-                                                      const Color(0xffffffff),
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  showprofile(
+                                                      context,
+                                                      widget.memberlist[index]!
+                                                          .member_id);
+                                                },
+                                                child: Text(
+                                                  widget.memberlist[index]!
+                                                      .member_username,
+                                                  style: SafeGoogleFont(
+                                                    'Inter',
+                                                    fontSize: 12 * ffem,
+                                                    fontWeight: FontWeight.w400,
+                                                    decoration:
+                                                        TextDecoration.none,
+                                                    height: 1.2125 * ffem / fem,
+                                                    color:
+                                                        const Color(0xffffffff),
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -256,38 +264,26 @@ class GroupMemberDetail extends State<GroupMemberDetailPage> {
                                                 ),
                                                 child: SizedBox(
                                                   width: 168 * fem,
-                                                  height: 25 * fem,
+                                                  height: 30 * fem,
                                                   child: Container(
                                                     alignment: Alignment.center,
-                                                    child: TextButton(
-                                                      onPressed: () {
-                                                        showprofile(
-                                                            context,
-                                                            widget
-                                                                .memberlist[
-                                                                    index]!
-                                                                .member_id);
-                                                      },
-                                                      child: Text(
-                                                        widget.memberposition(
-                                                            widget
-                                                                .memberlist[
-                                                                    index]!
-                                                                .member_type),
-                                                        style: SafeGoogleFont(
-                                                          'Inter',
-                                                          fontSize: 12 * ffem,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .none,
-                                                          height: 1.2125 *
-                                                              ffem /
-                                                              fem,
-                                                          color: const Color(
-                                                              0xffffffff),
-                                                        ),
+                                                    child: Text(
+                                                      widget.memberposition(
+                                                          widget
+                                                              .memberlist[
+                                                                  index]!
+                                                              .member_type),
+                                                      style: SafeGoogleFont(
+                                                        'Inter',
+                                                        fontSize: 12 * ffem,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        decoration:
+                                                            TextDecoration.none,
+                                                        height:
+                                                            1.2125 * ffem / fem,
+                                                        color: const Color(
+                                                            0xffffffff),
                                                       ),
                                                     ),
                                                   ),

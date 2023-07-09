@@ -125,9 +125,9 @@ class GroupTaskList extends State<GroupTaskListPage> {
                                 return;
                               }
                               leaving = false;
-
                               Navigator.pop(context);
-                              widget.refresh();
+                              await widget.refresh();
+
                               leaving = true;
                             },
                             child: SizedBox(
@@ -199,7 +199,8 @@ class GroupTaskList extends State<GroupTaskListPage> {
                                 alignment: Alignment.center,
                                 child: Column(
                                   children: [
-                                    Container(
+                                    SizedBox(
+                                        height: 160,
                                         child:
                                             LoadingAnimationWidget.hexagonDots(
                                                 color: Colors.white,

@@ -49,6 +49,7 @@ class NotificationService {
               body: event.notification!.body,
               icon: 'resource://drawable/task',
               largeIcon: 'resource://drawable/task',
+              notificationLayout: NotificationLayout.BigText,
               payload: {"name": "Task Notify"}));
     });
 
@@ -66,6 +67,7 @@ class NotificationService {
               body: event.notification!.body,
               icon: 'resource://drawable/task',
               largeIcon: 'resource://drawable/task',
+              notificationLayout: NotificationLayout.BigText,
               payload: {"name": "Task Notify"}));
     });
   }
