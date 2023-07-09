@@ -111,6 +111,7 @@ class Group_task_progress_service {
       }, SetOptions(merge: true));
       await EstimateEndDate(grouptask: grouptask, group_leader: group_leader);
     } catch (e) {
+      print(e.toString());
       return e.toString();
     }
     return "Update successful";
@@ -119,7 +120,7 @@ class Group_task_progress_service {
   Future<void> EstimateEndDate(
       {required Group_Task_record grouptask,
       required Group_leader_record group_leader}) async {
-    num newprogressvalue = 0;
+    num newprogressvalue = 0.00;
     await firestoreInstance
         .collection("GroupTask")
         .doc(grouptask.task_id)
@@ -127,10 +128,10 @@ class Group_task_progress_service {
         .where("task_involved", isEqualTo: true)
         .get()
         .then((QuerySnapshot) async {
-      for (var document in QuerySnapshot.docs) {
-        newprogressvalue += document.get("progress");
-      }
       if (QuerySnapshot.docs.isNotEmpty) {
+        for (var document in QuerySnapshot.docs) {
+          newprogressvalue += document.get("progress");
+        }
         newprogressvalue = newprogressvalue / QuerySnapshot.docs.length;
       }
       Group? group =
