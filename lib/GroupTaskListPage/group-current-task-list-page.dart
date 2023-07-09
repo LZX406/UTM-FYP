@@ -49,29 +49,35 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
     double baseWidth = 360;
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
-    return FutureBuilder(
-        future: getalltask(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Column(
-              children: [
-                Container(
-                    child: LoadingAnimationWidget.hexagonDots(
-                        color: Colors.white, size: 200)),
-                const dialog2(
-                  message: 'Loading, please wait',
-                )
-              ],
-            );
-          }
-          return SizedBox(
-            width: 360 * fem,
-            height: 558 * fem,
-            child: Container(
-              alignment: Alignment.topLeft,
-              child: Stack(
-                children: [
-                  ListView.separated(
+    return SizedBox(
+      width: 360 * fem,
+      height: 558 * fem,
+      child: Container(
+        alignment: Alignment.topLeft,
+        child: Stack(
+          children: [
+            FutureBuilder(
+                future: getalltask(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Column(
+                      children: [
+                        Container(
+                            child: LoadingAnimationWidget.hexagonDots(
+                                color: Colors.white, size: 200)),
+                        const dialog2(
+                          message: 'Loading, please wait',
+                        )
+                      ],
+                    );
+                  }
+
+                  if (Activetasklist!.isEmpty) {
+                    return const dialog2(
+                      message: 'No task available.',
+                    );
+                  }
+                  return ListView.separated(
                     padding: const EdgeInsets.all(0.0),
                     itemCount: Activetasklist!.length,
                     itemBuilder: (context, index) {
@@ -254,33 +260,33 @@ class GroupCurrentTaskList extends State<GroupCurrentTaskListPage> {
                         height: 0,
                       );
                     },
-                  ),
-                  if (widget.UserAccount!.uid == widget.group_leader?.leader_id)
-                    Positioned(
-                      // rectangle20QCp (107:33)
-                      left: 230 * fem,
-                      top: 500 * fem,
-                      child: FloatingActionButton.extended(
-                          backgroundColor: Colors.blueGrey[900],
-                          hoverColor: Colors.grey,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => GroupCreateTaskPage(
-                                        UserAccount: widget.UserAccount,
-                                        switchpage: widget.switchpage,
-                                        group: widget.group,
-                                      )),
-                            );
-                          },
-                          icon: const Icon(Icons.add_task),
-                          label: const Text('Add task')),
-                    ),
-                ],
+                  );
+                }),
+            if (widget.UserAccount!.uid == widget.group_leader?.leader_id)
+              Positioned(
+                // rectangle20QCp (107:33)
+                left: 230 * fem,
+                top: 500 * fem,
+                child: FloatingActionButton.extended(
+                    backgroundColor: Colors.blueGrey[900],
+                    hoverColor: Colors.grey,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GroupCreateTaskPage(
+                                  UserAccount: widget.UserAccount,
+                                  switchpage: widget.switchpage,
+                                  group: widget.group,
+                                )),
+                      );
+                    },
+                    icon: const Icon(Icons.add_task),
+                    label: const Text('Add task')),
               ),
-            ),
-          );
-        });
+          ],
+        ),
+      ),
+    );
   }
 }
