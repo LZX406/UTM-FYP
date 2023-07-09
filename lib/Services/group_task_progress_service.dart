@@ -111,7 +111,6 @@ class Group_task_progress_service {
       }, SetOptions(merge: true));
       await EstimateEndDate(grouptask: grouptask, group_leader: group_leader);
     } catch (e) {
-      print(e.toString());
       return e.toString();
     }
     return "Update successful";
