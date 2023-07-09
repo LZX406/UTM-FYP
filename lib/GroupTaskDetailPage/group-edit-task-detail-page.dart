@@ -397,8 +397,8 @@ class UserEditTaskDetail extends State<GroupEditTaskDetailPage> {
                                   'Inter',
                                   fontSize: 14 * ffem,
                                   decoration: TextDecoration.none,
-                                  color: const Color(0xff1e25de),
-                                  decorationColor: const Color(0xff1e25de),
+                                  color: Colors.white,
+                                  decorationColor: Colors.white,
                                 ),
                                 decoration: const InputDecoration(
                                   border: OutlineInputBorder(
